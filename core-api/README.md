@@ -16,11 +16,9 @@ You will also see any lint errors in the console.
 
 Launches the tests
 
-
 ### `npm lint`
 
 Launches the linter checking on all the project
-
 
 ### `npm coverage`
 
