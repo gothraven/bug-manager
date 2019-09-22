@@ -6,8 +6,7 @@
   "author": "ZAGHBANE Safiy Errahmane",
   "license": "ISC",
   "scripts": {
-    "start": "cross-env NODE_ENV=production pm2 start ./src/index.js --watch",
-    "dev": "nodemon ./src/index.js",
+    "start": "nodemon ./src/index.js",
     "lint": "eslint ./src/ --ignore-path .gitignore --ignore-pattern internals/scripts",
     "test": "cross-env NODE_ENV=test nyc --reporter=text mocha --timeout 20000 --recursive src/api/tests",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
