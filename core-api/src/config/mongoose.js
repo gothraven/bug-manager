@@ -17,13 +17,13 @@ if (env === 'development') {
 }
 
 /**
-* Connect to mongo db
-*/
+ * Connect to mongo db
+ */
 exports.connect = () => {
   mongoose.connect(mongo.uri, {
     keepAlive: 1,
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true
   });
   return mongoose.connection;
 };

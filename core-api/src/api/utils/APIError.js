@@ -1,9 +1,7 @@
 const httpStatus = require('http-status');
 
 class ExtendableError extends Error {
-  constructor({
-    message, errors, status, isPublic, stack,
-  }) {
+  constructor({ message, errors, status, isPublic, stack }) {
     super(message);
     this.name = this.constructor.name;
     this.message = message;
@@ -22,10 +20,14 @@ class APIError extends ExtendableError {
     errors,
     stack,
     status = httpStatus.INTERNAL_SERVER_ERROR,
-    isPublic = false,
+    isPublic = false
   }) {
     super({
-      message, errors, status, isPublic, stack,
+      message,
+      errors,
+      status,
+      isPublic,
+      stack
     });
   }
 }

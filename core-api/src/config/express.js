@@ -11,8 +11,8 @@ const { logs } = require('./vars');
 const error = require('../api/middlewares/error');
 
 /**
-* Express instance
-*/
+ * Express instance
+ */
 const app = express();
 
 // request logging. dev: console | production: file
