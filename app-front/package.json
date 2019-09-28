@@ -21,9 +21,9 @@
     }
   },
   "lint-staged": {
-    "src /**/*.{js,jsx}": [
-      "eslint",
-      "pretty-quick — staged",
+    "src/**/*.{js,jsx,json,css,scss,md}": [
+      "eslint --fix",
+      "prettier-eslint --write",
       "git add"
     ]
   },
