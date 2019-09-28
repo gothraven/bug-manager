@@ -1,0 +1,82 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": false,
+    "codeFrame": false
+  },
+  "extends": ["airbnb", "prettier", "prettier/react"],
+  "rules": {
+    "unicorn/prevent-abbreviations": "off",
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "react/jsx-uses-vars": 2,
+    "object-curly-newline": "off",
+    "comma-dangle": "off",
+    "no-console": "error",
+    "promise/always-return": "error",
+    "promise/no-return-wrap": "error",
+    "promise/param-names": "error",
+    "promise/catch-or-return": "error",
+    "promise/no-native": "off",
+    "promise/no-nesting": "error",
+    "promise/no-promise-in-callback": "error",
+    "promise/no-callback-in-promise": "error",
+    "promise/no-return-in-finally": "error",
+    "prefer-arrow-callback": "error",
+    "no-underscore-dangle": 0,
+    "no-multi-str": 0,
+    "unicorn/filename-case": [
+      "error",
+      {
+        "cases": {
+          "kebabCase": true,
+          "camelCase": true,
+          "pascalCase": true
+        }
+      }
+    ],
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "next"
+      }
+    ],
+    "no-use-before-define": [
+      "error",
+      {
+        "variables": false
+      }
+    ],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx"]
+      }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "trailingComma": "es5",
+        "singleQuote": true,
+        "printWidth": 100
+      }
+    ]
+  },
+  "plugins": ["prettier"],
+  "env": {
+    "node": true,
+    "browser": true,
+    "jest": true,
+    "es6": true,
+    "commonjs": true
+  }
+}
