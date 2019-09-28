@@ -2,5 +2,6 @@
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
   "editor.formatOnType": true,
-  "prettier.eslintIntegration": true
+  "prettier.eslintIntegration": true,
+  "eslint.validate": ["javascript", "javascriptreact"]
 }
