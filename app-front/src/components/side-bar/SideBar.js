@@ -97,6 +97,7 @@ function SideBar(props) {
           </ListItem>
           {menuItems.map(item => (
             <ListItem
+              key={item.title}
               button
               classes={{ root: classes.listItem }}
               onClick={() => history.push(item.link)}
