@@ -1,17 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import clsx from "clsx";
 import { makeStyles } from "@material-ui/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import SideBar from "../side-bar/SideBar";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   root: {
+    display: "flex",
     height: "100%"
-  },
-  shiftContent: {
-    paddingLeft: 240
   },
   content: {
-    height: "100%"
+    flexGrow: 1,
+    padding: theme.spacing(3)
   }
 }));
 
@@ -20,12 +20,9 @@ const MainLayout = props => {
   const classes = useStyles();
 
   return (
-    <div
-      className={clsx({
-        [classes.root]: true,
-        [classes.shiftContent]: false
-      })}
-    >
+    <div className={classes.root}>
+      <CssBaseline />
+      <SideBar />
       <main className={classes.content}>{children}</main>
     </div>
   );
