@@ -64,9 +64,9 @@ const menuItems = [
     link: "/user/projects"
   },
   {
-    title: "Issues",
+    title: "tags",
     icon: <BookmarksIcon />,
-    link: "/user/issues"
+    link: "/user/tags"
   }
 ];
 

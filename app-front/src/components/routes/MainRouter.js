@@ -5,7 +5,7 @@ import Container from "@material-ui/core/Container";
 import RouteWithLayout from "../lib/RouteWithLayout";
 import SignIn from "../sign-in/SignIn";
 import MainLayout from "../layouts/MainLayout";
-import Issues from "../issues/Issues";
+import { TagsView } from "../views";
 
 function MyComponentDashboard() {
   return (
@@ -86,9 +86,9 @@ function MainRouter() {
       />
       <RouteWithLayout
         exact
-        path="/user/issues"
+        path="/user/tags"
         authed={isAuthenticated}
-        component={Issues}
+        component={TagsView}
         layout={MainLayout}
       />
     </Switch>
