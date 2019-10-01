@@ -7,14 +7,8 @@ const jwt = require('jwt-simple');
 const APIError = require('../utils/APIError');
 const { env, jwtSecret, jwtExpirationInterval } = require('../../config/vars');
 
-/**
- * User Roles
- */
 const roles = ['user', 'admin'];
 
-/**
- * User Schema
- */
 const userSchema = new mongoose.Schema(
   {
     email: {
@@ -52,12 +46,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-/**
- * Add your
- * - pre-save hooks
- * - validations
- * - virtuals
- */
 userSchema.pre('save', async function save(next) {
   try {
     if (!this.isModified('password')) return next();
@@ -73,9 +61,6 @@ userSchema.pre('save', async function save(next) {
   }
 });
 
-/**
- * Methods
- */
 userSchema.method({
   transform() {
     const transformed = {};
@@ -102,17 +87,8 @@ userSchema.method({
   }
 });
 
-/**
- * Statics
- */
 userSchema.statics = {
   roles,
-  /**
-   * Get user
-   *
-   * @param {ObjectId} id - The objectId of user.
-   * @returns {Promise<User, APIError>}
-   */
   async get(id) {
     try {
       let user;
@@ -133,12 +109,6 @@ userSchema.statics = {
     }
   },
 
-  /**
-   * Find user by email and tries to generate a JWT token
-   *
-   * @param {ObjectId} id - The objectId of user.
-   * @returns {Promise<User, APIError>}
-   */
   async findAndGenerateToken(options) {
     const { email, password, refreshObject } = options;
     if (!email) throw new APIError({ message: 'An email is required to generate a token' });
@@ -165,13 +135,6 @@ userSchema.statics = {
     throw new APIError(err);
   },
 
-  /**
-   * List users in descending order of 'createdAt' timestamp.
-   *
-   * @param {number} skip - Number of users to be skipped.
-   * @param {number} limit - Limit number of users to be returned.
-   * @returns {Promise<User[]>}
-   */
   list({ page = 1, perPage = 30, name, email, role }) {
     const options = omitBy({ name, email, role }, isNil);
 
@@ -182,13 +145,6 @@ userSchema.statics = {
       .exec();
   },
 
-  /**
-   * Return new validation error
-   * if error is a mongoose duplicate key error
-   *
-   * @param {Error} error
-   * @returns {Error|APIError}
-   */
   checkDuplicateEmail(error) {
     if (error.name === 'MongoError' && error.code === 11000) {
       return new APIError({
@@ -209,7 +165,4 @@ userSchema.statics = {
   }
 };
 
-/**
- * @typedef User
- */
 module.exports = mongoose.model('User', userSchema);
