@@ -1,26 +1,22 @@
 const mongoose = require('mongoose');
 
-const tagSchema = new mongoose.Schema(
+const projectSchema = new mongoose.Schema(
   {
-    name: {
+    title: {
       type: String,
       required: true
     },
-    description: String,
-    color: {
-      type: String,
-      required: true
-    }
+    description: String
   },
   {
     timestamps: true
   }
 );
 
-tagSchema.method({
+projectSchema.method({
   transform() {
     const transformed = {};
-    const fields = ['id', 'name', 'description', 'color'];
+    const fields = ['id', 'title', 'description', 'createdAt'];
 
     fields.forEach((field) => {
       transformed[field] = this[field];
@@ -30,4 +26,4 @@ tagSchema.method({
   }
 });
 
-module.exports = mongoose.model('Tag', tagSchema);
+module.exports = mongoose.model('Project', projectSchema);
