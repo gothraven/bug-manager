@@ -1,8 +1,9 @@
-This project was bootstrapped from [express-rest-es2017-boilerplate](https://github.com/danielfsousa/express-rest-es2017-boilerplate).
+This project was bootstrapped from express rest nodejs boilerplates.
 
 ## Initialisation
 
 - create a `.env` file in `bug-manager/core-api/` which you should have these environment variables
+
 ```.env
 NODE_ENV=development
 PORT=3030
