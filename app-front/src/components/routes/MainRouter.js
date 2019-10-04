@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import RouteWithLayout from "../lib/RouteWithLayout";
 import SignIn from "../sign-in/SignIn";
+import ProjectsComponent from "../projects/ProjectsComponent";
 import MainLayout from "../layouts/MainLayout";
 
 function MyComponentDashboard() {
@@ -69,6 +70,7 @@ function MainRouter() {
     <Switch>
       <Redirect exact from="/" to="/user/dashboard" />
       <Route path="/sign-in" component={SignIn} />
+
       <RouteWithLayout
         exact
         path="/user/dashboard"
@@ -81,6 +83,14 @@ function MainRouter() {
         path="/user/issue"
         authed={isAuthenticated}
         component={MyComponentIssue}
+        layout={MainLayout}
+      />
+
+      <RouteWithLayout
+        exact
+        path="/user/projects"
+        authed={isAuthenticated}
+        component={ProjectsComponent}
         layout={MainLayout}
       />
     </Switch>
