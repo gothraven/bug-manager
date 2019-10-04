@@ -11,6 +11,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+import BookmarksIcon from "@material-ui/icons/Bookmarks";
 
 const drawerWidth = 240;
 
@@ -60,7 +61,12 @@ const menuItems = [
   {
     title: "Projects",
     icon: <MailIcon />,
-    link: "/user/issue"
+    link: "/user/projects"
+  },
+  {
+    title: "tags",
+    icon: <BookmarksIcon />,
+    link: "/user/tags"
   }
 ];
 
