@@ -12,66 +12,20 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Chip from "@material-ui/core/Chip";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
+import Grid from "@material-ui/core/Grid";
+
+import { invertColor } from "../../core/utils/Functions";
 
 const useStyles = makeStyles(theme => ({
-  heading: {
-    fontSize: theme.typography.pxToRem(15)
-  },
-  container: {
-    display: "flex",
-    flexWrap: "wrap"
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200
-  },
-  dense: {
-    marginTop: 19
-  },
-  menu: {
-    width: 200
-  },
-  secondaryHeading: {
+  description: {
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary
-  },
-  icon: {
-    verticalAlign: "bottom",
-    height: 20,
-    width: 20
-  },
-  details: {
-    alignItems: "center"
-  },
-  chip: {
-    margin: theme.spacing(1)
-  },
-  column: {
-    flexBasis: "33.33%"
-  },
-  fab: {
-    margin: theme.spacing(1)
-  },
-  extendedIcon: {
-    marginRight: theme.spacing(1)
-  },
-  helper: {
-    borderLeft: `2px solid ${theme.palette.divider}`,
-    padding: theme.spacing(1, 2)
-  },
-  link: {
-    color: theme.palette.primary.main,
-    textDecoration: "none",
-    "&:hover": {
-      textDecoration: "underline"
-    }
   }
 }));
 
 function TagPanel(props) {
   const { tag, onDelete, onUpdate } = props;
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(tag.id === undefined);
   const [name, setName] = useState(tag.name);
   const [description, setDescription] = useState(tag.description);
   const [color, setColor] = useState(tag.color);
@@ -79,39 +33,67 @@ function TagPanel(props) {
 
   return (
     <ExpansionPanel expanded={expanded} onChange={() => setExpanded(!expanded)}>
-      <ExpansionPanelSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1c-content"
-        id="panel1c-header"
-      >
-        <Chip
-          label={name}
-          style={{ backgroundColor: color }}
-          className={classes.chip}
-          variant="outlined"
-        />
-        <div className={classes.column}>
-          <Typography className={classes.secondaryHeading}>
-            {description}
-          </Typography>
-        </div>
+      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+        <Grid container xs={10} justify="flex-start" alignItems="center">
+          <Grid item xs={2}>
+            <Chip
+              label={name}
+              style={{
+                borderColor: color,
+                backgroundColor: color,
+                color: invertColor(color)
+              }}
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={8}>
+            <Typography className={classes.description}>
+              {description}
+            </Typography>
+          </Grid>
+        </Grid>
       </ExpansionPanelSummary>
-      <ExpansionPanelDetails className={classes.details}>
-        <TextField
-          label="name"
-          className={classes.textField}
-          value={name}
-          onChange={event => setName(event.target.value)}
-          margin="normal"
-        />
-        <TextField
-          label="description"
-          className={classes.secondaryHeading}
-          value={description}
-          onChange={event => setDescription(event.target.value)}
-          margin="normal"
-        />
-        <TwitterPicker value={color} onChange={event => setColor(event.hex)} />
+      <ExpansionPanelDetails>
+        <Grid
+          container
+          xs={12}
+          justify="flex-start"
+          alignItems="stretch"
+          spacing={2}
+        >
+          <Grid item>
+            <TwitterPicker value={color} onChange={e => setColor(e.hex)} />
+          </Grid>
+          <Grid item xs={7}>
+            <Grid
+              container
+              direction="column"
+              justify="flex-start"
+              alignItems="stretch"
+            >
+              <TextField
+                label="name"
+                placeholder="Urgent"
+                value={name}
+                fullWidth
+                variant="outlined"
+                onChange={e => setName(e.target.value)}
+                margin="normal"
+              />
+              <TextField
+                label="description"
+                value={description}
+                placeholder="This concerns all the issues that we should fix urgently"
+                onChange={e => setDescription(e.target.value)}
+                margin="normal"
+                variant="outlined"
+                fullWidth
+                multiline
+                rows="4"
+              />
+            </Grid>
+          </Grid>
+        </Grid>
       </ExpansionPanelDetails>
       <Divider />
       <ExpansionPanelActions>
