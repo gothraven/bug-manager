@@ -6,6 +6,7 @@ import RouteWithLayout from "../lib/RouteWithLayout";
 import SignIn from "../sign-in/SignIn";
 import ProjectsComponent from "../projects/ProjectsComponent";
 import MainLayout from "../layouts/MainLayout";
+import { TagsView } from "../views";
 
 function MyComponentDashboard() {
   return (
@@ -80,17 +81,16 @@ function MainRouter() {
       />
       <RouteWithLayout
         exact
-        path="/user/issue"
+        path="/user/projects"
         authed={isAuthenticated}
         component={MyComponentIssue}
         layout={MainLayout}
       />
-
       <RouteWithLayout
         exact
-        path="/user/projects"
+        path="/user/tags"
         authed={isAuthenticated}
-        component={ProjectsComponent}
+        component={TagsView}
         layout={MainLayout}
       />
     </Switch>
