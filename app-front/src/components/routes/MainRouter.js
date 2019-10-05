@@ -4,7 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import RouteWithLayout from "../lib/RouteWithLayout";
 import { MainLayout } from "../layouts";
-import { TagsView, SignInView, ProjectsView } from "../views";
+import { TagsView, SignInView, ProjectsView, NotFoundView } from "../views";
 
 function MyComponentDashboard() {
   return (
@@ -69,6 +69,14 @@ function MainRouter() {
         component={TagsView}
         layout={MainLayout}
       />
+      <RouteWithLayout
+        exact
+        path="/not-found"
+        authed={isAuthenticated}
+        component={NotFoundView}
+        layout={MainLayout}
+      />
+      <Redirect to="/not-found" />
     </Switch>
   );
 }
