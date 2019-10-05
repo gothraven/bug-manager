@@ -33,12 +33,7 @@ function TagsView() {
       justify="flex-start"
       alignItems="stretch"
     >
-      <Typography
-        variant="h1"
-        component="h1"
-        gutterBottom
-        style={{ fontWeight: "bold" }}
-      >
+      <Typography variant="h1" component="h1" gutterBottom>
         All labels
       </Typography>
       <Grid item>
