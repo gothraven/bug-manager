@@ -3,7 +3,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import RouteWithLayout from "../lib/RouteWithLayout";
-import MainLayout from "../layouts/MainLayout";
+import { MainLayout } from "../layouts";
 import { TagsView, SignInView, ProjectsView } from "../views";
 
 function MyComponentDashboard() {

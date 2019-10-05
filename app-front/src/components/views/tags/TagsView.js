@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Fab from "@material-ui/core/Fab";
 import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 import AddIcon from "@material-ui/icons/Add";
 import TagPanel from "./TagPanel";
 
@@ -29,10 +30,17 @@ function TagsView() {
       container
       xs={12}
       direction="column"
-      spacing={4}
       justify="flex-start"
       alignItems="stretch"
     >
+      <Typography
+        variant="h1"
+        component="h1"
+        gutterBottom
+        style={{ fontWeight: "bold" }}
+      >
+        All labels
+      </Typography>
       <Grid item>
         {tags.map(tag => (
           <TagPanel
@@ -43,7 +51,10 @@ function TagsView() {
           />
         ))}
       </Grid>
-      <Grid item style={{ display: "grid", justifyContent: "center" }}>
+      <Grid
+        item
+        style={{ display: "grid", justifyContent: "center", padding: 30 }}
+      >
         <Fab color="primary" aria-label="add" onClick={onAddHandler}>
           <AddIcon />
         </Fab>

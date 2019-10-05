@@ -3,6 +3,7 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import Grid from "@material-ui/core/Grid";
 import Dialog from "@material-ui/core/Dialog";
+import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
@@ -56,23 +57,42 @@ function ProjectsView() {
   }
 
   return (
-    <Grid container xs={12} direction="column" spacing={2}>
-      <Grid item xs={12}>
-        <Grid container justify="space-between">
-          <Fab variant="extended" color="primary" onClick={() => setOpen(true)}>
-            <AddIcon />
-          </Fab>
-          <div>
-            <IconButton size="small">
-              <ChevronLeft />
-            </IconButton>
-            <IconButton size="small">
-              <ChevronRight />
-            </IconButton>
-          </div>
-        </Grid>
+    <Grid
+      container
+      xs={12}
+      direction="column"
+      justify="flex-start"
+      alignItems="stretch"
+    >
+      <Typography
+        variant="h1"
+        component="h1"
+        gutterBottom
+        style={{ fontWeight: "bold" }}
+      >
+        All Projects
+      </Typography>
+      <Grid
+        item
+        style={{
+          display: "grid",
+          gridAutoFlow: "column",
+          justifyContent: "space-between"
+        }}
+      >
+        <Fab variant="extended" color="primary" onClick={() => setOpen(true)}>
+          <AddIcon />
+        </Fab>
+        <div>
+          <IconButton size="small">
+            <ChevronLeft />
+          </IconButton>
+          <IconButton size="small">
+            <ChevronRight />
+          </IconButton>
+        </div>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item>
         <Grid
           container
           direction="row"
@@ -81,7 +101,7 @@ function ProjectsView() {
           alignItems="flex-start"
         >
           {projects.reverse().map(project => (
-            <Grid item xs={6}>
+            <Grid key={project.id} item xs={6}>
               <ProjectCard
                 key={project.id}
                 project={project}
