@@ -4,7 +4,13 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import RouteWithLayout from "../lib/RouteWithLayout";
 import { MainLayout } from "../layouts";
-import { TagsView, SignInView, ProjectsView, NotFoundView } from "../views";
+import {
+  TagsView,
+  SignInView,
+  ProjectsView,
+  NotFoundView,
+  NewIssueView
+} from "../views";
 
 function MyComponentDashboard() {
   return (
@@ -53,6 +59,13 @@ function MainRouter() {
         path="/user/dashboard"
         authed={isAuthenticated}
         component={MyComponentDashboard}
+        layout={MainLayout}
+      />
+      <RouteWithLayout
+        exact
+        path="/user/issue/new"
+        authed={isAuthenticated}
+        component={NewIssueView}
         layout={MainLayout}
       />
       <RouteWithLayout
