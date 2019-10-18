@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const statusSchema = new mongoose.Schema(
   {
-    title: {
+    name: {
       type: String,
       required: true
     },
@@ -16,9 +16,9 @@ const statusSchema = new mongoose.Schema(
 statusSchema.method({
   transform() {
     const transformed = {};
-    const fields = ['id', 'title', 'description'];
+    const fields = ["id", "name", "description"];
 
-    fields.forEach((field) => {
+    fields.forEach(field => {
       transformed[field] = this[field];
     });
 
@@ -26,4 +26,4 @@ statusSchema.method({
   }
 });
 
-module.exports = mongoose.model('Status', statusSchema);
+module.exports = mongoose.model("Status", statusSchema);
