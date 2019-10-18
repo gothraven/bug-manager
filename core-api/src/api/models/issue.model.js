@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const issueSchema = new mongoose.Schema(
   {
@@ -16,24 +16,29 @@ const issueSchema = new mongoose.Schema(
     ],
     creatorId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
+      required: true
+    },
+    statuId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Status",
       required: true
     },
     assignedUserIds: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: "User"
       }
     ],
     tagsIds: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Tag'
+        ref: "Tag"
       }
     ],
     projectId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Project'
+      ref: "Project"
     }
   },
   {
@@ -45,16 +50,17 @@ issueSchema.method({
   transform() {
     const transformed = {};
     const fields = [
-      'id',
-      'title',
-      'content',
-      'creatorId',
-      'assignedUserIds',
-      'tagsIds',
-      'projectId'
+      "id",
+      "title",
+      "content",
+      "creatorId",
+      "statusId",
+      "assignedUserIds",
+      "tagsIds",
+      "projectId"
     ];
 
-    fields.forEach((field) => {
+    fields.forEach(field => {
       transformed[field] = this[field];
     });
 
@@ -62,4 +68,4 @@ issueSchema.method({
   }
 });
 
-module.exports = mongoose.model('Issue', issueSchema);
+module.exports = mongoose.model("Issue", issueSchema);
