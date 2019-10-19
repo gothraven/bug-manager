@@ -18,7 +18,7 @@ router
   .get(authorize(ADMIN), validate(listUsers), controller.list)
   .post(authorize(ADMIN), validate(createUser), controller.create);
 
-router.route('/profile').get(authorize(), controller.loggedIn);
+router.route('/self').get(authorize(), controller.loggedIn);
 
 router
   .route('/:userId')
