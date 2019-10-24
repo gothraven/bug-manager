@@ -1,5 +1,5 @@
 import expect from 'expect';
 
-it('health test', () => {
-	expect(1).toEqual(1);
+it('should be healthy', () => {
+  expect(1).toEqual(1);
 });
