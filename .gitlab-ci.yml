@@ -7,14 +7,19 @@ cache:
     - core_api/node_modules/
     - app_front/node_modules/
 
+only:
+  - master
+
 test_core_api:
   script:
-    - cd core_api/
-    - npm install
-    - npm run test
+    - ls -a
+    # - cd core_api/
+    # - npm install
+    # - npm run test
 
 test_app_front:
   script:
-    - cd app_front/
-    - npm install
-    - npm run test:cli
+    - ls -a
+    # - cd app_front/
+    # - npm install
+    # - npm run test:cli
