@@ -4,13 +4,17 @@ image: node:latest
 # http://docs.gitlab.com/ce/ci/yaml/README.html#cache
 cache:
   paths:
-    - core_api/node_modules/
-    - app_front/node_modules/
+    - core-api/node_modules/
+    - app-front/node_modules/
 
 test_core_api:
   script:
-    - ls -a
+    - cd core-api/
+    - npm install
+    - npm run test
 
 test_app_front:
   script:
-    - ls -a
+    - cd app-front/
+    - npm install
+    - npm run test:cli
