@@ -13,6 +13,7 @@
     "prop-types": "^15.7.2",
     "query-string": "^6.8.3",
     "react": "^16.10.0",
+    "react-color": "^2.17.3",
     "react-dom": "^16.10.0",
     "react-perfect-scrollbar": "^1.5.3",
     "react-router-dom": "^5.1.1",
@@ -23,6 +24,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "test:cli": "CI=true react-scripts test --env=jsdom",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.js' --fix",
