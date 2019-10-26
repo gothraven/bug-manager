@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const projectSchema = new mongoose.Schema(
   {
-    title: {
+    name: {
       type: String,
       required: true
     },
@@ -16,7 +16,7 @@ const projectSchema = new mongoose.Schema(
 projectSchema.method({
   transform() {
     const transformed = {};
-    const fields = ['id', 'title', 'description', 'createdAt'];
+    const fields = ['id', 'name', 'description', 'createdAt'];
 
     fields.forEach((field) => {
       transformed[field] = this[field];

@@ -19,6 +19,11 @@ const issueSchema = new mongoose.Schema(
       ref: 'User',
       required: true
     },
+    statuId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Status',
+      required: true
+    },
     assignedUserIds: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -49,6 +54,7 @@ issueSchema.method({
       'title',
       'content',
       'creatorId',
+      'statusId',
       'assignedUserIds',
       'tagsIds',
       'projectId'
