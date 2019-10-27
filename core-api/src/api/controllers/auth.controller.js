@@ -1,7 +1,9 @@
+const httpStatus = require('http-status');
 const User = require('../models/user.model');
 const RefreshToken = require('../models/refreshToken.model');
 const moment = require('moment-timezone');
 const { jwtExpirationInterval } = require('../../config/vars');
+const { omit } = require('lodash');
 
 function generateTokenResponse(user, accessToken) {
   const tokenType = 'Bearer';
@@ -15,7 +17,20 @@ function generateTokenResponse(user, accessToken) {
   };
 }
 
-exports.login = async (req, res, next) => {
+exports.signup = async (req, res, next) => {
+  try {
+    const userData = omit(req.body, 'role');
+    const user = await new User(userData).save();
+    const userTransformed = user.transform();
+    const token = generateTokenResponse(user, user.token());
+    res.status(httpStatus.CREATED);
+    return res.json({ token, user: userTransformed });
+  } catch (error) {
+    return next(User.checkDuplicateEmail(error));
+  }
+};
+
+exports.signin = async (req, res, next) => {
   try {
     const { user, accessToken } = await User.findAndGenerateToken(req.body);
     const token = generateTokenResponse(user, accessToken);

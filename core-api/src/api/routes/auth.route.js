@@ -1,11 +1,13 @@
 const express = require('express');
 const validate = require('express-validation');
 const controller = require('../controllers/auth.controller');
-const { login, refresh } = require('../validations/auth.validation');
+const { signup, signin, refresh } = require('../validations/auth.validation');
 
 const router = express.Router();
 
-router.route('/auth').post(validate(login), controller.login);
+router.route('/signup').post(validate(signup), controller.signup);
+
+router.route('/signin').post(validate(signin), controller.signin);
 
 router.route('/refresh-token').post(validate(refresh), controller.refresh);
 

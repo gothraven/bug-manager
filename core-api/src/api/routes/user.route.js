@@ -15,7 +15,7 @@ router.param('userId', controller.load);
 
 router
   .route('/')
-  .get(authorize(ADMIN), validate(listUsers), controller.list)
+  .get(authorize(LOGGED_USER), validate(listUsers), controller.list)
   .post(authorize(ADMIN), validate(createUser), controller.create);
 
 router.route('/self').get(authorize(), controller.loggedIn);
@@ -23,7 +23,9 @@ router.route('/self').get(authorize(), controller.loggedIn);
 router
   .route('/:userId')
   .get(authorize(LOGGED_USER), controller.get)
+  // todo make sure he can't update another profile
   .put(authorize(LOGGED_USER), validate(replaceUser), controller.replace)
+  // todo make sure he can't update another profile
   .patch(authorize(LOGGED_USER), validate(updateUser), controller.update)
   .delete(authorize(ADMIN), controller.remove);
 

@@ -8,12 +8,6 @@ const issueSchema = new mongoose.Schema(
       index: true
     },
     content: String,
-    attachments: [
-      {
-        data: Buffer,
-        contentType: String
-      }
-    ],
     creatorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
