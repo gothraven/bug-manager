@@ -1,3 +1,4 @@
+openapi: "3.0"
 swagger: "2.0"
 info:
   description: "This is the full description of bug-manager core-api"
@@ -5,173 +6,673 @@ info:
   title: "Bug Manager Core-api"
 host: "bug-manager.io"
 basePath: "/v1"
+consumes:
+  - application/json
+  - application/xml
+produces:
+  - application/json
+  - application/xml
 tags:
-  - name: "user"
+  - name: "auth"
+    description: "Operations about auhtentication"
+  - name: "users"
     description: "Operations about user"
-    externalDocs:
-      description: "Find out more about our store"
-      url: "http://swagger.io"
+  - name: "projects"
+    description: "Operations about project"
+  - name : "issues"
+    description: "Operations about issues"
+  - name : "tags"
+    description : "Operation about tags"
+  - name : "status"
+    description : "Operation about status"
+  - name : "comments"
+    description : "Operation about comments"
 schemes:
   - "https"
   - "http"
 paths:
-  /user:
+  /auth:
+      post:
+        tags:
+          - "auth"
+        summary: "Logs user into the system"
+        operationId: "authentication"
+        parameters:
+          - in: "body"
+            name: "auth"
+            description: "data for authentication"
+            required: true
+            schema: 
+              $ref : "#/definitions/Auth"
+        responses:
+          "200":
+            description : "logging in"
+          default:
+            description: "error"
+  /users:
+    get: 
+      tags :
+        - "users"
+      summary : "Get all users"
+      operationId: "getUsers"
+      responses:
+        "200" : 
+          description : "getting all users"
+          schema : 
+            type : "array"
+            items :
+              $ref : "#/definitions/User"
+        default :
+          description : "error"
     post:
       tags:
-        - "user"
+        - "users"
       summary: "Create user"
-      description: "This can only be done by the logged in user."
-      operationId: "createUser"
-      produces:
-        - "application/xml"
-        - "application/json"
+      operationId: "addUser"
       parameters:
         - in: "body"
-          name: "body"
-          description: "Created user object"
+          name: "user"
+          description: "User object that need to be add"
           required: true
           schema:
             $ref: "#/definitions/User"
       responses:
-        default:
-          description: "successful operation"
-  /user/login:
+        "200" : 
+          description : "creating user"
+        default :
+          description : "error"
+  /users/{userId}:
     get:
       tags:
-        - "user"
-      summary: "Logs user into the system"
-      description: ""
-      operationId: "loginUser"
-      produces:
-        - "application/xml"
-        - "application/json"
+        - "users"
+      summary: "Get user by ID"
+      operationId: "getUserById"
       parameters:
-        - name: "username"
-          in: "query"
-          description: "The user name for login"
-          required: true
-          type: "string"
-        - name: "password"
-          in: "query"
-          description: "The password for login in clear text"
+        - in: "path"
+          name: "userId"
+          description: "The user that needs to be fetched"
           required: true
           type: "string"
       responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "string"
-          headers:
-            X-Rate-Limit:
-              type: "integer"
-              format: "int32"
-              description: "calls per hour allowed by the user"
-            X-Expires-After:
-              type: "string"
-              format: "date-time"
-              description: "date in UTC when token expires"
-        400:
-          description: "Invalid username/password supplied"
-  /user/logout:
-    get:
-      tags:
-        - "user"
-      summary: "Logs out current logged in user session"
-      description: ""
-      operationId: "logoutUser"
-      produces:
-        - "application/xml"
-        - "application/json"
-      parameters: []
-      responses:
+        "200": 
+          description : "getting user"
         default:
-          description: "successful operation"
-  /user/{username}:
-    get:
-      tags:
-        - "user"
-      summary: "Get user by user name"
-      description: ""
-      operationId: "getUserByName"
-      produces:
-        - "application/xml"
-        - "application/json"
-      parameters:
-        - name: "username"
-          in: "path"
-          description: "The name that needs to be fetched. Use user1 for testing. "
-          required: true
-          type: "string"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/User"
-        400:
-          description: "Invalid username supplied"
-        404:
-          description: "User not found"
+          description: "error"
     put:
       tags:
-        - "user"
-      summary: "Updated user"
-      description: "This can only be done by the logged in user."
-      operationId: "updateUser"
-      produces:
-        - "application/xml"
-        - "application/json"
+        - "users"
+      summary: "Update user by ID"
+      operationId: "updateUserById"
       parameters:
-        - name: "username"
-          in: "path"
-          description: "name that need to be updated"
+        - in: "path"
+          name: "userId"
+          description: "user that need to be update"
           required: true
           type: "string"
         - in: "body"
-          name: "body"
+          name: "user"
           description: "Updated user object"
           required: true
           schema:
             $ref: "#/definitions/User"
       responses:
-        400:
-          description: "Invalid user supplied"
-        404:
-          description: "User not found"
+        "200":
+          description : "updating user"
+        default:
+          description: "error"
+    patch:
+      tags:
+        - "users"
+      summary: "Modify user"
+      operationId: "modifyUser"
+      parameters:
+        - in: "path"
+          name: "userId"
+          description: "name that need to be updated"
+          required: true
+          type: "string"
+        - in: "body"
+          name : "user"
+          description : "elements that need to be patch"
+          required : true
+          schema :
+            type : "object"
+            properties:
+              email :
+                type : "string"
+              password : 
+                type : "string"
+              name : 
+                type: "string"
+              role :
+                type : "string"
+                enum : ["admin","user"]
+      responses:
+        "200" :
+          description : "patching user"
+        default:
+          description: "error"
     delete:
       tags:
-        - "user"
+        - "users"
       summary: "Delete user"
-      description: "This can only be done by the logged in user."
       operationId: "deleteUser"
-      produces:
-        - "application/xml"
-        - "application/json"
       parameters:
-        - name: "username"
-          in: "path"
-          description: "The name that needs to be deleted"
+        - in: "path"
+          name: "userId"
+          description: "The user that needs to be deleted"
           required: true
           type: "string"
       responses:
-        400:
-          description: "Invalid username supplied"
-        404:
-          description: "User not found"
+        "200":
+          description : "deleting user"
+        default:
+          description: "error"
+  /users/self:
+    get :
+      tags :
+        - "users"
+      summary: "Get current user"
+      operationId: "getCurrentUser"
+      responses:
+        "200" :
+          description : "getting current user"
+        default:
+          description : "error"
+  /projects:
+    get : 
+      tags :
+        - "projects"
+      summary : "Get project"
+      operationId : "getProject"
+      responses :
+        "200":
+          description : "getting all projects"
+        default:
+          description : "error"
+    post : 
+      tags :
+        - "projects"
+      summary : " Create project"
+      operationId: "createProject"
+      parameters : 
+        - in : "body"
+          name : "project"
+          description : "project object that need to be add"
+          required : true
+          schema : 
+            $ref : "#/definitions/Project"
+      responses:
+        "200":
+          description : "creating project"
+        default:
+          description : "error"
+  /projects/{projectId}:
+    get:
+      tags:
+        - "projects"
+      summary : "Get project by ID"
+      operationId : "getProjectById"
+      parameters:
+        - in: "path"
+          name: "projectId"
+          description: "the project that need to be fetched"
+          required: true
+          type: "string"
+      responses: 
+        "200" :
+          description : "getting project"
+        default:
+          description : "succesful operation"
+    put:
+      tags:
+        - "projects"
+      summary : "Update project by ID"
+      operationId : "updateProjectById"
+      parameters:
+        - in: "path"
+          name: "projectId"
+          description: "the project that need to be update"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "project"
+          description: "updated project"
+          required: true
+          schema:
+            $ref: "#/definitions/Project"
+      responses:
+        "200":
+          description : "updating project"
+        default:
+          description : "error"
+    patch :
+      tags :
+        - projects
+      summary : "Patch project by ID"
+      operationId : "patchProjectById"
+      parameters :
+        - in : "path"
+          name : "projectId"
+          description : "the project that need to be patch"
+          required : true
+          type : "string"
+        - in : "body"
+          name : "project"
+          description : "patched project"
+          required : true
+          schema : 
+            type : "object"
+            properties :
+              title : 
+                type : "string"
+              description : 
+                type : "string"
+      responses : 
+        "200" :
+          description : "patching project"
+        default : 
+          description : "error"
+    delete :
+      tags :
+        - projects
+      summary : "Delete project by ID"
+      operationId : "deleteProjectById"
+      parameters :
+        - in : "path"
+          name : "projectId"
+          description : "the project that need to be delete"
+          required : true
+          type : "string"
+      responses: 
+        "200":
+          description : "deleting project"
+        default: 
+          description : "error"
+  /projects/{projectId}/issues:
+    get:
+      tags:
+        - "projects"
+      summary : "Get issues by project"
+      operationId : "getIssuesByProject"
+      parameters:
+        - in: "path"
+          name: "projectId"
+          description: "the project ID"
+          required: true
+          type: "string"
+      responses: 
+        "200" :
+          description : "getting issues by project"
+        default:
+          description : "error"
+  /issues:
+    get:
+      tags:
+        - "issues"
+      summary : "Get all issues"
+      operationId : "getIssues"
+      responses:
+        "200" : 
+          description : "getting all issues"
+        default:
+          description : "successful operation"
+    post :
+      tags :
+        - "issues"
+      summary : "Create issue"
+      operationId : "createIssue"
+      parameters: 
+        - in : "body"
+          name : "issue"
+          description : "issue that need to be add"
+          required : true
+          schema :
+            $ref : "#/definitions/Issue"
+      responses : 
+        "200":
+          description : "Creating issue"
+        default : 
+          description : "error"
+  /issues/{issueId}:
+    get:
+      tags:
+        - "issues"
+      summary : "Get issues by id"
+      operationId : "getIssuesById"
+      parameters : 
+        - in : "path"
+          name : "issueId"
+          description : "The issue that need to be fetched"
+          required : true
+          type : "string"
+      responses:
+        "200" :
+          description : "getting issue"
+        default:
+          description : "error"
+    put:
+      tags:
+        - "issues"
+      summary : "update issues by id"
+      operationId : "updateIssuesById"
+      parameters : 
+        - in : "path"
+          name : "issueId"
+          description : "The issue that need to be updated"
+          required : true
+          type : "string"
+        - in : "body"
+          name : "body"
+          description : "the updated issue"
+          required : true
+          schema : 
+            $ref : "#/definitions/Issue"
+      responses: 
+        "200" :
+          description : "updating issue"
+        default:
+          description : "error"
+    patch:
+      tags :
+        - "issues"
+      summary : "patch issue by Id"
+      operationId: "patchIssueById"
+      parameters : 
+        - in : "path"
+          name : "issueId"
+          description : "The issue that need to be fetched"
+          required : true
+          type : "string"
+        - in : "body"
+          name : "issue"
+          description : "the patched issues"
+          required : true
+          schema :
+            type : "object"
+            properties : 
+              title:
+                type : "string"
+              content:
+                type : "string"
+              attachments:
+                type : "array"
+                items :
+                  type : "string"
+              creatorId :
+                type : "number"
+              assignedUserIds:
+                type : "number"
+              tagsId : 
+                type : "number"
+              projectId : 
+                type : "number"
+      responses :
+        "200": 
+          description : "patching issue"
+        default : 
+          description : "error"
+    delete:
+      tags : 
+        - issues
+      summary : "delete issue by Id"
+      operationId : "deleteIssueById"
+      parameters:
+        - in : "path"
+          name : "issueId"
+          description : "The issue that need to be deleted"
+          required : true
+          type : "string"
+      responses :   
+        "200" : 
+          description : "deleting user"
+        default :
+          description : "error"
+  /issues/findByTags:
+    post:
+      tags : 
+        - "issues"
+      summary : "Get issues by tag"
+      operationId : "getIssuesByTag"
+      parameters : 
+        - in : "body"
+          name : "tag"
+          required : true
+          schema : 
+            $ref : "#/definitions/Tag"
+      responses:
+        "200" :
+          description : "getting issues by tag"
+        default :
+          description : "error"
+  /issues/findByStatus:
+    post:
+      tags : 
+        - "issues"
+      summary : "Get issues by status"
+      operationId : "getIssuesByStatus"
+      parameters : 
+        - in : "body"
+          name : "body"
+          required : true
+          schema : 
+            $ref : "#/definitions/Status"
+      responses:
+        "200" : 
+          description : "getting issues by status"
+        default :
+          description : "error"
+  /tags:
+    get:
+      tags : 
+        - "tags"
+      summary : "Get tags"
+      operationId : "getTags"
+      responses:
+        "200":
+          description : "getting all tags"
+        default :
+          description : "successful opearion"
+    post:
+      tags : 
+        - "tags"
+      summary : "Create tag"
+      operationId : "createTag"
+      parameters : 
+        - in : "body"
+          name : "tag"
+          description : "tag that need to be create"
+          required : true
+          schema :
+            $ref : "#/definitions/Tag"
+      responses:
+        "200":
+          description : "creating tag"
+        default :
+          description : "error"
+  /status:
+    get:
+      tags : 
+        - "status"
+      summary : "Get all status"
+      operationId : "getStatus"
+      responses:
+        "200" : 
+          description : "getting status"
+        default:
+          description : "error"
+    post:
+      tags:
+        - "status"
+      summary: "Create status"
+      operationId : "createStatus"
+      parameters :
+        - in : "body"
+          name : "status"
+          description : "status that need to be create"
+          required : true
+          schema :
+            $ref : "#/definitions/Status"
+      responses : 
+        "200":
+          description : "creating status"
+        default :
+          description : "Successful operation"
+  /comment :
+    get:
+      tags : 
+        - "comments"
+      summary : "Get all comments"
+      operationId : "getComments"
+      responses : 
+        "200":
+          description : "getting comments"
+        default : 
+          description : "error"
+    post:
+      tags : 
+        - "comments"
+      summary : "Create comment"
+      operationId : "createComment"
+      parameters : 
+        - in : "body"
+          name : "comment"
+          description : "Comment that need to be create"
+          required : true
+          schema : 
+            $ref : "#/definitions/Comment"
+      responses : 
+        "200" : 
+          description : "creating comment"
+        default : 
+          description : "error"
+  /comment/{commentId} : 
+    get :
+      tags : 
+        - "comments"
+      summary : "get comment by ID"
+      operationId : "getCommentById"
+      parameters : 
+        - in : "path"
+          name : "commentId"
+          description : "comment that need to be update"
+          required : true
+          type: "string"
+      responses : 
+        "200" : 
+          description : "getting comment"
+        default : 
+          description : "Successful operation"
+    put :
+      tags : 
+        - "comments"
+      summary : "Update comments"
+      operationId : "updateComment"
+      parameters : 
+        - in : "path"
+          name : "commentId"
+          description : "comment that need to be update"
+          required : true
+          type: "string"
+        - in : "body"
+          name : "comment"
+          description : "updated comment"
+          required : true
+          schema : 
+            $ref : "#/definitions/Comment"
+      responses : 
+        "200" : 
+          description : "updating comment"
+        default : 
+          description : "Successful operation"
+    patch :
+      tags : 
+        - "comments"
+      summary : "Modify comments"
+      operationId : "modifyComment"
+      parameters :
+        - in : "path"
+          name : "commentId"
+          description : "comment that need to be patch"
+          required : true
+          type: "string"
+        - in : "body"
+          name : "comment"
+          description : "patcheed comment"
+          required : true
+          schema : 
+            type : "object"
+            properties :
+              userId:
+                type : "string"
+              issueId : 
+                type : "string"
+              content:
+                type : "string"
+      responses : 
+        default : 
+          description : "Successful operation"
+    delete :
+      tags :
+        - comments
+      summary : "delete comment"
+      operationId : "deleteComment"
+      parameters :
+        - in : "path"
+          name : "commentId"
+          description : "comment that need to be delete"
+          required : true
+          type: "string"
+      responses :
+        "200":
+          description : "deleting comment"
+        default:
+          description : "error"
 definitions:
   User:
     type: "object"
     properties:
       id:
-        type: "string"
+        type: "number"
       email:
         type: "string"
       password:
+        type: "string"
+      name:
         type: "string"
       role:
         type: "string"
         enum: [admin, user]
     xml:
       name: "User"
+  Project:
+    type: "object"
+    properties: 
+      id:
+        type: "number"
+      title:
+        type: "string"
+      description :
+        type : "string"
+  Issue:
+    type: "object"
+    properties:
+      id : 
+        type : "number"
+      title : 
+        type : "string"
+      content :
+        type : "string"
+      attachments :
+        type : "string"
+      creatorId:
+        type: "object"
+      assignedUserId:
+        type : "object"
+      tagsIds:
+        type : "object"
+      projectId:
+        type : "object"
   Tag:
     type: "object"
     properties:
@@ -180,18 +681,52 @@ definitions:
         format: "int64"
       name:
         type: "string"
+      description:
+        type: "string"
+      color:
+        type: "string"
     xml:
       name: "Tag"
-  ApiResponse:
-    type: "object"
+  Status:
+    type : "object"
     properties:
-      code:
-        type: "integer"
-        format: "int32"
-      type:
+      id :
+        type : "number"
+      title : 
+        type : "string"
+      description : 
+        type : "string"
+  Comment:
+    type : "object"
+    properties:
+      id : 
+        type : "number"
+      userId : 
+        type : "number"
+      issueId:
+        type : "number"
+      content : 
+        type : "string"
+  Action:
+    type : "object"
+    properties:
+      id:
+        type: "number"
+      userId :
+        type : "number"
+      issueId :
+        type : "number"
+      type : 
         type: "string"
-      message:
-        type: "string"
+      data :
+        type : "object"
+  Auth:
+    type : "object"
+    properties:
+      login:
+        type : "string"
+      mdp : 
+        type : "string"
 externalDocs:
   description: "Find out more about bug-manager"
   url: "http://bug-manager.io"

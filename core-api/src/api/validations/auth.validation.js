@@ -1,8 +1,20 @@
 const Joi = require('joi');
 
 module.exports = {
+  // POST /auth/register
+  signup: {
+    body: {
+      email: Joi.string()
+        .email()
+        .required(),
+      password: Joi.string()
+        .required()
+        .min(6)
+        .max(128)
+    }
+  },
   // POST /auth/login
-  login: {
+  signin: {
     body: {
       email: Joi.string()
         .email()
@@ -12,7 +24,6 @@ module.exports = {
         .max(128)
     }
   },
-
   // POST /auth/refresh
   refresh: {
     body: {
