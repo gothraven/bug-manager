@@ -27,24 +27,8 @@ exports.create = async (req, res, next) => {
   }
 };
 
-exports.replace = async (req, res, next) => {
-  try {
-    const { user } = req.locals;
-    const newUser = new User(req.body);
-    const ommitRole = user.role !== 'admin' ? 'role' : '';
-    const newUserObject = omit(newUser.toObject(), '_id', ommitRole);
-
-    await user.update(newUserObject, { override: true, upsert: true });
-    const savedUser = await User.findById(user._id);
-
-    res.json(savedUser.transform());
-  } catch (error) {
-    next(User.checkDuplicateEmail(error));
-  }
-};
-
 exports.update = (req, res, next) => {
-  const ommitRole = req.locals.user.role !== 'admin' ? 'role' : '';
+  const ommitRole = req.user.role !== 'admin' ? 'role' : '';
   const updatedUser = omit(req.body, ommitRole);
   const user = Object.assign(req.locals.user, updatedUser);
 
