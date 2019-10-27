@@ -5,6 +5,8 @@ const compress = require('compression');
 const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const passport = require('passport');
+const strategies = require('./passport');
 const helmet = require('helmet');
 const routes = require('../api/routes');
 const { logs } = require('./vars');
@@ -37,6 +39,10 @@ app.use(helmet());
 
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors());
+
+// enable authentication
+app.use(passport.initialize());
+passport.use('jwt', strategies.jwt);
 
 // mount api v1 routes
 app.use('/', routes);
