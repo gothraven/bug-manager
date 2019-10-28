@@ -12,7 +12,6 @@ module.exports = {
       description: Joi.string()
     }
   },
-
   // POST /tags
   createTag: {
     body: {
@@ -23,7 +22,6 @@ module.exports = {
         .required()
     }
   },
-
   // PATCH /tags/:tagId
   updateTag: {
     body: {

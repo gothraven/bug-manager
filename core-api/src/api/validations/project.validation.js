@@ -12,7 +12,6 @@ module.exports = {
       description: Joi.string()
     }
   },
-
   // POST /projects
   createProject: {
     body: {
@@ -20,8 +19,7 @@ module.exports = {
       description: Joi.string()
     }
   },
-
-  // PATCH /project/:projectId
+  // PATCH /projects/:projectId
   updateProject: {
     body: {
       email: Joi.string(),

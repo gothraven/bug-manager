@@ -14,7 +14,6 @@ module.exports = {
       role: Joi.string().valid(User.roles)
     }
   },
-
   // POST /users
   createUser: {
     body: {
@@ -29,7 +28,6 @@ module.exports = {
       role: Joi.string().valid(User.roles)
     }
   },
-
   // PATCH /users/:userId
   updateUser: {
     body: {

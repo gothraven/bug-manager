@@ -1,12 +1,24 @@
 const Joi = require('joi');
 
 module.exports = {
-  body: {
-    userId: Joi.number(),
-    issueId: Joi.number(),
-    contentId: Joi.string()
+  // POST /comments
+  createComment: {
+    body: {
+      issueId: Joi.string()
+        .regex(/^[a-fA-F0-9]{24}$/)
+        .required(),
+      content: Joi.string().required()
+    }
   },
-  params: {
-    commentId: Joi.string().require()
+  // PATCH /comments/:commentId
+  updateComment: {
+    body: {
+      content: Joi.string().required()
+    },
+    params: {
+      commentId: Joi.string()
+        .regex(/^[a-fA-F0-9]{24}$/)
+        .required()
+    }
   }
 };
