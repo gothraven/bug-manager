@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const httpStatus = require('http-status');
-const { omitBy, isNil } = require('lodash');
 const APIError = require('../utils/APIError');
 
 const tagSchema = new mongoose.Schema(
@@ -54,14 +53,11 @@ tagSchema.statics = {
     }
   },
 
-  list({ page = 1, perPage = 30, name, description }) {
-    const options = omitBy({ name, description }, isNil);
-
-    return this.find(options)
-      .sort({ createdAt: -1 })
-      .skip(perPage * (page - 1))
-      .limit(perPage)
+  list() {
+    return this.find()
+      .all()
       .exec();
   }
 };
+
 module.exports = mongoose.model('Tag', tagSchema);
