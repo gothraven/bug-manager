@@ -1,17 +1,6 @@
 const Joi = require('joi');
 
 module.exports = {
-  // GET /tags
-  listTags: {
-    query: {
-      page: Joi.number().min(1),
-      perPage: Joi.number()
-        .min(1)
-        .max(100),
-      name: Joi.string(),
-      description: Joi.string()
-    }
-  },
   // POST /tags
   createTag: {
     body: {
@@ -25,8 +14,11 @@ module.exports = {
   // PATCH /tags/:tagId
   updateTag: {
     body: {
-      email: Joi.string(),
-      description: Joi.string()
+      name: Joi.string(),
+      description: Joi.string(),
+      color: Joi.string()
+        .regex(/^#((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/)
+        .required()
     },
     params: {
       tagId: Joi.string()

@@ -35,7 +35,7 @@ exports.update = (req, res, next) => {
 
 exports.list = async (req, res, next) => {
   try {
-    const tags = await Tag.list(req.query);
+    const tags = await Tag.list();
     const transformedTags = tags.map(tag => tag.transform());
     res.json(transformedTags);
   } catch (error) {

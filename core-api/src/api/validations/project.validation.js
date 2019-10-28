@@ -22,7 +22,7 @@ module.exports = {
   // PATCH /projects/:projectId
   updateProject: {
     body: {
-      email: Joi.string(),
+      name: Joi.string(),
       description: Joi.string()
     },
     params: {
