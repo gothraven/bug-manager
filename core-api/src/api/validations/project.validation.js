@@ -21,21 +21,6 @@ module.exports = {
     }
   },
 
-  // PUT /project/:projectId
-  replaceProject: {
-    body: {
-      name: Joi.string()
-        .email()
-        .required(),
-      description: Joi.string()
-    },
-    params: {
-      projectId: Joi.string()
-        .regex(/^[a-fA-F0-9]{24}$/)
-        .required()
-    }
-  },
-
   // PATCH /project/:projectId
   updateProject: {
     body: {
