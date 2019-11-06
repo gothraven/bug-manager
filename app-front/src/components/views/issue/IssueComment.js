@@ -8,14 +8,15 @@ import TextField from "@material-ui/core/TextField";
 import PropType from "prop-types";
 
 function IssueComment(props) {
-  const { creation, issue } = props;
-  const [value, setValue] = useState("");
+  const { creation, content, user } = props;
+  // const [edit, setEdit] = useState(creation);
+  const [value, setValue] = useState(content);
 
   return (
     <Box m={2}>
       <Grid container>
         <Grid item xs={1}>
-          <Avatar>AM</Avatar>
+          <Avatar>{user.name.slice(0, 2).toUpperCase()}</Avatar>
         </Grid>
         <Grid item xs>
           {creation ? (
@@ -39,7 +40,7 @@ function IssueComment(props) {
               </Box>
             </>
           ) : (
-            <Paper>{issue.content}</Paper>
+            <Paper style={{ padding: 10 }}>{value}</Paper>
           )}
         </Grid>
       </Grid>
@@ -47,10 +48,14 @@ function IssueComment(props) {
   );
 }
 
-IssueComment.defaultProps = { creation: false };
+IssueComment.defaultProps = {
+  creation: false,
+  content: ""
+};
 
 IssueComment.propTypes = {
-  issue: PropType.object.isRequired,
+  user: PropType.object.isRequired,
+  content: PropType.string,
   creation: PropType.bool
 };
 
