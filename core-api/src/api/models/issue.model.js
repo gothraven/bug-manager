@@ -18,6 +18,10 @@ const issueSchema = new mongoose.Schema(
       ref: 'Status',
       required: true
     },
+    open: {
+      type: Boolean,
+      default: true
+    },
     assignedUserIds: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -46,8 +50,11 @@ issueSchema.method({
     const fields = [
       'id',
       'title',
+      'createdAt',
+      'updatedAt',
       'content',
       'creatorId',
+      'open',
       'statusId',
       'assignedUserIds',
       'tagsIds',
