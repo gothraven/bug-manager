@@ -29,15 +29,21 @@ exports.update = (req, res, next) => {
 
   project
     .save()
-    .then(savedTag => res.json(savedTag.transform()))
+    .then(savedProject => res.json(savedProject.transform()))
     .catch(e => next(e));
 };
 
 exports.list = async (req, res, next) => {
   try {
+    const { page = 1, perPage = 30 } = req.query;
     const projects = await Project.list(req.query);
     const transformedProjects = projects.map(project => project.transform());
-    res.json(transformedProjects);
+    res.json({
+      page,
+      perPage,
+      count: transformedProjects.length,
+      results: transformedProjects
+    });
   } catch (error) {
     next(error);
   }
