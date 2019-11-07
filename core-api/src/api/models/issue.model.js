@@ -8,16 +8,19 @@ const issueSchema = new mongoose.Schema(
       index: true
     },
     content: String,
-    attachments: [
-      {
-        data: Buffer,
-        contentType: String
-      }
-    ],
     creatorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true
+    },
+    statuId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Status',
+      required: true
+    },
+    open: {
+      type: Boolean,
+      default: true
     },
     assignedUserIds: [
       {
@@ -47,8 +50,12 @@ issueSchema.method({
     const fields = [
       'id',
       'title',
+      'createdAt',
+      'updatedAt',
       'content',
       'creatorId',
+      'open',
+      'statusId',
       'assignedUserIds',
       'tagsIds',
       'projectId'
