@@ -35,9 +35,15 @@ exports.update = (req, res, next) => {
 
 exports.list = async (req, res, next) => {
   try {
-    const tags = await Tag.list();
+    const { page = 1, perPage = 30 } = req.query;
+    const tags = await Tag.list(req.query);
     const transformedTags = tags.map(tag => tag.transform());
-    res.json(transformedTags);
+    res.json({
+      page,
+      perPage,
+      count: transformedTags.length,
+      results: transformedTags
+    });
   } catch (error) {
     next(error);
   }

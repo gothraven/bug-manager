@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const httpStatus = require('http-status');
+const { omitBy, isNil } = require('lodash');
 const APIError = require('../utils/APIError');
 
 const tagSchema = new mongoose.Schema(
@@ -53,9 +54,13 @@ tagSchema.statics = {
     }
   },
 
-  list() {
-    return this.find()
-      .all()
+  list({ page = 1, perPage = 30, name, description, color }) {
+    const options = omitBy({ name, description, color }, isNil);
+
+    return this.find(options)
+      .sort({ createdAt: -1 })
+      .skip(perPage * (page - 1))
+      .limit(perPage)
       .exec();
   }
 };
