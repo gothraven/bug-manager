@@ -40,9 +40,15 @@ exports.update = (req, res, next) => {
 
 exports.list = async (req, res, next) => {
   try {
+    const { page = 1, perPage = 30 } = req.query;
     const users = await User.list(req.query);
     const transformedUsers = users.map(user => user.transform());
-    res.json(transformedUsers);
+    res.json({
+      page,
+      perPage,
+      count: transformedUsers.length,
+      results: transformedUsers
+    });
   } catch (error) {
     next(error);
   }
