@@ -1,4 +1,5 @@
 scalar Date
+scalar Color
 
 type Tag {
   id: ID!
@@ -6,7 +7,7 @@ type Tag {
   updatedAt: Date!
   name: String!
   description: String
-  color: String!
+  color: Color!
 }
 
 type TagCursor {
@@ -20,7 +21,7 @@ type Query {
 }
 
 type Mutation {
-  createTag(name: String!, description: String, color: String!): Tag!
-  updateTag(id: ID!, name: String, description: String, color: String): Tag!
+  createTag(name: String!, description: String, color: Color!): Tag!
+  updateTag(id: ID!, name: String, description: String, color: Color): Tag!
   deleteTag(id: ID!): Boolean!
 }
