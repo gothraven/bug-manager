@@ -1,3 +1,9 @@
-import tag from './tag.loader';
+export default async (keys, models, model) => {
+  const data = await models[model].find({
+    _id: {
+      $in: keys
+    }
+  });
 
-export default { tag };
+  return keys.map(key => data.find(x => x.id === key));
+};
