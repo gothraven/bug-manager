@@ -1,0 +1,33 @@
+scalar Date
+
+enum Role {
+  USER
+  ADMIN
+}
+
+type User {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  email: String!
+  name: String!
+  role: Role!
+}
+
+type UsersCursor {
+  pageInfo: PageInfo!
+  edges: [User!]!
+}
+
+type Query {
+  user(id: String!): User!
+  users(after: String, first: Int): UsersCursor
+  me: User
+}
+
+type Mutation {
+  signUp(name: String!, email: String!, password: String!): Auth!
+  signIn(email: String!, password: String!): Auth!
+  updateUser(email: String!): User!
+  deleteUser(id: ID!): Boolean!
+}
