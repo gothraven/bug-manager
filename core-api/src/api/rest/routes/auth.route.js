@@ -1,7 +1,7 @@
-const express = require('express');
-const validate = require('express-validation');
-const controller = require('../controllers/auth.controller');
-const { signup, signin, refresh } = require('../validations/auth.validation');
+import express from 'express';
+import validate from 'express-validation';
+import controller from '../controllers/auth.controller';
+import { signup, signin, refresh } from '../validations/auth.validation';
 
 const router = express.Router();
 
@@ -15,4 +15,4 @@ router.route('/refresh-token').post(validate(refresh), controller.refresh);
  * TODO: POST /v1/auth/reset-password
  */
 
-module.exports = router;
+export default router;

@@ -1,6 +1,6 @@
-const httpStatus = require('http-status');
-const APIError = require('../utils/APIError');
-const Comment = require('../models/comment.model');
+import httpStatus from 'http-status';
+import APIError from '../utils/APIError';
+import Comment from '../../models/comment.model';
 
 exports.load = async (req, res, next, id) => {
   try {

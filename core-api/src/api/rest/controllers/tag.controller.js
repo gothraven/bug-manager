@@ -1,5 +1,5 @@
-const httpStatus = require('http-status');
-const Tag = require('../models/tag.model');
+import httpStatus from 'http-status';
+import Tag from '../../models/tag.model';
 
 exports.load = async (req, res, next, id) => {
   try {

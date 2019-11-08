@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
-const httpStatus = require('http-status');
-const { omitBy, isNil } = require('lodash');
-const bcrypt = require('bcryptjs');
-const moment = require('moment-timezone');
-const jwt = require('jwt-simple');
-const APIError = require('../utils/APIError');
-const { env, jwtSecret, jwtExpirationInterval } = require('../../config/vars');
+import mongoose from 'mongoose';
+import httpStatus from 'http-status';
+import { omitBy, isNil } from 'lodash';
+import bcrypt from 'bcryptjs';
+import moment from 'moment-timezone';
+import jwt from 'jwt-simple';
+import APIError from '../rest/utils/APIError';
+import { env, jwtSecret, jwtExpirationInterval } from '../../config/vars';
 
 const roles = ['user', 'admin'];
 

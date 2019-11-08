@@ -1,5 +1,5 @@
-const httpStatus = require('http-status');
-const Project = require('../models/project.model');
+import httpStatus from 'http-status';
+import Project from '../../models/project.model';
 
 exports.load = async (req, res, next, id) => {
   try {

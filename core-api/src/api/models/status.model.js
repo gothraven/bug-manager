@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const httpStatus = require('http-status');
-const APIError = require('../utils/APIError');
+import mongoose from 'mongoose';
+import httpStatus from 'http-status';
+import APIError from '../rest/utils/APIError';
 
 const statusSchema = new mongoose.Schema(
   {
