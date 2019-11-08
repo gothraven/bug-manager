@@ -1,9 +1,9 @@
-const httpStatus = require('http-status');
-const User = require('../models/user.model');
-const RefreshToken = require('../models/refreshToken.model');
-const moment = require('moment-timezone');
-const { jwtExpirationInterval } = require('../../config/vars');
-const { omit } = require('lodash');
+import httpStatus from 'http-status';
+import moment from 'moment-timezone';
+import { omit } from 'lodash';
+import User from '../../models/user.model';
+import RefreshToken from '../../models/refreshToken.model';
+import { jwtExpirationInterval } from '../../../config/vars';
 
 function generateTokenResponse(user, accessToken) {
   const tokenType = 'Bearer';

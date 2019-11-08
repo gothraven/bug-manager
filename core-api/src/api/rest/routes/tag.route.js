@@ -1,8 +1,8 @@
-const express = require('express');
-const validate = require('express-validation');
-const controller = require('../controllers/tag.controller');
-const { authorize, ADMIN, LOGGED_USER } = require('../middlewares/auth');
-const { listTags, createTag, updateTag } = require('../validations/tag.validation');
+import express from 'express';
+import validate from 'express-validation';
+import controller from '../controllers/tag.controller';
+import { authorize, ADMIN, LOGGED_USER } from '../middlewares/auth';
+import { listTags, createTag, updateTag } from '../validations/tag.validation';
 
 const router = express.Router();
 
@@ -19,4 +19,4 @@ router
   .patch(authorize(ADMIN), validate(updateTag), controller.update)
   .delete(authorize(ADMIN), controller.remove);
 
-module.exports = router;
+export default router;

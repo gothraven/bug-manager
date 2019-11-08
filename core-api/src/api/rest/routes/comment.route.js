@@ -1,8 +1,8 @@
-const express = require('express');
-const validate = require('express-validation');
-const controller = require('../controllers/comment.controller');
-const { authorize, LOGGED_USER } = require('../middlewares/auth');
-const { createComment, updateComment } = require('../validations/comment.validation');
+import express from 'express';
+import validate from 'express-validation';
+import controller from '../controllers/comment.controller';
+import { authorize, LOGGED_USER } from '../middlewares/auth';
+import { createComment, updateComment } from '../validations/comment.validation';
 
 const router = express.Router();
 
@@ -15,4 +15,4 @@ router
   .patch(authorize(LOGGED_USER), validate(updateComment), controller.update)
   .delete(authorize(LOGGED_USER), controller.remove);
 
-module.exports = router;
+export default router;

@@ -1,4 +1,4 @@
-const httpStatus = require('http-status');
+import httpStatus from 'http-status';
 
 class ExtendableError extends Error {
   constructor({ message, errors, status, isPublic, stack }) {
