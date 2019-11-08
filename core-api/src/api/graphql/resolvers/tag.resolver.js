@@ -21,7 +21,7 @@ export default {
       authorize(ADMIN),
       async (parent, { id, name, description, color }, { models }) => {
         const options = omitBy({ name, description, color }, isNil);
-        return models.User.findByIdAndUpdate(id, options, { new: true });
+        return models.Tag.findByIdAndUpdate(id, options, { new: true });
       }
     ),
 

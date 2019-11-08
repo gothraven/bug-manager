@@ -1,4 +1,5 @@
 scalar Date
+scalar Email
 
 enum Role {
   USER
@@ -9,7 +10,7 @@ type User {
   id: ID!
   createdAt: Date!
   updatedAt: Date!
-  email: String!
+  email: Email!
   name: String!
   role: Role!
 }
@@ -26,8 +27,8 @@ type Query {
 }
 
 type Mutation {
-  signUp(name: String!, email: String!, password: String!): Auth!
-  signIn(email: String!, password: String!): Auth!
-  updateUser(email: String!): User!
+  signUp(name: String!, email: Email!, password: String!): Auth!
+  signIn(email: Email!, password: String!): Auth!
+  updateUser(email: Email!): User!
   deleteUser(id: ID!): Boolean!
 }

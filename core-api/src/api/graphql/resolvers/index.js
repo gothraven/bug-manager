@@ -1,10 +1,12 @@
-import { GraphQLDateTime } from 'graphql-iso-date';
+import { EmailAddressResolver, HexColorCodeResolver, DateTimeResolver } from 'graphql-scalars';
 
 import tagResolvers from './tag.resolver';
 import userResolvers from './user.resolver';
 
 const customScalarResolver = {
-  Date: GraphQLDateTime
+  Date: DateTimeResolver,
+  Email: EmailAddressResolver,
+  Color: HexColorCodeResolver
 };
 
 export default [customScalarResolver, tagResolvers, userResolvers];
