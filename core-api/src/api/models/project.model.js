@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import httpStatus from 'http-status';
 import { omitBy, isNil } from 'lodash';
-import APIError from '../rest/utils/APIError';
+import APIError from '../utils/APIError';
 
 const projectSchema = new mongoose.Schema(
   {
@@ -30,6 +30,9 @@ projectSchema.method({
 });
 
 projectSchema.statics = {
+  /**
+   * @deprecated Since version 1.0.
+   */
   async get(id) {
     try {
       let project;

@@ -1,10 +1,10 @@
 import httpStatus from 'http-status';
 import passport from 'passport';
 import User from '../../models/user.model';
-import APIError from '../utils/APIError';
+import APIError from '../../utils/APIError';
 
-const ADMIN = 'admin';
-const LOGGED_USER = 'user';
+export const ADMIN = 'admin';
+export const LOGGED_USER = 'user';
 
 const handleJWT = (req, res, next, roles) => async (err, user, info) => {
   const error = err || info;
@@ -35,10 +35,7 @@ const handleJWT = (req, res, next, roles) => async (err, user, info) => {
   return next();
 };
 
-exports.ADMIN = ADMIN;
-exports.LOGGED_USER = LOGGED_USER;
-
-exports.authorize = (roles = User.roles) => (req, res, next) =>
+export const authorize = (roles = User.roles) => (req, res, next) =>
   passport.authenticate('jwt', { session: false }, handleJWT(req, res, next, roles))(
     req,
     res,

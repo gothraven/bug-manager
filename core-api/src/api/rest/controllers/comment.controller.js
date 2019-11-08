@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import APIError from '../utils/APIError';
+import APIError from '../../utils/APIError';
 import Comment from '../../models/comment.model';
 
 exports.load = async (req, res, next, id) => {

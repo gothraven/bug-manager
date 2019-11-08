@@ -45,6 +45,9 @@ const issueSchema = new mongoose.Schema(
 );
 
 issueSchema.method({
+  /**
+   * @deprecated Since version 1.0.
+   */
   transform() {
     const transformed = {};
     const fields = [
