@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const httpStatus = require('http-status');
+const { omitBy, isNil } = require('lodash');
+const APIError = require('../utils/APIError');
 
 const issueSchema = new mongoose.Schema(
   {
@@ -68,5 +71,37 @@ issueSchema.method({
     return transformed;
   }
 });
+
+issueSchema.statics = {
+  async get(id) {
+    try {
+      let issue;
+
+      if (mongoose.Types.ObjectId.isValid(id)) {
+        issue = await this.findById(id).exec();
+      }
+      if (issue) {
+        return issue;
+      }
+
+      throw new APIError({
+        message: 'Issue does not exist',
+        status: httpStatus.NOT_FOUND
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  list({ page = 1, perPage = 30, projectId }) {
+    const options = omitBy({ projectId }, isNil);
+
+    return this.find(options)
+      .sort({ createdAt: -1 })
+      .skip(perPage * (page - 1))
+      .limit(perPage)
+      .exec();
+  }
+};
 
 module.exports = mongoose.model('Issue', issueSchema);

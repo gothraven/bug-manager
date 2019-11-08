@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { omitBy, isNil } = require('lodash');
 
 const types = [
   'assignUser',
@@ -45,5 +46,12 @@ actionSchema.method({
     return transformed;
   }
 });
+
+actionSchema.statics = {
+  list({ issueId, userId, type }) {
+    const options = omitBy({ issueId, userId, type }, isNil);
+    return this.find(options);
+  }
+};
 
 module.exports = mongoose.model('Action', actionSchema);
