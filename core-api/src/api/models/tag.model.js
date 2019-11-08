@@ -12,6 +12,7 @@ const tagSchema = new mongoose.Schema(
     description: String,
     color: {
       type: String,
+      match: /^#((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/,
       required: true
     }
   },
@@ -59,7 +60,9 @@ tagSchema.statics = {
       throw error;
     }
   },
-
+  /**
+   * @deprecated Since version 1.0.
+   */
   list({ page = 1, perPage = 30, name, description, color }) {
     const options = omitBy({ name, description, color }, isNil);
 

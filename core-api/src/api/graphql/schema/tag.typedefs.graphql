@@ -18,3 +18,9 @@ type Query {
   tag(id: String!): Tag!
   tags(after: String, first: Int): TagCursor
 }
+
+type Mutation {
+  createTag(name: String!, description: String, color: String!): Tag!
+  updateTag(id: ID!, name: String, description: String, color: String): Tag!
+  deleteTag(id: ID!): Boolean!
+}

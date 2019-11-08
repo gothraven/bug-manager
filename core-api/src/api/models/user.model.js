@@ -116,7 +116,9 @@ userSchema.statics = {
       throw error;
     }
   },
-
+  /**
+   * @deprecated Since version 1.0.
+   */
   list({ page = 1, perPage = 30, name, email, role }) {
     const options = omitBy({ name, email, role }, isNil);
 
@@ -126,7 +128,6 @@ userSchema.statics = {
       .limit(perPage)
       .exec();
   },
-
   /**
    * @deprecated Since version 1.0.
    */
