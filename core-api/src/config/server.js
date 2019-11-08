@@ -11,7 +11,7 @@ import typesMerged from '../api/graphql/schema';
 import { jwtSecret, jwtExpirationInterval } from './vars';
 
 const getMe = async (req) => {
-  const token = req.headers['x-manager-token'];
+  const token = req.headers['x-bearer-token'];
 
   if (token) {
     try {

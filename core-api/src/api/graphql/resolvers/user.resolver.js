@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { combineResolvers } from 'graphql-resolvers';
 import { isAdmin, isAuthenticated } from './auth.resolver';
+import { Paginate } from './pagination.resolver';
 
 const createToken = async (user, secret, expiresIn) => {
   const { id, email, username, role } = user;
@@ -9,23 +10,14 @@ const createToken = async (user, secret, expiresIn) => {
 
 export default {
   Query: {
-    users: combineResolvers(isAdmin, async (parent, args, { models }) => models.User.find()),
+    users: combineResolvers(isAdmin, Paginate('User')),
     user: combineResolvers(isAdmin, async (parent, { id }, { models }) => models.User.findById(id)),
-    me: combineResolvers(isAuthenticated, async (parent, args, { models, me }) => {
-      if (!me) {
-        return null;
-      }
-
-      return models.User.findById(me.id);
-    })
+    me: combineResolvers(isAuthenticated, async (parent, args, { models, me }) =>
+      models.User.findById(me.id))
   },
   Mutation: {
     signUp: async (parent, { name, email, password }, { models, secret, expiresIn }) => {
-      const user = await models.User.create({
-        name,
-        email,
-        password
-      });
+      const user = await models.User.create({ name, email, password });
 
       return { user, token: createToken(user, secret, expiresIn) };
     },
@@ -34,13 +26,13 @@ export default {
       const user = await models.User.findOne({ email }).exec();
 
       if (!user) {
-        throw new Error('No user found with this login credentials.');
+        throw new Error('No user found with this login credentials');
       }
 
       const isValid = await user.passwordMatches(password);
 
       if (!isValid) {
-        throw new Error('Invalid password.');
+        throw new Error('Invalid password');
       }
 
       return { user, token: createToken(user, secret, expiresIn) };
@@ -58,9 +50,5 @@ export default {
       }
       return false;
     })
-  },
-
-  User: {
-    // add here some stuff about the user
   }
 };

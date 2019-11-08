@@ -86,9 +86,7 @@ userSchema.method({
     };
     return jwt.encode(playload, jwtSecret);
   },
-  /**
-   * @deprecated Since version 1.0.
-   */
+
   async passwordMatches(password) {
     return bcrypt.compare(password, this.password);
   }
@@ -181,4 +179,4 @@ userSchema.statics = {
   }
 };
 
-module.exports = mongoose.model('User', userSchema);
+export default mongoose.model('User', userSchema);

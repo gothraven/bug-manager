@@ -14,9 +14,14 @@ type User {
   role: Role!
 }
 
+type UsersCursor {
+  pageInfo: PageInfo!
+  edges: [User!]!
+}
+
 type Query {
   user(id: String!): User!
-  users: [User!]!
+  users(after: String, first: Int): UsersCursor
   me: User
 }
 
