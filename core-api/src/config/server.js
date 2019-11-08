@@ -8,7 +8,7 @@ import models from '../api/models';
 import loaders from '../api/graphql/loaders';
 import resolvers from '../api/graphql/resolvers';
 import typesMerged from '../api/graphql/schema';
-import { jwtSecret, jwtExpirationInterval } from './vars';
+import { logs, jwtSecret, jwtExpirationInterval } from './vars';
 
 const getMe = async (req) => {
   const token = req.headers['x-bearer-token'];
@@ -42,6 +42,6 @@ const server = new GraphQLServer({
 });
 
 server.express.use(cors());
-server.express.use(morgan('dev'));
+server.express.use(morgan(logs));
 
 export default server;

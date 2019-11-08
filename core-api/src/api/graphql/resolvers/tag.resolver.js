@@ -1,6 +1,12 @@
+import { combineResolvers } from 'graphql-resolvers';
+import { authorize } from './auth.resolver';
+import { USER, ADMIN } from '../../models/user.model';
+import { Paginate } from './pagination.resolver';
+
 export default {
   Query: {
-    tag: async (parent, { id }, { models }) => models.Tag.findById(id),
-    tags: (parent, args, { models }) => models.Tag.find()
+    tag: combineResolvers(authorize(ADMIN), async (parent, { id }, { models }) =>
+      models.Tag.findById(id)),
+    tags: combineResolvers(authorize(USER), Paginate('Tag'))
   }
 };

@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { combineResolvers } from 'graphql-resolvers';
-import { isAdmin, isAuthenticated } from './auth.resolver';
+import { authorize } from './auth.resolver';
+import { USER, ADMIN } from '../../models/user.model';
 import { Paginate } from './pagination.resolver';
 
 const createToken = async (user, secret, expiresIn) => {
@@ -10,9 +11,10 @@ const createToken = async (user, secret, expiresIn) => {
 
 export default {
   Query: {
-    users: combineResolvers(isAdmin, Paginate('User')),
-    user: combineResolvers(isAdmin, async (parent, { id }, { models }) => models.User.findById(id)),
-    me: combineResolvers(isAuthenticated, async (parent, args, { models, me }) =>
+    users: combineResolvers(authorize(ADMIN), Paginate('User')),
+    user: combineResolvers(authorize(ADMIN), async (parent, { id }, { models }) =>
+      models.User.findById(id)),
+    me: combineResolvers(authorize(USER), async (parent, args, { models, me }) =>
       models.User.findById(me.id))
   },
   Mutation: {
@@ -38,10 +40,10 @@ export default {
       return { user, token: createToken(user, secret, expiresIn) };
     },
 
-    updateUser: combineResolvers(isAuthenticated, async (parent, { email }, { models, me }) =>
+    updateUser: combineResolvers(authorize(USER), async (parent, { email }, { models, me }) =>
       models.User.findByIdAndUpdate(me.id, { email }, { new: true })),
 
-    deleteUser: combineResolvers(isAdmin, async (parent, { id }, { models }) => {
+    deleteUser: combineResolvers(authorize(ADMIN), async (parent, { id }, { models }) => {
       const user = await models.User.findById(id);
 
       if (user) {

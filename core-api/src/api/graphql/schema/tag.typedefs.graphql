@@ -9,7 +9,12 @@ type Tag {
   color: String!
 }
 
+type TagCursor {
+  pageInfo: PageInfo!
+  edges: [Tag!]!
+}
+
 type Query {
   tag(id: String!): Tag!
-  tags: [Tag!]!
+  tags(after: String, first: Int): TagCursor
 }
