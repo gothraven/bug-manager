@@ -8,7 +8,7 @@ const resolvers = {
 };
 
 const server = new GraphQLServer({
-  typeDefs: 'src/api/schema/schema.graphql',
+  typeDefs: 'src/api/graphql/schema/schema.graphql',
   resolvers,
   context: async () => ({
     loaders: {}
