@@ -4,10 +4,12 @@ import { omitBy, isNil } from 'lodash';
 import bcrypt from 'bcryptjs';
 import moment from 'moment-timezone';
 import jwt from 'jwt-simple';
-import APIError from '../rest/utils/APIError';
+import APIError from '../utils/APIError';
 import { env, jwtSecret, jwtExpirationInterval } from '../../config/vars';
 
-const roles = ['user', 'admin'];
+export const ADMIN = 'ADMIN';
+export const USER = 'USER';
+const roles = [ADMIN, USER];
 
 const userSchema = new mongoose.Schema(
   {
@@ -34,7 +36,7 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: roles,
-      default: 'user'
+      default: USER
     }
   },
   {
@@ -58,9 +60,12 @@ userSchema.pre('save', async function save(next) {
 });
 
 userSchema.method({
+  /**
+   * @deprecated Since version 1.0.
+   */
   transform() {
     const transformed = {};
-    const fields = ['id', 'name', 'email', 'picture', 'role', 'createdAt'];
+    const fields = ['id', 'name', 'email', 'role', 'createdAt', 'updatedAt'];
 
     fields.forEach((field) => {
       transformed[field] = this[field];
@@ -68,6 +73,9 @@ userSchema.method({
 
     return transformed;
   },
+  /**
+   * @deprecated Since version 1.0.
+   */
   token() {
     const playload = {
       exp: moment()
@@ -78,6 +86,9 @@ userSchema.method({
     };
     return jwt.encode(playload, jwtSecret);
   },
+  /**
+   * @deprecated Since version 1.0.
+   */
   async passwordMatches(password) {
     return bcrypt.compare(password, this.password);
   }
@@ -85,6 +96,9 @@ userSchema.method({
 
 userSchema.statics = {
   roles,
+  /**
+   * @deprecated Since version 1.0.
+   */
   async get(id) {
     try {
       let user;
@@ -105,6 +119,19 @@ userSchema.statics = {
     }
   },
 
+  list({ page = 1, perPage = 30, name, email, role }) {
+    const options = omitBy({ name, email, role }, isNil);
+
+    return this.find(options)
+      .sort({ createdAt: -1 })
+      .skip(perPage * (page - 1))
+      .limit(perPage)
+      .exec();
+  },
+
+  /**
+   * @deprecated Since version 1.0.
+   */
   async findAndGenerateToken(options) {
     const { email, password, refreshObject } = options;
     if (!email) throw new APIError({ message: 'An email is required to generate a token' });
@@ -131,16 +158,9 @@ userSchema.statics = {
     throw new APIError(err);
   },
 
-  list({ page = 1, perPage = 30, name, email, role }) {
-    const options = omitBy({ name, email, role }, isNil);
-
-    return this.find(options)
-      .sort({ createdAt: -1 })
-      .skip(perPage * (page - 1))
-      .limit(perPage)
-      .exec();
-  },
-
+  /**
+   * @deprecated Since version 1.0.
+   */
   checkDuplicateEmail(error) {
     if (error.name === 'MongoError' && error.code === 11000) {
       return new APIError({

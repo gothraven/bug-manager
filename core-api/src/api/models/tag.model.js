@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import httpStatus from 'http-status';
 import { omitBy, isNil } from 'lodash';
-import APIError from '../rest/utils/APIError';
+import APIError from '../utils/APIError';
 
 const tagSchema = new mongoose.Schema(
   {
@@ -21,9 +21,12 @@ const tagSchema = new mongoose.Schema(
 );
 
 tagSchema.method({
+  /**
+   * @deprecated Since version 1.0.
+   */
   transform() {
     const transformed = {};
-    const fields = ['id', 'name', 'description', 'color'];
+    const fields = ['id', 'createdAt', 'updatedAt', 'name', 'description', 'color'];
 
     fields.forEach((field) => {
       transformed[field] = this[field];
@@ -34,6 +37,9 @@ tagSchema.method({
 });
 
 tagSchema.statics = {
+  /**
+   * @deprecated Since version 1.0.
+   */
   async get(id) {
     try {
       let tag;
