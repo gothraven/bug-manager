@@ -3,6 +3,7 @@ import { EmailAddressResolver, HexColorCodeResolver, DateTimeResolver } from 'gr
 import tagResolvers from './tag.resolver';
 import userResolvers from './user.resolver';
 import statusResolvers from './status.resolver';
+import projectResolvers from './project.resolver';
 
 const customScalarResolver = {
   Date: DateTimeResolver,
@@ -10,4 +11,10 @@ const customScalarResolver = {
   Color: HexColorCodeResolver
 };
 
-export default [customScalarResolver, userResolvers, tagResolvers, statusResolvers];
+export default [
+  customScalarResolver,
+  userResolvers,
+  tagResolvers,
+  statusResolvers,
+  projectResolvers
+];
