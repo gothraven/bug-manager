@@ -1,0 +1,25 @@
+scalar Date
+
+type Project {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  name: String!
+  description: String
+}
+
+type ProjectsCursor {
+  pageInfo: PageInfo!
+  edges: [Project!]!
+}
+
+type Query {
+  project(id: String!): Project!
+  projects(after: String, first: Int): ProjectsCursor
+}
+
+type Mutation {
+  createProject(name: String!, description: String): Project!
+  updateProject(id: ID!, name: String, description: String): Project!
+  deleteProject(id: ID!): Boolean!
+}
