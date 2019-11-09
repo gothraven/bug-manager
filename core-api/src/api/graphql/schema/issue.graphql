@@ -1,0 +1,10 @@
+scalar Date
+
+type Issue {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  title: String!
+  content: String!
+  open: Boolean!
+}

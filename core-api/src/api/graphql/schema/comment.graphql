@@ -1,0 +1,26 @@
+scalar Date
+
+type Comment {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  creator: User!
+  issue: Issue!
+  content: String!
+}
+
+type CommentCursor {
+  pageInfo: PageInfo!
+  edges: [Comment!]!
+}
+
+type Query {
+  comment(id: String!): Comment!
+  commentes(after: String, first: Int): CommentCursor
+}
+
+type Mutation {
+  createComment(name: String!, description: String): Comment!
+  updateComment(id: ID!, name: String, description: String): Comment!
+  deleteComment(id: ID!): Boolean!
+}
