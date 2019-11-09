@@ -1,4 +1,4 @@
-import { GraphQLServer, AuthenticationError } from 'graphql-yoga';
+import { GraphQLServer, Error } from 'graphql-yoga';
 import DataLoader from 'dataloader';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -16,7 +16,7 @@ const getMe = async (req) => {
     try {
       return await jwt.verify(token, jwtSecret);
     } catch (e) {
-      throw new AuthenticationError('Your session expired. Sign in again.');
+      throw new Error('Your session expired. Sign in again.');
     }
   }
   return null;
