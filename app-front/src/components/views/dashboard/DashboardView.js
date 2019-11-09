@@ -1,15 +1,26 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import ListItem from "@material-ui/core/ListItem";
 import List from "@material-ui/core/List";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
+import Box from "@material-ui/core/Box";
 import ErrorIcon from "@material-ui/icons/Error";
 
 import IssueItem from "./IssueItem";
 
+const useStyles = makeStyles(() => ({
+  listHeaderBox: {
+    display: "grid",
+    gridTemplateColumns: "1fr 4fr",
+    alignItems: "center"
+  }
+}));
+
+
 function DashboardView() {
   const issues = issuesListResult.result;
+  const classes = useStyles();
 
   return (
     <Grid
@@ -24,14 +35,14 @@ function DashboardView() {
       <Grid item xs={12}>
         <List style={{ backgroundColor: "white" }}>
           <ListItem divider>
-            <ListItemIcon>
-              <ErrorIcon style={{ marginLeft: 5, color: "green" }} />
+            <Box className={classes.listHeaderBox} >
+              <ErrorIcon style={{ color: "green" }} />
               <Typography>39 Issues Opened</Typography>
-            </ListItemIcon>
-            <ListItemIcon>
-              <ErrorIcon style={{ marginLeft: 5, color: "red" }} />
+            </Box>          
+            <Box className={classes.listHeaderBox} style={{ marginLeft: 10 }}>
+              <ErrorIcon style={{ color: "red" }} />
               <Typography>39 Issues Opened</Typography>
-            </ListItemIcon>
+            </Box>
           </ListItem>
           {issues.map(issue => (
             <IssueItem key={issue.id} issue={issue} />
@@ -59,8 +70,8 @@ const issuesListResult = {
         { id: "123123124", name: "nadir" }
       ],
       tags: [
-        { id: "123SFF", name: "Devops", color: "#12FFEE" },
-        { id: "123SFQ", name: "Bug", color: "#12FFAA" }
+        { id: "123SFF", name: "Devops", color: "#1200FF" },
+        { id: "123SFQ", name: "Bug", color: "#FF0000" }
       ],
       project: { name: "bug Manager 1" }
     },
@@ -75,8 +86,8 @@ const issuesListResult = {
         { id: "223123124", name: "nadir" }
       ],
       tags: [
-        { id: "223SFF", name: "Devops", color: "#12FFEE" },
-        { id: "224SFQ", name: "Bug", color: "#12FFAA" }
+        { id: "223SFF", name: "Devops", color: "#002F55" },
+        { id: "224SFQ", name: "Bug", color: "#FF00FF" }
       ],
       project: { name: "bug Manager 2" }
     }

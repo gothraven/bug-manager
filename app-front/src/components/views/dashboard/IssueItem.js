@@ -6,28 +6,18 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ErrorIcon from "@material-ui/icons/Error";
 import ListItemText from "@material-ui/core/ListItemText";
-import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+// import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
 import moment from "moment";
 import { invertColor } from "../../core/utils/Functions";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    width: "100%",
-    backgroundColor: theme.palette.background.paper
-  },
   inline: {
-    display: "inline",
-    marginLeft: 5,
-    fontSize: 15
+    fontSize: theme.typography.body1
   },
   title: {
-    fontSize: 20,
-    fontWeight: "bold"
-  },
-  description: {
-    fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary
+    fontWeight: theme.typography.fontWeightBold
   }
 }));
 
@@ -41,79 +31,40 @@ function IssueItem(props) {
       button
       divider
       onClick={() => history.push("/user/projects")}
-      alignItems="flex-start"
     >
       <ListItemIcon>
         <ErrorIcon style={{ color: issue.open ? "green" : "red" }} />
       </ListItemIcon>
       <ListItemText
-        primary={
-          <Typography
-            component="span"
-            variant="body"
-            className={classes.title}
-            color="textPrimary"
-          >
-            {issue.title}
-          </Typography>
-        }
+        classes={{ primary: classes.title, secondary: classes.inline }}
+        primary={issue.title}
         secondary={
-          <>
-            <Typography
-              component="span"
-              variant="body"
-              className={classes.inline}
-              color="textPrimary"
-            >
-              Created {moment(issue.createdAt).fromNow()} by{" "}
-              {issue.creator.name}
-            </Typography>
-            {" - "}
-            <Typography
-              component="span"
-              variant="body2"
-              className={classes.inline}
-              color="textPrimary"
-            >
-              last Updated {moment(issue.updatedAt).fromNow()}
-            </Typography>
-            <Typography className={classes.inline}>
-              {" - Assigned to "}{" "}
-              {issue.assignedUsers.map(user => (
-                <>
-                  {user.name}
-                  {", "}
-                </>
-              ))}
-            </Typography>
-            <Typography
-              component="span"
-              variant="body"
-              className={classes.inline}
-              color="textPrimary"
-            >
-              {" - this issue opened on "} {issue.project.name}
-            </Typography>
-            {issue.tags.map(tag => (
-              <Chip
-                key={tag.id}
-                size="small"
-                label={tag.name}
-                style={{
-                  borderColor: tag.color,
-                  marginLeft: 5,
-                  backgroundColor: tag.color,
-                  color: invertColor(tag.color)
-                }}
-              />
-            ))}
-          </>
+          `Created ${moment(issue.createdAt).fromNow()} by ${issue.creator.name}
+           -
+          last Updated ${moment(issue.updatedAt).fromNow()}
+           -
+          Assigned to ${issue.assignedUsers.map(user => ` ${user.name}`)}
+           -
+          this issue opened on ${issue.project.name}`
         }
       />
+      <Box>
+        {issue.tags.map(tag => (
+          <Chip
+            key={tag.id}
+            label={tag.name}
+            size="small"
+            style={{
+              margin: 2,
+              backgroundColor: tag.color,
+              color: invertColor(tag.color)
+            }}
+          />
+        ))}
+      </Box>
     </ListItem>
   );
 }
-
 IssueItem.propTypes = {
   issue: PropType.object.isRequired
 };
