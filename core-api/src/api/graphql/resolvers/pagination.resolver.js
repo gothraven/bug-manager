@@ -16,11 +16,14 @@ export const Paginate = model => async (parent, { after, first = 100 }, { models
   });
   const hasNextPage = data.length > first;
   const edges = hasNextPage ? data.slice(0, -1) : data;
+  const endCursor =
+    edges.length > 0 ? toCursorHash(edges[edges.length - 1].createdAt.toString()) : null;
+
   return {
     edges,
     pageInfo: {
       hasNextPage,
-      endCursor: toCursorHash(edges[edges.length - 1].createdAt.toString())
+      endCursor
     }
   };
 };

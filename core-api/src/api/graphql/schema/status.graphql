@@ -1,0 +1,25 @@
+scalar Date
+
+type Status {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  name: String!
+  description: String
+}
+
+type StatusCursor {
+  pageInfo: PageInfo!
+  edges: [Status!]!
+}
+
+type Query {
+  status(id: String!): Status!
+  statuses(after: String, first: Int): StatusCursor
+}
+
+type Mutation {
+  createStatus(name: String!, description: String): Status!
+  updateStatus(id: ID!, name: String, description: String): Status!
+  deleteStatus(id: ID!): Boolean!
+}
