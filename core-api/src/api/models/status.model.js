@@ -16,6 +16,9 @@ const statusSchema = new mongoose.Schema(
 );
 
 statusSchema.method({
+  /**
+   * @deprecated Since version 1.0.
+   */
   transform() {
     const transformed = {};
     const fields = ['id', 'name', 'description'];
@@ -29,6 +32,9 @@ statusSchema.method({
 });
 
 statusSchema.statics = {
+  /**
+   * @deprecated Since version 1.0.
+   */
   async get(id) {
     try {
       let status;
@@ -48,7 +54,9 @@ statusSchema.statics = {
       throw error;
     }
   },
-
+  /**
+   * @deprecated Since version 1.0.
+   */
   list() {
     return this.find()
       .all()
