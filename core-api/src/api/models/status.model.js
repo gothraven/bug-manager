@@ -1,4 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
+import httpStatus from 'http-status';
+import APIError from '../utils/APIError';
 
 const statusSchema = new mongoose.Schema(
   {
@@ -16,7 +18,7 @@ const statusSchema = new mongoose.Schema(
 statusSchema.method({
   transform() {
     const transformed = {};
-    const fields = ["id", "name", "description"];
+    const fields = ['id', 'name', 'description'];
 
     fields.forEach(field => {
       transformed[field] = this[field];
@@ -26,4 +28,32 @@ statusSchema.method({
   }
 });
 
-module.exports = mongoose.model("Status", statusSchema);
+statusSchema.statics = {
+  async get(id) {
+    try {
+      let status;
+
+      if (mongoose.Types.ObjectId.isValid(id)) {
+        status = await this.findById(id).exec();
+      }
+      if (status) {
+        return status;
+      }
+
+      throw new APIError({
+        message: 'Status does not exist',
+        status: httpStatus.NOT_FOUND
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  list() {
+    return this.find()
+      .all()
+      .exec();
+  }
+};
+
+module.exports = mongoose.model('Status', statusSchema);

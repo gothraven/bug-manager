@@ -1,0 +1,27 @@
+scalar Date
+scalar Color
+
+type Tag {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  name: String!
+  description: String
+  color: Color!
+}
+
+type TagCursor {
+  pageInfo: PageInfo!
+  edges: [Tag!]!
+}
+
+type Query {
+  tag(id: String!): Tag!
+  tags(after: String, first: Int): TagCursor
+}
+
+type Mutation {
+  createTag(name: String!, description: String, color: Color!): Tag!
+  updateTag(id: ID!, name: String, description: String, color: Color): Tag!
+  deleteTag(id: ID!): Boolean!
+}

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const types = [
   'assignUser',
@@ -34,6 +34,9 @@ const actionSchema = new mongoose.Schema(
 );
 
 actionSchema.method({
+  /**
+   * @deprecated Since version 1.0.
+   */
   transform() {
     const transformed = {};
     const fields = ['id', 'userId', 'issueId', 'type', 'data'];

@@ -1,0 +1,682 @@
+openapi: 3.0.1
+info:
+  title: Bug Manager Core-api
+  description: This is the full description of bug-manager core-api
+  version: 1.0.0
+externalDocs:
+  description: Find out more about bug-manager
+  url: http://bug-manager.io
+servers:
+  - url: http://localhost:3030/
+tags:
+  - name: authentication
+    description: Operations about auhtentication
+  - name: users
+    description: Operations about user
+  - name: projects
+    description: Operations about project
+  - name: tags
+    description: Operation about tags
+  - name: status
+    description: Operation about status
+  - name: comments
+    description: Operation about comments
+  - name: issues
+    description: Operations about issues
+security:
+  - bearerAuth: []
+paths:
+  /auth/signup:
+    post:
+      summary: Creates a new user
+      security: []
+      tags:
+        - authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    $ref: "#/components/schemas/Auth"
+                  user:
+                    $ref: "#/components/schemas/User"
+  /auth/signin:
+    post:
+      summary: Logs user into the system
+      security: []
+      tags:
+        - authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    $ref: "#/components/schemas/Auth"
+                  user:
+                    $ref: "#/components/schemas/User"
+  /auth/refresh-token:
+    post:
+      summary: Refresh User token
+      security: []
+      tags:
+        - authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                refreshToken:
+                  type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    $ref: "#/components/schemas/Auth"
+
+  /users:
+    get:
+      summary: Get all users
+      tags:
+        - users
+      parameters:
+        - in: path
+          name: page
+          required: true
+          allowEmptyValue: true
+          schema:
+            type: number
+            default: 1
+        - in: path
+          name: perPage
+          required: true
+          allowEmptyValue: true
+          schema:
+            type: number
+            default: 30
+        - in: path
+          name: name
+          required: true
+          allowEmptyValue: true
+          schema:
+            type: string
+        - in: path
+          name: email
+          required: true
+          allowEmptyValue: true
+          schema:
+            type: string
+        - in: path
+          name: role
+          required: true
+          allowEmptyValue: true
+          schema:
+            type: string
+            enum: [admin, user, ""]
+      responses:
+        200:
+          description: all users with pagination
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: number
+                  perPage:
+                    type: number
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+    post:
+      tags:
+        - users
+      summary: Create user
+      requestBody:
+        description: User object that need to be add
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: creating user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /users/{userId}:
+    get:
+      tags:
+        - users
+      summary: Get user
+      parameters:
+        - in: path
+          name: userId
+          description: The user id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: getting user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    patch:
+      tags:
+        - users
+      summary: Modify user
+      parameters:
+        - in: path
+          name: userId
+          description: The user id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Elements that need to be patch
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                name:
+                  type: string
+                role:
+                  type: string
+                  enum: [admin, user]
+        required: true
+      responses:
+        200:
+          description: patching user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    delete:
+      summary: Delete user
+      tags:
+        - users
+      parameters:
+        - name: userId
+          in: path
+          description: The user id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: deleting user
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /projects:
+    get:
+      summary: Get projects
+      tags:
+        - projects
+      parameters:
+        - in: path
+          name: page
+          required: true
+          allowEmptyValue: true
+          schema:
+            type: number
+            default: 1
+        - in: path
+          name: perPage
+          required: true
+          allowEmptyValue: true
+          schema:
+            type: number
+            default: 30
+        - in: path
+          name: name
+          required: true
+          allowEmptyValue: true
+          schema:
+            type: string
+        - in: path
+          name: description
+          required: true
+          allowEmptyValue: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: getting all projects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: number
+                  perPage:
+                    type: number
+                  count:
+                    type: number
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Project"
+    post:
+      summary: Create project
+      tags:
+        - projects
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        200:
+          description: creating project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+  /projects/{projectId}:
+    get:
+      summary: Get project
+      tags:
+        - projects
+      parameters:
+        - in: path
+          name: projectId
+          description: The project id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: getting project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+    patch:
+      tags:
+        - projects
+      summary: The project id
+      parameters:
+        - in: path
+          name: projectId
+          description: The project id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: patched project
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: patching project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+    delete:
+      summary: Delete project by ID
+      tags:
+        - projects
+      operationId: deleteProjectById
+      parameters:
+        - in: path
+          name: projectId
+          description: The project id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Deleted project
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /tags:
+    get:
+      summary: Get tags
+      tags:
+        - tags
+      responses:
+        200:
+          description: all tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tag"
+    post:
+      summary: Create a new Tag
+      tags:
+        - tags
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                color:
+                  type: string
+      responses:
+        200:
+          description: creating Tag
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+  /tags/{tagId}:
+    get:
+      summary: Get tag
+      tags:
+        - tags
+      parameters:
+        - in: path
+          name: tagId
+          description: The tag id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Tag object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+    patch:
+      tags:
+        - tags
+      summary: The tag id
+      parameters:
+        - in: path
+          name: tagId
+          description: The tag id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: patched tag
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        200:
+          description: patching tag
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+    delete:
+      summary: Delete Tag
+      tags:
+        - tags
+      parameters:
+        - in: path
+          name: tagId
+          description: The tag id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Deleted project
+          content:
+            application/json:
+              schema:
+                type: object
+
+components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Auth:
+      type: object
+      properties:
+        token:
+          type: object
+          properties:
+            tokenType:
+              type: string
+              example: "Bearer"
+            accessToken:
+              type: string
+              example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NzMwNjMwNTgsImlhdCI6MTU3MzA2MjE1OCwic3ViIjoiNWRiNGQzODZlZGNkNzk5OTgzOTRhMzQ0In0.2k6et8EQ0wuG65F0Y2DHYYDJEtjTdrI8jxD0g39-N_0"
+            refreshToken:
+              type: string
+              example: "5db4d386edcd79998394a344.fc2d04ee3b71affc02245abe515a5ac0953b8bab0cb56d12aa905b34caba3b449ab6bace8a8989c6"
+            expiresIn:
+              type: string
+              example: "2019-11-06T17:57:38.368Z"
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "5db4d386edcd79998394a344"
+            email:
+              type: string
+              example: "safiy@bug.co"
+            role:
+              type: string
+              enum: ["admin", "user"]
+            createdAt:
+              type: string
+              example: "2019-10-26T23:15:18.578Z"
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          enum:
+            - admin
+            - user
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    Issue:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        open:
+          type: boolean
+        creatorId:
+          type: string
+        statusId:
+          type: string
+        projectId:
+          type: string
+        assignedUserId:
+          type: array
+          items:
+            type: string
+        tagsIds:
+          type: array
+          items:
+            type: string
+    Tag:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        color:
+          type: string
+    Status:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        userId:
+          type: string
+        issueId:
+          type: string
+        content:
+          type: string
+    Action:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        userId:
+          type: string
+        issueId:
+          type: string
+        type:
+          type: string
+          enum:
+            - assignUser
+            - unassignUser
+            - addTag
+            - removeTag
+            - changeStatus
+            - changeProject
+        data:
+          type: object
+          properties: {}

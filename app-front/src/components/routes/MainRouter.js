@@ -7,7 +7,8 @@ import {
   SignInView,
   ProjectsView,
   NotFoundView,
-  DashboardView
+  DashboardView,
+  NewIssueView
 } from "../views";
 
 function MainRouter() {
@@ -22,6 +23,13 @@ function MainRouter() {
         path="/user/dashboard"
         authed={isAuthenticated}
         component={DashboardView}
+        layout={MainLayout}
+      />
+      <RouteWithLayout
+        exact
+        path="/user/issue/new"
+        authed={isAuthenticated}
+        component={NewIssueView}
         layout={MainLayout}
       />
       <RouteWithLayout

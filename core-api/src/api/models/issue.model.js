@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
 const issueSchema = new mongoose.Schema(
   {
@@ -8,12 +8,6 @@ const issueSchema = new mongoose.Schema(
       index: true
     },
     content: String,
-    attachments: [
-      {
-        data: Buffer,
-        contentType: String
-      }
-    ],
     creatorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -23,6 +17,15 @@ const issueSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Status",
       required: true
+    },
+    statuId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Status',
+      required: true
+    },
+    open: {
+      type: Boolean,
+      default: true
     },
     assignedUserIds: [
       {
@@ -47,17 +50,23 @@ const issueSchema = new mongoose.Schema(
 );
 
 issueSchema.method({
+  /**
+   * @deprecated Since version 1.0.
+   */
   transform() {
     const transformed = {};
     const fields = [
-      "id",
-      "title",
-      "content",
-      "creatorId",
-      "statusId",
-      "assignedUserIds",
-      "tagsIds",
-      "projectId"
+      'id',
+      'title',
+      'createdAt',
+      'updatedAt',
+      'content',
+      'creatorId',
+      'open',
+      'statusId',
+      'assignedUserIds',
+      'tagsIds',
+      'projectId'
     ];
 
     fields.forEach(field => {

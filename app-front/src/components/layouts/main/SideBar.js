@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import { withRouter } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
+import Fab from "@material-ui/core/Fab";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import Avatar from "@material-ui/core/Avatar";
@@ -13,7 +14,7 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -36,9 +37,9 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen
     }),
     overflowX: "hidden",
-    width: theme.spacing(7) + 1,
+    width: theme.spacing(7) + 20,
     [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9) + 1
+      width: theme.spacing(9) + 20
     },
     icons: {
       color: "white"
@@ -48,6 +49,8 @@ const useStyles = makeStyles(theme => ({
     color: "#fff"
   },
   listItemIcon: {
+    display: "grid",
+    justifyContent: "center",
     color: "#fff"
   }
 }));
@@ -99,7 +102,22 @@ function SideBar(props) {
             <ListItemIcon classes={{ root: classes.listItemIcon }}>
               <Avatar alt="">RS</Avatar>
             </ListItemIcon>
-            <ListItemText primary="Remy Sharp" />
+            {open && <ListItemText primary="Remy Sharp" />}
+          </ListItem>
+          <ListItem button classes={{ root: classes.listItem }}>
+            <Fab
+              variant="extended"
+              aria-label="add-issue"
+              style={{ backgroundColor: "#fff" }}
+              onClick={() => history.push("/user/issue/new")}
+            >
+              <img
+                style={{ width: 30, margin: 5 }}
+                src="/images/create_32dp.png"
+                alt="Under development"
+              />
+              {open && "New Issue"}
+            </Fab>
           </ListItem>
           {menuItems.map(item => (
             <ListItem
@@ -111,7 +129,7 @@ function SideBar(props) {
               <ListItemIcon classes={{ root: classes.listItemIcon }}>
                 {item.icon}
               </ListItemIcon>
-              <ListItemText primary={item.title} />
+              {open && <ListItemText primary={item.title} />}
             </ListItem>
           ))}
         </List>

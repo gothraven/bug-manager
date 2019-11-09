@@ -1,4 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import httpStatus from 'http-status';
+import { omitBy, isNil } from 'lodash';
+import APIError from '../utils/APIError';
 
 const tagSchema = new mongoose.Schema(
   {
@@ -9,6 +12,7 @@ const tagSchema = new mongoose.Schema(
     description: String,
     color: {
       type: String,
+      match: /^#((0x){0,1}|#{0,1})([0-9A-F]{8}|[0-9A-F]{6})$/,
       required: true
     }
   },
@@ -18,9 +22,12 @@ const tagSchema = new mongoose.Schema(
 );
 
 tagSchema.method({
+  /**
+   * @deprecated Since version 1.0.
+   */
   transform() {
     const transformed = {};
-    const fields = ['id', 'name', 'description', 'color'];
+    const fields = ['id', 'createdAt', 'updatedAt', 'name', 'description', 'color'];
 
     fields.forEach((field) => {
       transformed[field] = this[field];
@@ -29,5 +36,42 @@ tagSchema.method({
     return transformed;
   }
 });
+
+tagSchema.statics = {
+  /**
+   * @deprecated Since version 1.0.
+   */
+  async get(id) {
+    try {
+      let tag;
+
+      if (mongoose.Types.ObjectId.isValid(id)) {
+        tag = await this.findById(id).exec();
+      }
+      if (tag) {
+        return tag;
+      }
+
+      throw new APIError({
+        message: 'Tag does not exist',
+        status: httpStatus.NOT_FOUND
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
+  /**
+   * @deprecated Since version 1.0.
+   */
+  list({ page = 1, perPage = 30, name, description, color }) {
+    const options = omitBy({ name, description, color }, isNil);
+
+    return this.find(options)
+      .sort({ createdAt: -1 })
+      .skip(perPage * (page - 1))
+      .limit(perPage)
+      .exec();
+  }
+};
 
 module.exports = mongoose.model('Tag', tagSchema);
