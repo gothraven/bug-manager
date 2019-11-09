@@ -59,7 +59,6 @@ function ProjectsView() {
   return (
     <Grid
       container
-      xs={12}
       direction="column"
       justify="flex-start"
       alignItems="stretch"
@@ -91,14 +90,12 @@ function ProjectsView() {
         <Grid
           container
           direction="row"
-          xs={12}
           justify="space-evenly"
           alignItems="flex-start"
         >
           {projects.reverse().map(project => (
             <Grid key={project.id} item xs={6}>
               <ProjectCard
-                key={project.id}
                 project={project}
                 onUpdate={updateProjectHandler}
                 onDelete={deleteProjectHandler}

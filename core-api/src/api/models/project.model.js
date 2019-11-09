@@ -21,7 +21,7 @@ projectSchema.method({
     const transformed = {};
     const fields = ['id', 'name', 'description', 'createdAt', 'updatedAt'];
 
-    fields.forEach(field => {
+    fields.forEach((field) => {
       transformed[field] = this[field];
     });
 

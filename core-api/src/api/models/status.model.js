@@ -20,7 +20,7 @@ statusSchema.method({
     const transformed = {};
     const fields = ['id', 'name', 'description'];
 
-    fields.forEach(field => {
+    fields.forEach((field) => {
       transformed[field] = this[field];
     });
 

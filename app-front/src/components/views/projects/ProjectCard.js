@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Card from "@material-ui/core/Card";
@@ -40,7 +41,7 @@ function ProjectCard(props) {
         action={
           <>
             <IconButton
-              color={edition ? "primary" : ""}
+              color={edition ? "primary" : "default"}
               aria-label="edit"
               onClick={() => setEdition(!edition)}
             >
@@ -60,10 +61,10 @@ function ProjectCard(props) {
       <CardContent>
         {!edition ? (
           [
-            <Typography variant="h3" color="textPrimary" component="h3">
+            <Typography key={0} variant="h3" color="textPrimary" component="h3">
               {project.title}
             </Typography>,
-            <Typography variant="body1" color="textSecondary" component="p">
+            <Typography key={1} variant="body1" color="textSecondary" component="p">
               {project.description}
             </Typography>
           ]

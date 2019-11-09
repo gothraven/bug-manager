@@ -70,8 +70,12 @@ function ProjectEdition(props) {
   );
 }
 
+ProjectEdition.defaultProps = {
+  id: ""
+}
+
 ProjectEdition.propTypes = {
-  id: PropTypes.func.isRequired,
+  id: PropTypes.string,
   project: PropTypes.object.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired

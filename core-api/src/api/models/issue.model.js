@@ -10,12 +10,7 @@ const issueSchema = new mongoose.Schema(
     content: String,
     creatorId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true
-    },
-    statuId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Status",
+      ref: 'User',
       required: true
     },
     statuId: {
@@ -30,18 +25,18 @@ const issueSchema = new mongoose.Schema(
     assignedUserIds: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        ref: 'User'
       }
     ],
     tagsIds: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Tag"
+        ref: 'Tag'
       }
     ],
     projectId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Project"
+      ref: 'Project'
     }
   },
   {
@@ -69,7 +64,7 @@ issueSchema.method({
       'projectId'
     ];
 
-    fields.forEach(field => {
+    fields.forEach((field) => {
       transformed[field] = this[field];
     });
 
@@ -77,4 +72,4 @@ issueSchema.method({
   }
 });
 
-module.exports = mongoose.model("Issue", issueSchema);
+module.exports = mongoose.model('Issue', issueSchema);

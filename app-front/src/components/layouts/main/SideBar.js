@@ -70,6 +70,11 @@ const menuItems = [
     title: "tags",
     icon: <BookmarksIcon />,
     link: "/user/tags"
+  },
+  {
+    title: "issue",
+    icon: <BookmarksIcon />,
+    link: "/user/issue/217"
   }
 ];
 
