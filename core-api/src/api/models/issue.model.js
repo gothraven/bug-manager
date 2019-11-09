@@ -7,20 +7,22 @@ const issueSchema = new mongoose.Schema(
       required: true,
       index: true
     },
-    content: String,
+    content: {
+      type: String,
+      required: true
+    },
     creatorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true
     },
-    statuId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Status',
-      required: true
-    },
     open: {
       type: Boolean,
       default: true
+    },
+    statusId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Status'
     },
     assignedUserIds: [
       {
@@ -28,7 +30,7 @@ const issueSchema = new mongoose.Schema(
         ref: 'User'
       }
     ],
-    tagsIds: [
+    tagIds: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Tag'

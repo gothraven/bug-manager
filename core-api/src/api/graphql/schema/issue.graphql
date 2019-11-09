@@ -7,4 +7,33 @@ type Issue {
   title: String!
   content: String!
   open: Boolean!
+  creator: User!
+  status: Status
+  assignedUsers: [User]!
+  tags: [Tag]!
+  project: Project
+}
+
+type IssueCursor {
+  pageInfo: PageInfo!
+  edges: [Issue]!
+}
+
+type Query {
+  issue(id: ID!): Issue!
+  issues(after: String, first: Int): IssueCursor
+}
+
+type Mutation {
+  createIssue(title: String!, content: String!): Issue!
+  updateIssue(id: ID!, title: String, content: String): Issue!
+  assignUser(id: ID!, userId: ID!): Issue!
+  unassignUser(id: ID!, userId: ID!): Issue!
+  addTag(id: ID!, tagId: ID!): Issue!
+  removeTag(id: ID!, tagId: ID!): Issue!
+  attachToProject(id: ID!, projectId: ID!): Issue!
+  detatchFromProject(id: ID!, projectId: ID!): Issue!
+  updateIssueStatus(id: ID!, statusId: ID!): Issue!
+  closeIssue(id: ID!): Issue!
+  deleteIssue(id: ID!): Boolean!
 }
