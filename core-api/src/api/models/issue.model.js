@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const issueSchema = new mongoose.Schema(
   {
@@ -45,6 +45,9 @@ const issueSchema = new mongoose.Schema(
 );
 
 issueSchema.method({
+  /**
+   * @deprecated Since version 1.0.
+   */
   transform() {
     const transformed = {};
     const fields = [

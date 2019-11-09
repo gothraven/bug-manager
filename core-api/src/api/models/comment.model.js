@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const httpStatus = require('http-status');
-const APIError = require('../utils/APIError');
+import mongoose from 'mongoose';
+import httpStatus from 'http-status';
+import APIError from '../utils/APIError';
 
 const commentSchema = new mongoose.Schema(
   {
@@ -25,6 +25,9 @@ const commentSchema = new mongoose.Schema(
 );
 
 commentSchema.method({
+  /**
+   * @deprecated Since version 1.0.
+   */
   transform() {
     const transformed = {};
     const fields = ['id', 'userId', 'issueId', 'content'];
@@ -38,6 +41,9 @@ commentSchema.method({
 });
 
 commentSchema.statics = {
+  /**
+   * @deprecated Since version 1.0.
+   */
   async get(id) {
     try {
       let comment;
