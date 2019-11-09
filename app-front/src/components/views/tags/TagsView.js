@@ -28,7 +28,6 @@ function TagsView() {
   return (
     <Grid
       container
-      xs={12}
       direction="column"
       justify="flex-start"
       alignItems="stretch"

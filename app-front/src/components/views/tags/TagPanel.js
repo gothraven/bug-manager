@@ -34,7 +34,7 @@ function TagPanel(props) {
   return (
     <ExpansionPanel expanded={expanded} onChange={() => setExpanded(!expanded)}>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-        <Grid container xs={10} justify="flex-start" alignItems="center">
+        <Grid container justify="flex-start" alignItems="center">
           <Grid item xs={2}>
             <Chip
               label={name}
@@ -56,7 +56,6 @@ function TagPanel(props) {
       <ExpansionPanelDetails>
         <Grid
           container
-          xs={12}
           justify="flex-start"
           alignItems="stretch"
           spacing={2}
