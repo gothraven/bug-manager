@@ -11,3 +11,10 @@ export const authorize = role =>
     }
     return new Error(`Not authorized as ${role}`);
   });
+export const authorize2 = creatorId =>
+  combineResolvers(isAuthenticated, (parent, args, { me }) => {
+    if (me.role === ADMIN && creatorId === me.id) {
+      return skip;
+    }
+    return new Error(`This user is not authorized as ${creatorId}`);
+  });
