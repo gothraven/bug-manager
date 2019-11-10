@@ -15,12 +15,12 @@ type CommentCursor {
 }
 
 type Query {
-  comment(id: String!): Comment!
-  commentes(after: String, first: Int): CommentCursor
+  comment(id: ID!): Comment!
+  comments(after: String, first: Int): CommentCursor
 }
 
 type Mutation {
-  createComment(name: String!, description: String): Comment!
-  updateComment(id: ID!, name: String, description: String): Comment!
+  createComment(content: String!, issueId: ID!): Comment!
+  updateComment(id: ID!, content: String): Comment!
   deleteComment(id: ID!): Boolean!
 }

@@ -1,6 +1,6 @@
 import { combineResolvers } from 'graphql-resolvers';
 import { omitBy, isNil } from 'lodash';
-import { authorize } from './auth.resolver';
+import { authorize, own, objectExists } from './auth.resolver';
 import { USER, ADMIN } from '../../models/user.model';
 import { Paginate } from './pagination.resolver';
 
@@ -18,28 +18,55 @@ export default {
     ),
     updateIssue: combineResolvers(
       authorize(USER),
+      own('Issue'),
       async (parent, { id, title, content }, { models }) => {
         const options = omitBy({ title, content }, isNil);
         return models.Issue.findByIdAndUpdate(id, options, { new: true });
       }
     ),
-    assignUser: combineResolvers(authorize(USER), async (parent, { id, userId }, { models }) =>
-      models.Issue.findByIdAndUpdate(id, { $addToSet: { assignedUserIds: userId } }, { new: true })),
-    unassignUser: combineResolvers(authorize(USER), async (parent, { id, userId }, { models }) =>
-      models.Issue.findByIdAndUpdate(id, { $pull: { assignedUserIds: userId } }, { new: true })),
-    addTag: combineResolvers(authorize(USER), async (parent, { id, tagId }, { models }) =>
-      models.Issue.findByIdAndUpdate(id, { $addToSet: { tagIds: tagId } }, { new: true })),
-    removeTag: combineResolvers(authorize(USER), async (parent, { id, tagId }, { models }) =>
-      models.Issue.findByIdAndUpdate(id, { $pull: { tagIds: tagId } }, { new: true })),
+    assignUser: combineResolvers(
+      authorize(USER),
+      objectExists('User', 'userId'),
+      async (parent, { id, userId }, { models }) =>
+        models.Issue.findByIdAndUpdate(
+          id,
+          { $addToSet: { assignedUserIds: userId } },
+          { new: true }
+        )
+    ),
+    unassignUser: combineResolvers(
+      authorize(USER),
+      objectExists('User', 'userId'),
+      async (parent, { id, userId }, { models }) =>
+        models.Issue.findByIdAndUpdate(id, { $pull: { assignedUserIds: userId } }, { new: true })
+    ),
+    addTag: combineResolvers(
+      authorize(USER),
+      objectExists('Tag', 'tagId'),
+      async (parent, { id, tagId }, { models }) =>
+        models.Issue.findByIdAndUpdate(id, { $addToSet: { tagIds: tagId } }, { new: true })
+    ),
+    removeTag: combineResolvers(
+      authorize(USER),
+      objectExists('Tag', 'tagId'),
+      async (parent, { id, tagId }, { models }) =>
+        models.Issue.findByIdAndUpdate(id, { $pull: { tagIds: tagId } }, { new: true })
+    ),
     attachToProject: combineResolvers(
       authorize(USER),
+      objectExists('Project', 'projectId'),
       async (parent, { id, projectId }, { models }) =>
         models.Issue.findByIdAndUpdate(id, { projectId }, { new: true })
     ),
-    detatchFromProject: combineResolvers(authorize(USER), async (parent, { id }, { models }) =>
-      models.Issue.findByIdAndUpdate(id, { projectId: null }, { new: true })),
+    detatchFromProject: combineResolvers(
+      authorize(USER),
+      objectExists('Project', 'projectId'),
+      async (parent, { id }, { models }) =>
+        models.Issue.findByIdAndUpdate(id, { projectId: null }, { new: true })
+    ),
     updateIssueStatus: combineResolvers(
       authorize(USER),
+      objectExists('Status', 'statusId'),
       async (parent, { id, statusId }, { models }) =>
         models.Issue.findByIdAndUpdate(id, { statusId }, { new: true })
     ),
