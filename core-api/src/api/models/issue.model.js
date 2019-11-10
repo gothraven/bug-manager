@@ -7,7 +7,10 @@ const issueSchema = new mongoose.Schema(
       required: true,
       index: true
     },
-    content: String,
+    content: {
+      type: String,
+      required: true
+    },
     creatorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
@@ -17,7 +20,7 @@ const issueSchema = new mongoose.Schema(
       type: Boolean,
       default: true
     },
-    statuId: {
+    statusId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Status'
     },
@@ -27,7 +30,7 @@ const issueSchema = new mongoose.Schema(
         ref: 'User'
       }
     ],
-    tagsIds: [
+    tagIds: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Tag'

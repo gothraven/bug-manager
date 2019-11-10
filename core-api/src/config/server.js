@@ -39,7 +39,7 @@ const server = new GraphQLServer({
         tags: new DataLoader(keys => loader(keys, models, 'Tag')),
         projects: new DataLoader(keys => loader(keys, models, 'Project')),
         comments: new DataLoader(keys => loader(keys, models, 'Comment')),
-        actions: new DataLoader(keys => loader(keys, models, 'Action')),
+        changes: new DataLoader(keys => loader(keys, models, 'Change')),
         statuses: new DataLoader(keys => loader(keys, models, 'Status'))
       }
     };
