@@ -5,5 +5,5 @@ export default async (keys, models, model) => {
     }
   });
 
-  return keys.map(key => data.find(x => x.id === key));
+  return keys.map(key => data.find(x => x.id === `${key}`));
 };
