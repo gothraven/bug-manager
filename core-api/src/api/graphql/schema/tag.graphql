@@ -16,7 +16,7 @@ type TagCursor {
 }
 
 type Query {
-  tag(id: String!): Tag!
+  tag(id: ID!): Tag!
   tags(after: String, first: Int): TagCursor
 }
 

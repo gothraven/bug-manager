@@ -14,7 +14,7 @@ type ProjectCursor {
 }
 
 type Query {
-  project(id: String!): Project!
+  project(id: ID!): Project!
   projects(after: String, first: Int): ProjectCursor
 }
 

@@ -12,6 +12,8 @@ type Issue {
   assignedUsers: [User]!
   tags: [Tag]!
   project: Project
+  changes: [Change!]!
+  comments: [Comment!]!
 }
 
 type IssueCursor {
@@ -35,5 +37,6 @@ type Mutation {
   detatchFromProject(id: ID!, projectId: ID!): Issue!
   updateIssueStatus(id: ID!, statusId: ID!): Issue!
   closeIssue(id: ID!): Issue!
+  reopenIssue(id: ID!): Issue!
   deleteIssue(id: ID!): Boolean!
 }
