@@ -1,7 +1,7 @@
 import { combineResolvers } from 'graphql-resolvers';
 import { omitBy, isNil } from 'lodash';
-import { authorize, authorize2 } from './auth.resolver';
-import { ADMIN } from '../../models/user.model';
+import { authorize, own, objectExists } from './auth.resolver';
+import { USER, ADMIN } from '../../models/user.model';
 import { Paginate } from './pagination.resolver';
 
 export default {
@@ -12,27 +12,37 @@ export default {
   },
   Mutation: {
     createComment: combineResolvers(
-      authorize(ADMIN),
+      authorize(USER),
+      objectExists('Issue', 'issueId'),
       async (parent, { content, issueId }, { models, me }) =>
         models.Comment.create({ creatorId: me.id, issueId, content })
     ),
 
     updateComment: combineResolvers(
-      authorize(ADMIN),
+      authorize(USER),
+      own('Comment'),
       async (parent, { id, content }, { models }) => {
         const options = omitBy({ content }, isNil);
         return models.Comment.findByIdAndUpdate(id, options, { new: true });
       }
     ),
 
-    deleteComment: combineResolvers(authorize2(ADMIN), async (parent, { id }, { models }) => {
-      const comment = await models.Comment.findById(id);
+    deleteComment: combineResolvers(
+      authorize(USER),
+      own('Comment'),
+      async (parent, { id }, { models }) => {
+        const comment = await models.Comment.findById(id);
 
-      if (comment) {
-        await comment.remove();
-        return true;
+        if (comment) {
+          await comment.remove();
+          return true;
+        }
+        return false;
       }
-      return false;
-    })
+    )
+  },
+  Comment: {
+    creator: async (comment, args, { loaders }) => loaders.users.load(comment.creatorId),
+    issue: async (comment, args, { loaders }) => loaders.issues.load(comment.issueId)
   }
 };
