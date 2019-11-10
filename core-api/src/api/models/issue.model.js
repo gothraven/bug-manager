@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import Comment from './comment.model';
+import Change from './change.model';
 
 const issueSchema = new mongoose.Schema(
   {
@@ -45,6 +47,16 @@ const issueSchema = new mongoose.Schema(
     timestamps: true
   }
 );
+
+issueSchema.post('remove', async function remove(next) {
+  try {
+    Comment.remove({ issueId: this.id });
+    Change.remove({ issueId: this.id });
+    return next();
+  } catch (error) {
+    return next(error);
+  }
+});
 
 issueSchema.method({
   /**

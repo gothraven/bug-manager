@@ -6,6 +6,9 @@ export const isAuthenticated = (parent, args, { me }) =>
 
 export const authorize = role =>
   combineResolvers(isAuthenticated, (parent, args, { me }) => {
+    if (me instanceof Error) {
+      return new Error(me);
+    }
     if (me.role === ADMIN || role === me.role) {
       return skip;
     }

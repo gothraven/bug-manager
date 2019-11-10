@@ -21,7 +21,7 @@ type UserCursor {
 }
 
 type Query {
-  user(id: String!): User!
+  user(id: ID!): User!
   users(after: String, first: Int): UserCursor
   me: User
 }

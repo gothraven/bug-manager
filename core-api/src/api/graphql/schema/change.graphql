@@ -1,0 +1,31 @@
+scalar Date
+
+enum ChangeType {
+  ASSIGN_USER
+  UNASSIGN_USER
+  ADD_TAG
+  REMOVE_TAG
+  CHANGE_STATUS
+  ATTACH_TO_PROJECT
+  DETATCH_FROM_PROJECT
+  CLOSE_ISSUE
+  REOPEN_ISSUE
+}
+
+type Change {
+  id: ID!
+  createdAt: Date!
+  updatedAt: Date!
+  creator: User!
+  issue: Issue!
+  type: ChangeType!
+  data: ChangeData!
+}
+
+type ChangeData {
+  user: User
+  issue: Issue
+  tag: Tag
+  status: Status
+  project: Project
+}

@@ -19,9 +19,15 @@ export default {
   },
   Mutation: {
     signUp: async (parent, { name, email, password }, { models, secret, expiresIn }) => {
-      const user = await models.User.create({ name, email, password });
-
-      return { user, token: createToken(user, secret, expiresIn) };
+      try {
+        const user = await models.User.create({ name, email, password });
+        return { user, token: createToken(user, secret, expiresIn) };
+      } catch (error) {
+        if (error.name === 'MongoError' && error.code === 11000) {
+          return new Error('Email already exists');
+        }
+        return error;
+      }
     },
 
     signIn: async (parent, { email, password }, { models, secret, expiresIn }) => {
