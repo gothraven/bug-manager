@@ -41,7 +41,7 @@ export default {
     updateIssueStatus: combineResolvers(
       authorize(USER),
       async (parent, { id, statusId }, { models }) =>
-        models.Issue.findOneAndUpdate({ _id: id, open: true }, { statusId }, { new: true })
+        models.Issue.findByIdAndUpdate(id, { statusId }, { new: true })
     ),
     closeIssue: combineResolvers(authorize(USER), async (parent, { id }, { models }) =>
       models.Issue.findByIdAndUpdate(id, { open: false }, { new: true })),
