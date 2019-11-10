@@ -1,19 +1,30 @@
 import mongoose from 'mongoose';
 
+export const ASSIGN_USER = 'assignUser';
+export const UNASSIGN_USER = 'unassignUser';
+export const ADD_TAG = 'addTag';
+export const REMOVE_TAG = 'removeTag';
+export const CHANGE_STATUS = 'changeStatus';
+export const ATTACH_TO_PROJECT = 'attachToProject';
+export const DETATCH_FROM_PROJECT = 'detatchFromProject';
+export const CLOSE_ISSUE = 'closeIssue';
+export const REOPEN_ISSUE = 'reopenIssue';
+
 const types = [
-  'assignUser',
-  'unassignUser',
-  'addTag',
-  'removeTag',
-  'changeStatus',
-  'changeProject',
-  'changeTitle',
-  'changeContent'
+  ASSIGN_USER,
+  UNASSIGN_USER,
+  ADD_TAG,
+  REMOVE_TAG,
+  CHANGE_STATUS,
+  ATTACH_TO_PROJECT,
+  DETATCH_FROM_PROJECT,
+  CLOSE_ISSUE,
+  REOPEN_ISSUE
 ];
 
 const changeSchema = new mongoose.Schema(
   {
-    userId: {
+    creatorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true
@@ -51,4 +62,4 @@ changeSchema.method({
   }
 });
 
-module.exports = mongoose.model('Change', changeSchema);
+export default mongoose.model('Change', changeSchema);
