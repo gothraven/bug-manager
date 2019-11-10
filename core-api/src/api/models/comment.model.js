@@ -4,7 +4,7 @@ import APIError from '../utils/APIError';
 
 const commentSchema = new mongoose.Schema(
   {
-    userId: {
+    creatorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true
@@ -30,7 +30,7 @@ commentSchema.method({
    */
   transform() {
     const transformed = {};
-    const fields = ['id', 'userId', 'issueId', 'content'];
+    const fields = ['id', 'creatorId', 'issueId', 'content'];
 
     fields.forEach((field) => {
       transformed[field] = this[field];

@@ -8,14 +8,14 @@ type Project {
   description: String
 }
 
-type ProjectsCursor {
+type ProjectCursor {
   pageInfo: PageInfo!
   edges: [Project!]!
 }
 
 type Query {
   project(id: String!): Project!
-  projects(after: String, first: Int): ProjectsCursor
+  projects(after: String, first: Int): ProjectCursor
 }
 
 type Mutation {

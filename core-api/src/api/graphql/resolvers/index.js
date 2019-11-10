@@ -4,6 +4,7 @@ import tagResolvers from './tag.resolver';
 import userResolvers from './user.resolver';
 import statusResolvers from './status.resolver';
 import projectResolvers from './project.resolver';
+import commentResolvers from './comment.resolver';
 
 const customScalarResolver = {
   Date: DateTimeResolver,
@@ -16,5 +17,6 @@ export default [
   userResolvers,
   tagResolvers,
   statusResolvers,
-  projectResolvers
+  projectResolvers,
+  commentResolvers
 ];

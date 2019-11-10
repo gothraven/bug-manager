@@ -13,14 +13,13 @@ const issueSchema = new mongoose.Schema(
       ref: 'User',
       required: true
     },
-    statuId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Status',
-      required: true
-    },
     open: {
       type: Boolean,
       default: true
+    },
+    statuId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Status'
     },
     assignedUserIds: [
       {
