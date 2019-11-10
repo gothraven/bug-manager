@@ -6,10 +6,12 @@ const types = [
   'addTag',
   'removeTag',
   'changeStatus',
-  'changeProject'
+  'changeProject',
+  'changeTitle',
+  'changeContent'
 ];
 
-const actionSchema = new mongoose.Schema(
+const changeSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -33,7 +35,7 @@ const actionSchema = new mongoose.Schema(
   }
 );
 
-actionSchema.method({
+changeSchema.method({
   /**
    * @deprecated Since version 1.0.
    */
@@ -49,4 +51,4 @@ actionSchema.method({
   }
 });
 
-module.exports = mongoose.model('Action', actionSchema);
+module.exports = mongoose.model('Change', changeSchema);
