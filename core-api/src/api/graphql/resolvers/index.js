@@ -1,4 +1,9 @@
-import { EmailAddressResolver, HexColorCodeResolver, DateTimeResolver } from 'graphql-scalars';
+import {
+  EmailAddressResolver,
+  HexColorCodeResolver,
+  PositiveIntResolver,
+  DateTimeResolver
+} from 'graphql-scalars';
 
 import tagResolvers from './tag.resolver';
 import userResolvers from './user.resolver';
@@ -11,7 +16,8 @@ import changeResolvers from './change.resolver';
 const customScalarResolver = {
   Date: DateTimeResolver,
   Email: EmailAddressResolver,
-  Color: HexColorCodeResolver
+  Color: HexColorCodeResolver,
+  UnsignedInt: PositiveIntResolver
 };
 
 export default [
