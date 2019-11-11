@@ -1,5 +1,5 @@
 scalar Date
-scalar UnsignedInt
+scalar PositiveInt
 
 type Status {
   id: ID!
@@ -16,7 +16,7 @@ type StatusCursor {
 
 type Query {
   status(id: ID!): Status!
-  statuses(after: String, first: UnsignedInt): StatusCursor
+  statuses(after: String, first: PositiveInt): StatusCursor
 }
 
 type Mutation {
