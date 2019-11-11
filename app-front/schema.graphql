@@ -1,0 +1,198 @@
+type Auth {
+  token: String!
+  user: User!
+}
+
+type Change {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  creator: User!
+  issue: Issue!
+  type: ChangeType!
+  data: ChangeData!
+}
+
+type ChangeData {
+  user: User
+  issue: Issue
+  tag: Tag
+  status: Status
+  project: Project
+}
+
+enum ChangeType {
+  ASSIGN_USER
+  UNASSIGN_USER
+  ADD_TAG
+  REMOVE_TAG
+  CHANGE_STATUS
+  ATTACH_TO_PROJECT
+  DETATCH_FROM_PROJECT
+  CLOSE_ISSUE
+  REOPEN_ISSUE
+}
+
+type Comment {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  creator: User!
+  issue: Issue!
+  content: String!
+}
+
+type CommentCursor {
+  pageInfo: PageInfo!
+  edges: [Comment!]!
+}
+
+"""Use JavaScript Date object for date/time fields."""
+scalar DateTime
+
+"""
+A field whose value conforms to the standard internet email address format as
+specified in RFC822: https://www.w3.org/Protocols/rfc822/.
+"""
+scalar EmailAddress
+
+"""
+A field whose value is a hex color code: https://en.wikipedia.org/wiki/Web_colors.
+"""
+scalar HexColorCode
+
+type Issue {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  content: String!
+  open: Boolean!
+  creator: User!
+  status: Status
+  assignedUsers: [User]!
+  tags: [Tag]!
+  project: Project
+  changes: [Change!]!
+  comments: [Comment!]!
+}
+
+type IssueCursor {
+  pageInfo: PageInfo!
+  edges: [Issue]!
+}
+
+type Mutation {
+  createComment(content: String!, issueId: ID!): Comment!
+  updateComment(id: ID!, content: String): Comment!
+  deleteComment(id: ID!): Boolean!
+  createIssue(title: String!, content: String!): Issue!
+  updateIssue(id: ID!, title: String, content: String): Issue!
+  assignUser(id: ID!, userId: ID!): Issue!
+  unassignUser(id: ID!, userId: ID!): Issue!
+  addTag(id: ID!, tagId: ID!): Issue!
+  removeTag(id: ID!, tagId: ID!): Issue!
+  attachToProject(id: ID!, projectId: ID!): Issue!
+  detatchFromProject(id: ID!, projectId: ID!): Issue!
+  updateIssueStatus(id: ID!, statusId: ID!): Issue!
+  closeIssue(id: ID!): Issue!
+  reopenIssue(id: ID!): Issue!
+  deleteIssue(id: ID!): Boolean!
+  createProject(name: String!, description: String): Project!
+  updateProject(id: ID!, name: String, description: String): Project!
+  deleteProject(id: ID!): Boolean!
+  createStatus(name: String!, description: String): Status!
+  updateStatus(id: ID!, name: String, description: String): Status!
+  deleteStatus(id: ID!): Boolean!
+  createTag(name: String!, description: String, color: HexColorCode!): Tag!
+  updateTag(id: ID!, name: String, description: String, color: HexColorCode): Tag!
+  deleteTag(id: ID!): Boolean!
+  signUp(name: String!, email: EmailAddress!, password: String!): Auth!
+  signIn(email: EmailAddress!, password: String!): Auth!
+  updateUser(email: EmailAddress!): User!
+  deleteUser(id: ID!): Boolean!
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+}
+
+"""Integers that will have a value greater than 0."""
+scalar PositiveInt
+
+type Project {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  description: String
+}
+
+type ProjectCursor {
+  pageInfo: PageInfo!
+  edges: [Project!]!
+}
+
+type Query {
+  comment(id: ID!): Comment!
+  comments(after: String, first: PositiveInt): CommentCursor
+  issue(id: ID!): Issue!
+  issues(after: String, first: PositiveInt): IssueCursor
+  project(id: ID!): Project!
+  projects(after: String, first: PositiveInt): ProjectCursor
+  status(id: ID!): Status!
+  statuses(after: String, first: PositiveInt): StatusCursor
+  tag(id: ID!): Tag!
+  tags(after: String, first: PositiveInt): TagCursor
+  user(id: ID!): User!
+  users(after: String, first: PositiveInt): UserCursor
+  me: User
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+type Status {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  description: String
+}
+
+type StatusCursor {
+  pageInfo: PageInfo!
+  edges: [Status!]!
+}
+
+type Tag {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  description: String
+  color: HexColorCode!
+}
+
+type TagCursor {
+  pageInfo: PageInfo!
+  edges: [Tag!]!
+}
+
+type User {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  email: EmailAddress!
+  name: String!
+  role: Role!
+}
+
+type UserCursor {
+  pageInfo: PageInfo!
+  edges: [User!]!
+}
+
