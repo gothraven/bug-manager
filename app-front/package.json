@@ -17,19 +17,23 @@
     "react-color": "^2.17.3",
     "react-dom": "^16.10.0",
     "react-perfect-scrollbar": "^1.5.3",
+    "react-relay": "0.0.0-experimental-a1a40b68",
     "react-router-dom": "^5.1.1",
     "react-scripts": "^3.1.2",
+    "relay-runtime": "^7.1.0",
     "retry-axios": "^1.0.1",
     "typeface-roboto": "0.0.75"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test:cli": "CI=true react-scripts test --env=jsdom",
-    "test": "react-scripts test",
+    "start": "npm run relay && react-app-rewired start",
+    "build": "npm run relay && react-app-rewired build",
+    "relay": "relay-compiler --schema schema.graphql --src ./src/ --watchman false $@",
+    "test:cli": "CI=true react-app-rewired test --env=jsdom",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.js' --fix",
-    "format": "prettier 'src/**/*.{js,json}' --write"
+    "format": "prettier 'src/**/*.{js,json}' --write",
+    "update-schema": "get-graphql-schema http://localhost:3030/ > schema.graphql"
   },
   "husky": {
     "hooks": {
@@ -60,16 +64,21 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
+    "babel-plugin-relay": "^7.1.0",
+    "customize-cra": "^0.8.0",
     "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.14.3",
+    "graphql": "^14.5.8",
     "husky": "^3.0.6",
     "lint-staged": "^9.4.0",
     "prettier": "^1.18.2",
     "prettier-eslint": "^9.0.0",
-    "pretty-quick": "^1.11.1"
+    "pretty-quick": "^1.11.1",
+    "react-app-rewired": "^2.1.5",
+    "relay-compiler": "^7.1.0"
   }
 }
