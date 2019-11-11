@@ -1,6 +1,6 @@
 scalar Date
 scalar Color
-scalar UnsignedInt
+scalar PositiveInt
 
 type Tag {
   id: ID!
@@ -18,7 +18,7 @@ type TagCursor {
 
 type Query {
   tag(id: ID!): Tag!
-  tags(after: String, first: UnsignedInt): TagCursor
+  tags(after: String, first: PositiveInt): TagCursor
 }
 
 type Mutation {
