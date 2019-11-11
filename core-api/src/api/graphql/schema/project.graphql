@@ -1,4 +1,5 @@
 scalar Date
+scalar UnsignedInt
 
 type Project {
   id: ID!
@@ -15,7 +16,7 @@ type ProjectCursor {
 
 type Query {
   project(id: ID!): Project!
-  projects(after: String, first: Int): ProjectCursor
+  projects(after: String, first: UnsignedInt): ProjectCursor
 }
 
 type Mutation {
