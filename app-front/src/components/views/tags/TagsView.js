@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { graphql, useLazyLoadQuery } from "react-relay/hooks";
 import Fab from "@material-ui/core/Fab";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -7,30 +6,12 @@ import AddIcon from "@material-ui/icons/Add";
 import TagPanel from "./TagPanel";
 
 function TagsView() {
-  const data = useLazyLoadQuery(
-    graphql`
-      query TagsViewQuery($first: PositiveInt!) {
-        tags(first: $first) {
-          edges {
-            id
-            createdAt
-            updatedAt
-            name
-            description
-            color
-          }
-          pageInfo {
-            endCursor
-            hasNextPage
-          }
-        }
-      }
-    `,
-    {first: 10},
-    {fetchPolicy: 'store-or-network'},
-  );
-
-  const [tags, setTags] = useState(data.tags.edges || []);
+  const [tags, setTags] = useState([
+    { id: 1, name: "tata", description: "description 1", color: "#22194D" },
+    { id: 2, name: "toto", description: "description 2", color: "#FF6900" },
+    { id: 3, name: "tato", description: "description 3", color: "#0693E3" },
+    { id: 4, name: "titi", description: "description 4", color: "#EB144C" }
+  ]);
 
   function onDeleteHandler(id) {
     setTags(tags.filter(tag => tag.id !== id));

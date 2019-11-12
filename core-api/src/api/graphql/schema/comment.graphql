@@ -1,5 +1,5 @@
 scalar Date
-scalar PositiveInt
+scalar UnsignedInt
 
 type Comment {
   id: ID!
@@ -17,7 +17,7 @@ type CommentCursor {
 
 type Query {
   comment(id: ID!): Comment!
-  comments(after: String, first: PositiveInt): CommentCursor
+  comments(after: String, first: UnsignedInt): CommentCursor
 }
 
 type Mutation {

@@ -1,6 +1,6 @@
 scalar Date
 scalar Email
-scalar PositiveInt
+scalar UnsignedInt
 
 enum Role {
   USER
@@ -23,7 +23,7 @@ type UserCursor {
 
 type Query {
   user(id: ID!): User!
-  users(after: String, first: PositiveInt): UserCursor
+  users(after: String, first: UnsignedInt): UserCursor
   me: User
 }
 

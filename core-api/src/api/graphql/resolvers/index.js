@@ -17,7 +17,7 @@ const customScalarResolver = {
   Date: DateTimeResolver,
   Email: EmailAddressResolver,
   Color: HexColorCodeResolver,
-  PositiveInt: PositiveIntResolver
+  UnsignedInt: PositiveIntResolver
 };
 
 export default [
