@@ -72,7 +72,7 @@ function ProjectEdition(props) {
 
 ProjectEdition.defaultProps = {
   id: ""
-}
+};
 
 ProjectEdition.propTypes = {
   id: PropTypes.string,

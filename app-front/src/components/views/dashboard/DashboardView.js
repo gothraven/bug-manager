@@ -17,7 +17,6 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-
 function DashboardView() {
   const issues = issuesListResult.result;
   const classes = useStyles();
@@ -35,10 +34,10 @@ function DashboardView() {
       <Grid item xs={12}>
         <List style={{ backgroundColor: "white" }}>
           <ListItem divider>
-            <Box className={classes.listHeaderBox} >
+            <Box className={classes.listHeaderBox}>
               <ErrorIcon style={{ color: "green" }} />
               <Typography>39 Issues Opened</Typography>
-            </Box>          
+            </Box>
             <Box className={classes.listHeaderBox} style={{ marginLeft: 10 }}>
               <ErrorIcon style={{ color: "red" }} />
               <Typography>39 Issues Opened</Typography>

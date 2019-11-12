@@ -2,6 +2,8 @@ import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import RouteWithLayout from "../lib/RouteWithLayout";
 import { MainLayout } from "../layouts";
+import { APP_USER_ID } from "../core/constants";
+import { history } from "../core/History";
 import {
   TagsView,
   SignInView,
@@ -12,12 +14,27 @@ import {
   NewIssueView
 } from "../views";
 
+if (window !== "undefined") {
+  window._history = history;
+}
+
 function MainRouter() {
-  const isAuthenticated = true;
+  const isAuthenticated = ![null, undefined].includes(
+    localStorage.getItem(APP_USER_ID)
+  );
 
   return (
     <Switch>
-      <Redirect exact from="/" to="/user/dashboard" />
+      <Route
+        exact
+        path="/"
+        render={() => {
+          if (isAuthenticated) {
+            return <Redirect to="/user/dashboard" />;
+          }
+          return <Redirect to="/sign-in" />;
+        }}
+      />
       <Route path="/sign-in" component={SignInView} />
       <RouteWithLayout
         exact

@@ -1,29 +1,60 @@
-import React, { useState } from "react";
+
+import React, { useCallback } from "react";
+import {
+  graphql,
+  useLazyLoadQuery,
+  usePaginationFragment
+} from "react-relay/hooks";
 import Fab from "@material-ui/core/Fab";
+import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import AddIcon from "@material-ui/icons/Add";
 import TagPanel from "./TagPanel";
+import { useCreateTag } from "./mutations/TagMutations";
 
 function TagsView() {
-  const [tags, setTags] = useState([
-    { id: 1, name: "tata", description: "description 1", color: "#22194D" },
-    { id: 2, name: "toto", description: "description 2", color: "#FF6900" },
-    { id: 3, name: "tato", description: "description 3", color: "#0693E3" },
-    { id: 4, name: "titi", description: "description 4", color: "#EB144C" }
-  ]);
+  const [isTagCreatePending, onCreateTag] = useCreateTag();
+  const queryData = useLazyLoadQuery(
+    graphql`
+      query TagsViewQuery {
+        ...TagsView_tags
+      }
+    `
+  );
+  const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment(
+    graphql`
+      fragment TagsView_tags on Query
+        @argumentDefinitions(
+          first: { type: "PositiveInt", defaultValue: 10 }
+          after: { type: "String", defaultValue: "" }
+        )
+        @refetchable(queryName: "TagsPaginationQuery") {
+        tags(first: $first, after: $after)
+          @connection(key: "Query_tags", filters: []) {
+          edges {
+            node {
+              id
+              name
+              description
+              color
+            }
+          }
+          pageInfo {
+            startCursor
+          }
+        }
+      }
+    `,
+    queryData
+  );
 
-  function onDeleteHandler(id) {
-    setTags(tags.filter(tag => tag.id !== id));
-  }
-
-  function onUpdateHandler(tag) {
-    setTags(tags.map(_tag => (_tag.id === tag.id ? tag : _tag)));
-  }
-
-  function onAddHandler() {
-    setTags([...tags, { name: "", description: "", color: "#EB144C" }]);
-  }
+  const loadMore = useCallback(() => {
+    if (isLoadingNext) {
+      return;
+    }
+    loadNext(10);
+  }, [isLoadingNext, loadNext]);
 
   return (
     <Grid
@@ -36,20 +67,26 @@ function TagsView() {
         All labels
       </Typography>
       <Grid item>
-        {tags.map(tag => (
-          <TagPanel
-            key={tag.id}
-            tag={tag}
-            onUpdate={onUpdateHandler}
-            onDelete={onDeleteHandler}
-          />
-        ))}
+        {data.tags.edges.map(edge => {
+          if (edge == null || edge.node == null) {
+            return null;
+          }
+          return <TagPanel key={edge.node.id} tag={edge.node} />;
+        })}
       </Grid>
+      <Button onClick={loadMore} disabled={!hasNext}>
+        load more
+      </Button>
       <Grid
         item
         style={{ display: "grid", justifyContent: "center", padding: 30 }}
       >
-        <Fab color="primary" aria-label="add" onClick={onAddHandler}>
+        <Fab
+          color="primary"
+          aria-label="add"
+          onClick={onCreateTag}
+          disabled={isTagCreatePending}
+        >
           <AddIcon />
         </Fab>
       </Grid>

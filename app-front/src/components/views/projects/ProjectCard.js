@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Card from "@material-ui/core/Card";
@@ -64,7 +63,12 @@ function ProjectCard(props) {
             <Typography key={0} variant="h3" color="textPrimary" component="h3">
               {project.title}
             </Typography>,
-            <Typography key={1} variant="body1" color="textSecondary" component="p">
+            <Typography
+              key={1}
+              variant="body1"
+              color="textSecondary"
+              component="p"
+            >
               {project.description}
             </Typography>
           ]

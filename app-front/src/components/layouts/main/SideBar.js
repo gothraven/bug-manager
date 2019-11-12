@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import clsx from "clsx";
-import { withRouter } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 import Fab from "@material-ui/core/Fab";
 import Drawer from "@material-ui/core/Drawer";
@@ -11,8 +10,10 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MailIcon from "@material-ui/icons/Mail";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
+import { signOut } from "../../core/utils/Auth";
 
 const drawerWidth = 200;
 
@@ -78,8 +79,8 @@ const menuItems = [
   }
 ];
 
-function SideBar(props) {
-  const { history } = props;
+function SideBar() {
+  const history = useHistory();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
@@ -138,13 +139,23 @@ function SideBar(props) {
             </ListItem>
           ))}
         </List>
+        <ListItem
+          key="Logout"
+          button
+          classes={{ root: classes.listItem }}
+          onClick={() => {
+            signOut();
+            history.push("/sign-in");
+          }}
+        >
+          <ListItemIcon classes={{ root: classes.listItemIcon }}>
+            <ExitToAppIcon />
+          </ListItemIcon>
+          {open && <ListItemText primary="Logout" />}
+        </ListItem>
       </div>
     </Drawer>
   );
 }
 
-SideBar.propTypes = {
-  history: PropTypes.object.isRequired
-};
-
-export default withRouter(SideBar);
+export default SideBar;

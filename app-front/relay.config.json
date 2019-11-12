@@ -1,0 +1,8 @@
+{
+  "customScalars": {
+    "Date": "String",
+    "Email": "String",
+    "HexColorCode": "String",
+    "PositiveInt": "Int"
+  }
+}

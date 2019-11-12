@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Copyright from "../../lib/Copyright";
+import { useSignIn } from "./mutations/SigninUserMutation";
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -43,6 +44,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignIn() {
   const classes = useStyles();
+  const [isSignInPending, onSignIn] = useSignIn("safiy@bug.co", "password");
 
   return (
     <Container component="main" maxWidth="xs">
@@ -87,6 +89,8 @@ export default function SignIn() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            disabled={isSignInPending}
+            onClick={onSignIn}
           >
             Sign In
           </Button>

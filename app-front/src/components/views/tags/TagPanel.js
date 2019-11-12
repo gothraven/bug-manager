@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropType from "prop-types";
 import { TwitterPicker } from "react-color";
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,6 +15,7 @@ import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 
 import { invertColor } from "../../core/utils/Functions";
+import { useUpdateTag, useDeleteTag } from "./mutations/TagMutations";
 
 const useStyles = makeStyles(theme => ({
   description: {
@@ -24,12 +25,26 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function TagPanel(props) {
-  const { tag, onDelete, onUpdate } = props;
+  const { tag } = props;
   const [expanded, setExpanded] = useState(tag.id === undefined);
   const [name, setName] = useState(tag.name);
-  const [description, setDescription] = useState(tag.description);
+  const [description, setDescription] = useState(tag.description || "");
   const [color, setColor] = useState(tag.color);
+  const [isTagUpdatePending, onUpdateTag] = useUpdateTag(
+    tag.id,
+    name,
+    description,
+    color
+  );
+  const [isTagDeletePending, onDeleteTag] = useDeleteTag(tag.id);
   const classes = useStyles();
+  const isPending = isTagUpdatePending || isTagDeletePending;
+
+  useEffect(() => {
+    setName(tag.name);
+    setDescription(tag.description || "");
+    setColor(tag.color);
+  }, [tag]);
 
   return (
     <ExpansionPanel expanded={expanded} onChange={() => setExpanded(!expanded)}>
@@ -54,12 +69,7 @@ function TagPanel(props) {
         </Grid>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
-        <Grid
-          container
-          justify="flex-start"
-          alignItems="stretch"
-          spacing={2}
-        >
+        <Grid container justify="flex-start" alignItems="stretch" spacing={2}>
           <Grid item>
             <TwitterPicker value={color} onChange={e => setColor(e.hex)} />
           </Grid>
@@ -96,15 +106,21 @@ function TagPanel(props) {
       </ExpansionPanelDetails>
       <Divider />
       <ExpansionPanelActions>
-        <Button color="primary" size="small" onClick={() => onDelete(tag.id)}>
+        <Button
+          color="primary"
+          size="small"
+          onClick={onDeleteTag}
+          disabled={isPending}
+        >
           Delete
         </Button>
         <Button
           size="small"
           color="primary"
+          disabled={isPending}
           onClick={() => {
             setExpanded(false);
-            onUpdate({ id: tag.id, name, description, color });
+            onUpdateTag();
           }}
         >
           Save
@@ -115,9 +131,7 @@ function TagPanel(props) {
 }
 
 TagPanel.propTypes = {
-  tag: PropType.object.isRequired,
-  onUpdate: PropType.func.isRequired,
-  onDelete: PropType.func.isRequired
+  tag: PropType.object.isRequired
 };
 
 export default TagPanel;

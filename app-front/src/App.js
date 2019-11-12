@@ -1,21 +1,23 @@
 import React from "react";
 import { Router } from "react-router-dom";
-import { createBrowserHistory } from "history";
+import { RelayEnvironmentProvider } from "react-relay/hooks";
 import { ThemeProvider } from "@material-ui/styles";
 import MainRouter from "./components/routes/MainRouter";
+import RelayEnvironment from "./components/core/api/RelayEnvironment";
 
 import theme from "./theme";
+import { history } from "./components/core/History";
 import "react-perfect-scrollbar/dist/css/styles.css";
-
-const browserHistory = createBrowserHistory();
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Router history={browserHistory}>
-        <MainRouter />
-      </Router>
-    </ThemeProvider>
+    <RelayEnvironmentProvider environment={RelayEnvironment}>
+      <ThemeProvider theme={theme}>
+        <Router history={history}>
+          <MainRouter />
+        </Router>
+      </ThemeProvider>
+    </RelayEnvironmentProvider>
   );
 }
 
