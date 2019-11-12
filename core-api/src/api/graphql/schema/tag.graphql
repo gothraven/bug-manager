@@ -1,5 +1,5 @@
 scalar Date
-scalar Color
+scalar HexColorCode
 scalar PositiveInt
 
 type Tag {
@@ -8,12 +8,18 @@ type Tag {
   updatedAt: Date!
   name: String!
   description: String
-  color: Color!
+  color: HexColorCode!
+}
+
+type TagEdge {
+  cursor: String!
+  node: Tag!
 }
 
 type TagCursor {
+  edges: [TagEdge!]!
   pageInfo: PageInfo!
-  edges: [Tag!]!
+  totalCount: Int!
 }
 
 type Query {
@@ -22,7 +28,12 @@ type Query {
 }
 
 type Mutation {
-  createTag(name: String!, description: String, color: Color!): Tag!
-  updateTag(id: ID!, name: String, description: String, color: Color): Tag!
+  createTag(name: String!, description: String, color: HexColorCode!): TagEdge!
+  updateTag(
+    id: ID!
+    name: String
+    description: String
+    color: HexColorCode
+  ): TagEdge!
   deleteTag(id: ID!): Boolean!
 }

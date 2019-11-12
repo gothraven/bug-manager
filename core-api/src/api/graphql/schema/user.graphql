@@ -1,5 +1,5 @@
 scalar Date
-scalar Email
+scalar EmailAddress
 scalar PositiveInt
 
 enum Role {
@@ -11,7 +11,7 @@ type User {
   id: ID!
   createdAt: Date!
   updatedAt: Date!
-  email: Email!
+  email: EmailAddress!
   name: String!
   role: Role!
 }
@@ -28,8 +28,8 @@ type Query {
 }
 
 type Mutation {
-  signUp(name: String!, email: Email!, password: String!): Auth!
-  signIn(email: Email!, password: String!): Auth!
-  updateUser(email: Email!): User!
+  signUp(name: String!, email: EmailAddress!, password: String!): Auth!
+  signIn(email: EmailAddress!, password: String!): Auth!
+  updateUser(email: EmailAddress!): User!
   deleteUser(id: ID!): Boolean!
 }

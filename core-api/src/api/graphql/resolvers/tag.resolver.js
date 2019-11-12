@@ -1,8 +1,8 @@
-import { combineResolvers } from 'graphql-resolvers';
+import { combineResolvers, pipeResolvers } from 'graphql-resolvers';
 import { omitBy, isNil } from 'lodash';
 import { authorize } from './auth.resolver';
 import { USER, ADMIN } from '../../models/user.model';
-import { Paginate } from './pagination.resolver';
+import { Paginate, Edgify } from './pagination.resolver';
 
 export default {
   Query: {
@@ -11,18 +11,20 @@ export default {
     tags: combineResolvers(authorize(USER), Paginate('Tag'))
   },
   Mutation: {
-    createTag: combineResolvers(
+    createTag: pipeResolvers(
       authorize(ADMIN),
       async (parent, { name, description, color }, { models }) =>
-        models.Tag.create({ name, description, color })
+        models.Tag.create({ name, description, color }),
+      Edgify()
     ),
 
-    updateTag: combineResolvers(
+    updateTag: pipeResolvers(
       authorize(ADMIN),
       async (parent, { id, name, description, color }, { models }) => {
         const options = omitBy({ name, description, color }, isNil);
         return models.Tag.findByIdAndUpdate(id, options, { new: true });
-      }
+      },
+      Edgify()
     ),
 
     deleteTag: combineResolvers(authorize(ADMIN), async (parent, { id }, { models }) => {

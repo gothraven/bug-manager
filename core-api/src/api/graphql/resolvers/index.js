@@ -15,8 +15,8 @@ import changeResolvers from './change.resolver';
 
 const customScalarResolver = {
   Date: DateTimeResolver,
-  Email: EmailAddressResolver,
-  Color: HexColorCodeResolver,
+  EmailAddress: EmailAddressResolver,
+  HexColorCode: HexColorCodeResolver,
   PositiveInt: PositiveIntResolver
 };
 

@@ -15,15 +15,30 @@ export const Paginate = model => async (parent, { after, first = 100 }, { models
     limit: first + 1
   });
   const hasNextPage = data.length > first;
-  const edges = hasNextPage ? data.slice(0, -1) : data;
-  const endCursor =
-    edges.length > 0 ? toCursorHash(edges[edges.length - 1].createdAt.toString()) : null;
-
+  let edges = hasNextPage ? data.slice(0, -1) : data;
+  const totalCount = edges.length;
+  edges = edges.map((node) => {
+    const endCursor = toCursorHash(node.createdAt.toString());
+    return {
+      cursor: endCursor,
+      node
+    };
+  });
+  const startCursor = edges.length > 0 ? edges[0].cursor : null;
+  const endCursor = edges.length > 0 ? edges[edges.length - 1].cursor : null;
   return {
     edges,
     pageInfo: {
       hasNextPage,
-      endCursor
-    }
+      hasPreviousPage: false,
+      endCursor,
+      startCursor
+    },
+    totalCount
   };
+};
+
+export const Edgify = () => async (parent) => {
+  const cursor = toCursorHash(parent.createdAt.toString());
+  return { cursor, node: parent };
 };
