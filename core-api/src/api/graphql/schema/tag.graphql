@@ -24,7 +24,7 @@ type TagCursor {
 
 type Query {
   tag(id: ID!): Tag!
-  tags(after: String, first: PositiveInt): TagCursor
+  tags(after: String, first: UnsignedInt): TagCursor
 }
 
 type Mutation {
