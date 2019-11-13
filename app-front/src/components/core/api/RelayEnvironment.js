@@ -1,5 +1,6 @@
 import { Environment, Network, RecordSource, Store } from "relay-runtime";
 import { APP_AUTH_TOKEN } from "../constants";
+import { signOut } from "../utils/Auth";
 
 /**
  * Relay requires developers to configure a "fetch" function that tells Relay how to load
@@ -9,7 +10,6 @@ import { APP_AUTH_TOKEN } from "../constants";
 async function fetchRelay(params, variables, _cacheConfig) {
   // Check that the auth token is configured
   const CORE_API_AUTH_TOKEN = localStorage.getItem(APP_AUTH_TOKEN);
-
   // Fetch data from GitHub's GraphQL API:
   const response = await fetch("http://localhost:3030/", {
     method: "POST",
@@ -32,6 +32,7 @@ async function fetchRelay(params, variables, _cacheConfig) {
   if (Array.isArray(json.errors)) {
     console.log(json.errors);
     if (json.errors[0].message.includes("Your session expired")) {
+      signOut();
       window._history.push("/sign-in");
     }
     throw new Error(

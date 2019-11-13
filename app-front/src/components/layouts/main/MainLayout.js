@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import PropTypes from "prop-types";}
+import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import CircularProgress from "@material-ui/core/CircularProgress";

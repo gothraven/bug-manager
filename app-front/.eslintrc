@@ -17,6 +17,12 @@
     "no-underscore-dangle": 0,
     "no-multi-str": 0,
     "eslint-disable-next-line no-use-before-define": "off",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ]
     "no-unused-vars": [
       "error",
       {

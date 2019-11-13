@@ -22,6 +22,7 @@ function MainRouter() {
   const isAuthenticated = ![null, undefined].includes(
     localStorage.getItem(APP_USER_ID)
   );
+  console.log(isAuthenticated);
 
   return (
     <Switch>
