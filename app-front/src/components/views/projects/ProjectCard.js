@@ -11,7 +11,10 @@ import EditIcon from "@material-ui/icons/Edit";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
-import { useDeleteProject, useUpdateProject } from "./mutations/ProjectMutations";
+import {
+  useDeleteProject,
+  useUpdateProject
+} from "./mutations/ProjectMutations";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -35,8 +38,14 @@ function ProjectCard(props) {
   const [edition, setEdition] = useState(false);
   const [name, setName] = useState(project.name);
   const [description, setDescription] = useState(project.description || "");
-  const [isProjectUpdatePending, onUpdateProject] = useUpdateProject(project.id, name, description);
-  const [isProjectDeletePending, onDeleteProject] = useDeleteProject(project.id);
+  const [isProjectUpdatePending, onUpdateProject] = useUpdateProject(
+    project.id,
+    name,
+    description
+  );
+  const [isProjectDeletePending, onDeleteProject] = useDeleteProject(
+    project.id
+  );
   const isPending = isProjectUpdatePending || isProjectDeletePending;
   const classes = useStyles();
 
@@ -49,30 +58,28 @@ function ProjectCard(props) {
     <Card className={classes.card}>
       <CardHeader
         className={classes.cardTitle}
-        action={
-          [
-            <IconButton
-              key={0}
-              color={edition ? "primary" : "default"}
-              aria-label="edit"
-              disabled={isPending}
-              onClick={() => setEdition(!edition)}
-            >
-              <EditIcon />
-            </IconButton>,
-            <IconButton
-              key={1}
-              aria-label="delete"
-              disabled={isPending}
-              onClick={onDeleteProject}
-            >
-              <CloseIcon />
-            </IconButton>
-          ]
-        }
+        action={[
+          <IconButton
+            key={0}
+            color={edition ? "primary" : "default"}
+            aria-label="edit"
+            disabled={isPending}
+            onClick={() => setEdition(!edition)}
+          >
+            <EditIcon />
+          </IconButton>,
+          <IconButton
+            key={1}
+            aria-label="delete"
+            disabled={isPending}
+            onClick={onDeleteProject}
+          >
+            <CloseIcon />
+          </IconButton>
+        ]}
       />
       <CardContent>
-        {edition ?
+        {edition ? (
           <TextField
             margin="dense"
             id="name"
@@ -82,12 +89,13 @@ function ProjectCard(props) {
             fullWidth
             defaultValue={name}
             onChange={event => setName(event.target.value)}
-          /> :
+          />
+        ) : (
           <Typography variant="h3" color="textPrimary" component="h3">
             {name}
           </Typography>
-        }
-        {edition ?
+        )}
+        {edition ? (
           <TextField
             label="Description"
             variant="outlined"
@@ -97,12 +105,13 @@ function ProjectCard(props) {
             fullWidth
             defaultValue={description}
             onChange={event => setDescription(event.target.value)}
-          /> :
+          />
+        ) : (
           <Typography variant="body1" color="textSecondary" component="p">
             {description}
           </Typography>
-        }
-        {edition &&
+        )}
+        {edition && (
           <Button
             variant="contained"
             color="primary"
@@ -115,14 +124,14 @@ function ProjectCard(props) {
           >
             Save
           </Button>
-        }
+        )}
       </CardContent>
     </Card>
   );
 }
 
 ProjectCard.propTypes = {
-  project: PropTypes.object.isRequired,
+  project: PropTypes.object.isRequired
 };
 
 export default ProjectCard;

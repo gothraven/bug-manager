@@ -5,7 +5,7 @@
 
 /* eslint-disable */
 
-'use strict';
+"use strict";
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
@@ -21,7 +21,6 @@ export type TagMutationsDeleteTagMutation = {|
 |};
 */
 
-
 /*
 mutation TagMutationsDeleteTagMutation(
   $id: ID!
@@ -30,54 +29,55 @@ mutation TagMutationsDeleteTagMutation(
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
-var v0 = [
-  {
-    "kind": "LocalArgument",
-    "name": "id",
-    "type": "ID!",
-    "defaultValue": null
-  }
-],
-v1 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "deleteTag",
-    "args": [
+const node /*: ConcreteRequest*/ = (function() {
+  var v0 = [
       {
-        "kind": "Variable",
-        "name": "id",
-        "variableName": "id"
+        kind: "LocalArgument",
+        name: "id",
+        type: "ID!",
+        defaultValue: null
       }
     ],
-    "storageKey": null
-  }
-];
-return {
-  "kind": "Request",
-  "fragment": {
-    "kind": "Fragment",
-    "name": "TagMutationsDeleteTagMutation",
-    "type": "Mutation",
-    "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
-  },
-  "operation": {
-    "kind": "Operation",
-    "name": "TagMutationsDeleteTagMutation",
-    "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
-  },
-  "params": {
-    "operationKind": "mutation",
-    "name": "TagMutationsDeleteTagMutation",
-    "id": null,
-    "text": "mutation TagMutationsDeleteTagMutation(\n  $id: ID!\n) {\n  deleteTag(id: $id)\n}\n",
-    "metadata": {}
-  }
-};
+    v1 = [
+      {
+        kind: "ScalarField",
+        alias: null,
+        name: "deleteTag",
+        args: [
+          {
+            kind: "Variable",
+            name: "id",
+            variableName: "id"
+          }
+        ],
+        storageKey: null
+      }
+    ];
+  return {
+    kind: "Request",
+    fragment: {
+      kind: "Fragment",
+      name: "TagMutationsDeleteTagMutation",
+      type: "Mutation",
+      metadata: null,
+      argumentDefinitions: (v0 /*: any*/),
+      selections: (v1 /*: any*/)
+    },
+    operation: {
+      kind: "Operation",
+      name: "TagMutationsDeleteTagMutation",
+      argumentDefinitions: (v0 /*: any*/),
+      selections: (v1 /*: any*/)
+    },
+    params: {
+      operationKind: "mutation",
+      name: "TagMutationsDeleteTagMutation",
+      id: null,
+      text:
+        "mutation TagMutationsDeleteTagMutation(\n  $id: ID!\n) {\n  deleteTag(id: $id)\n}\n",
+      metadata: {}
+    }
+  };
 })();
 // prettier-ignore
 (node/*: any*/).hash = '70c8cb9af43159263c30aff0d0e969d7';

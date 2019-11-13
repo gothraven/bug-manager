@@ -1,4 +1,3 @@
-
 import React, { useCallback } from "react";
 import {
   graphql,
@@ -31,7 +30,7 @@ function TagsView() {
         )
         @refetchable(queryName: "TagsPaginationQuery") {
         tags(first: $first, after: $after)
-        @connection(key: "Query_tags", filters: []) {
+          @connection(key: "Query_tags", filters: []) {
           edges {
             node {
               id

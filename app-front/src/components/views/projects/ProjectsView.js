@@ -13,7 +13,6 @@ import Typography from "@material-ui/core/Typography";
 import ProjectCard from "./ProjectCard";
 import { useCreateProject } from "./mutations/ProjectMutations";
 
-
 function ProjectsView() {
   const [isProjectCreatePending, onCreateProject] = useCreateProject();
   const queryData = useLazyLoadQuery(

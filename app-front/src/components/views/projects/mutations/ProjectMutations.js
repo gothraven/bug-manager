@@ -45,20 +45,25 @@ const DeleteProjectMutation = graphql`
 `;
 
 export function useCreateProject() {
-  const [isProjectCreatePending, createProject] = useMutation(CreateProjectMutation);
+  const [isProjectCreatePending, createProject] = useMutation(
+    CreateProjectMutation
+  );
 
   const onCreateProject = useCallback(() => {
     createProject({
       variables: {
         name: "Project X",
-        description: "Lorem ipsum dolor sit amet",
+        description: "Lorem ipsum dolor sit amet"
       },
       updater: store => {
         const root = store.get(ROOT_ID);
         if (root == null) {
           return;
         }
-        const projects = ConnectionHandler.getConnection(root, "Query_projects");
+        const projects = ConnectionHandler.getConnection(
+          root,
+          "Query_projects"
+        );
         if (projects == null) {
           return;
         }
@@ -75,7 +80,9 @@ export function useCreateProject() {
 }
 
 export function useUpdateProject(id, name, description) {
-  const [isProjectUpdatePending, updateProject] = useMutation(UpdateProjectMutation);
+  const [isProjectUpdatePending, updateProject] = useMutation(
+    UpdateProjectMutation
+  );
 
   const onUpdateProject = useCallback(() => {
     updateProject({
@@ -87,7 +94,9 @@ export function useUpdateProject(id, name, description) {
 }
 
 export function useDeleteProject(id) {
-  const [isProjectDeletePending, deleteProject] = useMutation(DeleteProjectMutation);
+  const [isProjectDeletePending, deleteProject] = useMutation(
+    DeleteProjectMutation
+  );
 
   const onDeleteProject = useCallback(() => {
     deleteProject({
@@ -97,7 +106,10 @@ export function useDeleteProject(id) {
         if (root == null) {
           return;
         }
-        const projects = ConnectionHandler.getConnection(root, "Query_projects");
+        const projects = ConnectionHandler.getConnection(
+          root,
+          "Query_projects"
+        );
         if (projects == null) {
           return;
         }

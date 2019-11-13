@@ -65,7 +65,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={e => setName(e.target.value)}
                 id="name"
                 label="Name"
                 name="name"
@@ -78,7 +78,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 id="email"
                 label="Email Address"
                 name="email"
@@ -91,7 +91,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 name="password"
                 label="Password"
                 type="password"
@@ -113,7 +113,7 @@ export default function SignUp() {
             color="primary"
             disabled={isSignUpPending}
             className={classes.submit}
-            onClick={(e) => {
+            onClick={e => {
               e.preventDefault();
               onSignUp();
             }}
