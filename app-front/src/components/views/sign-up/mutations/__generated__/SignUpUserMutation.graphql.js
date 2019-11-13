@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 9e15618e6183251bd160dd2c3d53655f
+ * @relayHash 4bff5384bb1f2fc34747cf8fec30be2b
  */
 
 /* eslint-disable */
@@ -9,31 +9,33 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-export type SignInUserMutationVariables = {|
+export type SignUpUserMutationVariables = {|
+  name: string,
   email: any,
   password: string,
 |};
-export type SignInUserMutationResponse = {|
-  +signIn: {|
+export type SignUpUserMutationResponse = {|
+  +signUp: {|
     +token: string,
     +user: {|
       +id: string
     |},
   |}
 |};
-export type SignInUserMutation = {|
-  variables: SignInUserMutationVariables,
-  response: SignInUserMutationResponse,
+export type SignUpUserMutation = {|
+  variables: SignUpUserMutationVariables,
+  response: SignUpUserMutationResponse,
 |};
 */
 
 
 /*
-mutation SignInUserMutation(
+mutation SignUpUserMutation(
+  $name: String!
   $email: EmailAddress!
   $password: String!
 ) {
-  signIn(email: $email, password: $password) {
+  signUp(name: $name, email: $email, password: $password) {
     token
     user {
       id
@@ -44,6 +46,12 @@ mutation SignInUserMutation(
 
 const node/*: ConcreteRequest*/ = (function(){
 var v0 = [
+  {
+    "kind": "LocalArgument",
+    "name": "name",
+    "type": "String!",
+    "defaultValue": null
+  },
   {
     "kind": "LocalArgument",
     "name": "email",
@@ -61,13 +69,18 @@ v1 = [
   {
     "kind": "LinkedField",
     "alias": null,
-    "name": "signIn",
+    "name": "signUp",
     "storageKey": null,
     "args": [
       {
         "kind": "Variable",
         "name": "email",
         "variableName": "email"
+      },
+      {
+        "kind": "Variable",
+        "name": "name",
+        "variableName": "name"
       },
       {
         "kind": "Variable",
@@ -110,7 +123,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "SignInUserMutation",
+    "name": "SignUpUserMutation",
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -118,19 +131,19 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "SignInUserMutation",
+    "name": "SignUpUserMutation",
     "argumentDefinitions": (v0/*: any*/),
     "selections": (v1/*: any*/)
   },
   "params": {
     "operationKind": "mutation",
-    "name": "SignInUserMutation",
+    "name": "SignUpUserMutation",
     "id": null,
-    "text": "mutation SignInUserMutation(\n  $email: EmailAddress!\n  $password: String!\n) {\n  signIn(email: $email, password: $password) {\n    token\n    user {\n      id\n    }\n  }\n}\n",
+    "text": "mutation SignUpUserMutation(\n  $name: String!\n  $email: EmailAddress!\n  $password: String!\n) {\n  signUp(name: $name, email: $email, password: $password) {\n    token\n    user {\n      id\n    }\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '29f321dc3fe66b7990fa101d98368407';
+(node/*: any*/).hash = '1332ae4cc0c0961027f254c9e1a4ad4d';
 module.exports = node;

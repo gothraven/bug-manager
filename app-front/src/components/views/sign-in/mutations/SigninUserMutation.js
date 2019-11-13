@@ -4,8 +4,8 @@ import { graphql } from "react-relay";
 import useMutation from "../../../core/hooks/useMutation";
 import { signIn } from "../../../core/utils/Auth";
 
-export const SigninUserMutation = graphql`
-  mutation SigninUserMutation($email: EmailAddress!, $password: String!) {
+export const SignInUserMutation = graphql`
+  mutation SignInUserMutation($email: EmailAddress!, $password: String!) {
     signIn(email: $email, password: $password) {
       token
       user {
@@ -16,10 +16,10 @@ export const SigninUserMutation = graphql`
 `;
 
 export function useSignIn(email, password) {
-  const [isSignInPending, signinUser] = useMutation(SigninUserMutation);
+  const [isSignInPending, signInUser] = useMutation(SignInUserMutation);
 
   const onSignIn = useCallback(() => {
-    signinUser({
+    signInUser({
       variables: { email, password },
       onCompleted: response => {
         const {
@@ -30,7 +30,7 @@ export function useSignIn(email, password) {
         window._history.push("/");
       }
     });
-  }, [signinUser, email, password]);
+  }, [signInUser, email, password]);
 
   return [isSignInPending, onSignIn];
 }

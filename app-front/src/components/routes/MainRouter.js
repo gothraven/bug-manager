@@ -7,6 +7,7 @@ import { history } from "../core/History";
 import {
   TagsView,
   SignInView,
+  SignUpView,
   ProjectsView,
   NotFoundView,
   IssuePageView,
@@ -22,7 +23,6 @@ function MainRouter() {
   const isAuthenticated = ![null, undefined].includes(
     localStorage.getItem(APP_USER_ID)
   );
-  console.log(isAuthenticated);
 
   return (
     <Switch>
@@ -36,7 +36,8 @@ function MainRouter() {
           return <Redirect to="/sign-in" />;
         }}
       />
-      <Route path="/sign-in" component={SignInView} />
+      <Route exact path="/sign-in" component={SignInView} />
+      <Route exact path="/sign-up" component={SignUpView} />
       <RouteWithLayout
         exact
         path="/user/dashboard"
