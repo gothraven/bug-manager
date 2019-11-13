@@ -1,5 +1,5 @@
 scalar Date
-scalar UnsignedInt
+scalar PositiveInt
 
 type Project {
   id: ID!
@@ -9,18 +9,24 @@ type Project {
   description: String
 }
 
+type ProjectEdge {
+  cursor: String!
+  node: Project!
+}
+
 type ProjectCursor {
+  edges: [ProjectEdge!]!
   pageInfo: PageInfo!
-  edges: [Project!]!
+  totalCount: Int!
 }
 
 type Query {
   project(id: ID!): Project!
-  projects(after: String, first: UnsignedInt): ProjectCursor
+  projects(after: String, first: PositiveInt): ProjectCursor
 }
 
 type Mutation {
-  createProject(name: String!, description: String): Project!
-  updateProject(id: ID!, name: String, description: String): Project!
+  createProject(name: String!, description: String): ProjectEdge!
+  updateProject(id: ID!, name: String, description: String): ProjectEdge!
   deleteProject(id: ID!): Boolean!
 }
