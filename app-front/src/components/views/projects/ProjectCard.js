@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,8 +8,10 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import EditIcon from "@material-ui/icons/Edit";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
-import ProjectEdition from "./ProjectEdition";
+import { useDeleteProject, useUpdateProject } from "./mutations/ProjectMutations";
 
 const useStyles = makeStyles(() => ({
   card: {
@@ -29,59 +31,91 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ProjectCard(props) {
-  const { project, onUpdate, onDelete } = props;
+  const { project } = props;
   const [edition, setEdition] = useState(false);
+  const [name, setName] = useState(project.name);
+  const [description, setDescription] = useState(project.description || "");
+  const [isProjectUpdatePending, onUpdateProject] = useUpdateProject(project.id, name, description);
+  const [isProjectDeletePending, onDeleteProject] = useDeleteProject(project.id);
+  const isPending = isProjectUpdatePending || isProjectDeletePending;
   const classes = useStyles();
+
+  useEffect(() => {
+    setName(project.name);
+    setDescription(project.description || "");
+  }, [project]);
 
   return (
     <Card className={classes.card}>
       <CardHeader
         className={classes.cardTitle}
         action={
-          <>
+          [
             <IconButton
+              key={0}
               color={edition ? "primary" : "default"}
               aria-label="edit"
+              disabled={isPending}
               onClick={() => setEdition(!edition)}
             >
               <EditIcon />
+            </IconButton>,
+            <IconButton
+              key={1}
+              aria-label="delete"
+              disabled={isPending}
+              onClick={onDeleteProject}
+            >
+              <CloseIcon />
             </IconButton>
-            {
-              <IconButton
-                aria-label="delete"
-                onClick={() => onDelete(project.id)}
-              >
-                <CloseIcon />
-              </IconButton>
-            }
-          </>
+          ]
         }
       />
       <CardContent>
-        {!edition ? (
-          [
-            <Typography key={0} variant="h3" color="textPrimary" component="h3">
-              {project.title}
-            </Typography>,
-            <Typography
-              key={1}
-              variant="body1"
-              color="textSecondary"
-              component="p"
-            >
-              {project.description}
-            </Typography>
-          ]
-        ) : (
-          <ProjectEdition
-            project={project}
-            onSubmit={values => {
-              onUpdate(project.id, values);
+        {edition ?
+          <TextField
+            margin="dense"
+            id="name"
+            label="Project Name"
+            type="text"
+            variant="outlined"
+            fullWidth
+            defaultValue={name}
+            onChange={event => setName(event.target.value)}
+          /> :
+          <Typography variant="h3" color="textPrimary" component="h3">
+            {name}
+          </Typography>
+        }
+        {edition ?
+          <TextField
+            label="Description"
+            variant="outlined"
+            multiline
+            margin="dense"
+            rows="4"
+            fullWidth
+            defaultValue={description}
+            onChange={event => setDescription(event.target.value)}
+          /> :
+          <Typography variant="body1" color="textSecondary" component="p">
+            {description}
+          </Typography>
+        }
+        {edition &&
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            disabled={isPending}
+            onClick={() => {
+              onUpdateProject();
               setEdition(false);
             }}
-            onCancel={() => setEdition(false)}
-          />
-        )}
+          >
+            Save
+          </Button>
+        }
       </CardContent>
     </Card>
   );
@@ -89,8 +123,6 @@ function ProjectCard(props) {
 
 ProjectCard.propTypes = {
   project: PropTypes.object.isRequired,
-  onUpdate: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired
 };
 
 export default ProjectCard;

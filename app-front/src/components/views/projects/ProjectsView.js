@@ -1,60 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import {
+  graphql,
+  useLazyLoadQuery,
+  usePaginationFragment
+} from "react-relay/hooks";
 import Fab from "@material-ui/core/Fab";
+import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import Grid from "@material-ui/core/Grid";
-import Dialog from "@material-ui/core/Dialog";
 import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import ChevronLeft from "@material-ui/icons/ChevronLeft";
-import ChevronRight from "@material-ui/icons/ChevronRight";
 
-import ProjectEdition from "./ProjectEdition";
 import ProjectCard from "./ProjectCard";
+import { useCreateProject } from "./mutations/ProjectMutations";
 
-const testProjects = [
-  {
-    id: 1,
-    title: "Project Name 1",
-    description: "Lorem ipsum dolor sit amet"
-  },
-  {
-    id: 2,
-    title: "Project Name 2",
-    description: "Lorem ipsum dolor sit amet"
-  },
-  {
-    id: 3,
-    title: "Project Name 3",
-    description: "Lorem ipsum dolor sit amet"
-  }
-];
 
 function ProjectsView() {
-  const [projects, setProjects] = useState(testProjects);
-  const [open, setOpen] = useState(false);
-  const closeDialogue = () => setOpen(false);
-
-  function createProjectHandler(data) {
-    const { title, description } = data;
-    const { id } = projects[projects.length - 1];
-    setProjects([...projects, { title, description, id: id + 1 }]);
-  }
-
-  function updateProjectHandler(id, data) {
-    const { title, description } = data;
-    setProjects(
-      projects.map(p => {
-        if (p.id === id) {
-          return { ...p, title, description };
+  const [isProjectCreatePending, onCreateProject] = useCreateProject();
+  const queryData = useLazyLoadQuery(
+    graphql`
+      query ProjectsViewQuery {
+        ...ProjectsView_projects
+      }
+    `
+  );
+  const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment(
+    graphql`
+      fragment ProjectsView_projects on Query
+        @argumentDefinitions(
+          first: { type: "PositiveInt", defaultValue: 10 }
+          after: { type: "String", defaultValue: "" }
+        )
+        @refetchable(queryName: "ProjectsPaginationQuery") {
+        projects(first: $first, after: $after)
+          @connection(key: "Query_projects", filters: []) {
+          edges {
+            node {
+              id
+              name
+              description
+            }
+          }
         }
-        return p;
-      })
-    );
-  }
+      }
+    `,
+    queryData
+  );
 
-  function deleteProjectHandler(id) {
-    setProjects(projects.filter(p => p.id !== id));
-  }
+  const loadMore = useCallback(() => {
+    if (isLoadingNext) {
+      return;
+    }
+    loadNext(10);
+  }, [isLoadingNext, loadNext]);
 
   return (
     <Grid
@@ -66,54 +63,36 @@ function ProjectsView() {
       <Typography variant="h1" component="h1" gutterBottom>
         All Projects
       </Typography>
-      <Grid
-        item
-        style={{
-          display: "grid",
-          gridAutoFlow: "column",
-          justifyContent: "space-between"
-        }}
-      >
-        <Fab variant="extended" color="primary" onClick={() => setOpen(true)}>
-          <AddIcon />
-        </Fab>
-        <div>
-          <IconButton size="small">
-            <ChevronLeft />
-          </IconButton>
-          <IconButton size="small">
-            <ChevronRight />
-          </IconButton>
-        </div>
-      </Grid>
       <Grid item>
-        <Grid
-          container
-          direction="row"
-          justify="space-evenly"
-          alignItems="flex-start"
-        >
-          {projects.reverse().map(project => (
-            <Grid key={project.id} item xs={6}>
-              <ProjectCard
-                project={project}
-                onUpdate={updateProjectHandler}
-                onDelete={deleteProjectHandler}
-              />
-            </Grid>
-          ))}
+        <Grid container direction="row" alignItems="flex-start">
+          {data.projects.edges.map(edge => {
+            if (edge == null || edge.node == null) {
+              return null;
+            }
+            return (
+              <Grid key={edge.node.id} item xs={6}>
+                <ProjectCard project={edge.node} />
+              </Grid>
+            );
+          })}
         </Grid>
       </Grid>
-      <Dialog open={open} onClose={closeDialogue}>
-        <ProjectEdition
-          project={{ name: "", description: "" }}
-          onSubmit={project => {
-            createProjectHandler(project);
-            closeDialogue();
-          }}
-          onCancel={() => closeDialogue()}
-        />
-      </Dialog>
+      <Button onClick={loadMore} disabled={!hasNext}>
+        load more
+      </Button>
+      <Grid
+        item
+        style={{ display: "grid", justifyContent: "center", padding: 30 }}
+      >
+        <Fab
+          color="primary"
+          aria-label="add"
+          onClick={onCreateProject}
+          disabled={isProjectCreatePending}
+        >
+          <AddIcon />
+        </Fab>
+      </Grid>
     </Grid>
   );
 }

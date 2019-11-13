@@ -11,8 +11,9 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import MailIcon from "@material-ui/icons/Mail";
+import ClassIcon from "@material-ui/icons/Class";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
+import SettingsIcon from '@material-ui/icons/Settings';
 import { signOut } from "../../core/utils/Auth";
 
 const drawerWidth = 200;
@@ -64,7 +65,7 @@ const menuItems = [
   },
   {
     title: "Projects",
-    icon: <MailIcon />,
+    icon: <ClassIcon />,
     link: "/user/projects"
   },
   {
@@ -73,9 +74,9 @@ const menuItems = [
     link: "/user/tags"
   },
   {
-    title: "issue",
-    icon: <BookmarksIcon />,
-    link: "/user/issue/217"
+    title: "settings",
+    icon: <SettingsIcon />,
+    link: "/user/settings"
   }
 ];
 
