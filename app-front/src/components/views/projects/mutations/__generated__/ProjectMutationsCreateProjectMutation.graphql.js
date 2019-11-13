@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 4bff5384bb1f2fc34747cf8fec30be2b
+ * @relayHash 6060e83ad463a3a4d084d050cc466759
  */
 
 /* eslint-disable */
@@ -9,35 +9,37 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-export type SignUpUserMutationVariables = {|
+export type ProjectMutationsCreateProjectMutationVariables = {|
   name: string,
-  email: any,
-  password: string,
+  description?: ?string,
 |};
-export type SignUpUserMutationResponse = {|
-  +signUp: {|
-    +token: string,
-    +user: {|
-      +id: string
+export type ProjectMutationsCreateProjectMutationResponse = {|
+  +createProject: {|
+    +cursor: string,
+    +node: {|
+      +id: string,
+      +name: string,
+      +description: ?string,
     |},
   |}
 |};
-export type SignUpUserMutation = {|
-  variables: SignUpUserMutationVariables,
-  response: SignUpUserMutationResponse,
+export type ProjectMutationsCreateProjectMutation = {|
+  variables: ProjectMutationsCreateProjectMutationVariables,
+  response: ProjectMutationsCreateProjectMutationResponse,
 |};
 */
 
 /*
-mutation SignUpUserMutation(
+mutation ProjectMutationsCreateProjectMutation(
   $name: String!
-  $email: EmailAddress!
-  $password: String!
+  $description: String
 ) {
-  signUp(name: $name, email: $email, password: $password) {
-    token
-    user {
+  createProject(name: $name, description: $description) {
+    cursor
+    node {
       id
+      name
+      description
     }
   }
 }
@@ -53,14 +55,8 @@ const node /*: ConcreteRequest*/ = (function() {
       },
       {
         kind: "LocalArgument",
-        name: "email",
-        type: "EmailAddress!",
-        defaultValue: null
-      },
-      {
-        kind: "LocalArgument",
-        name: "password",
-        type: "String!",
+        name: "description",
+        type: "String",
         defaultValue: null
       }
     ],
@@ -68,48 +64,57 @@ const node /*: ConcreteRequest*/ = (function() {
       {
         kind: "LinkedField",
         alias: null,
-        name: "signUp",
+        name: "createProject",
         storageKey: null,
         args: [
           {
             kind: "Variable",
-            name: "email",
-            variableName: "email"
+            name: "description",
+            variableName: "description"
           },
           {
             kind: "Variable",
             name: "name",
             variableName: "name"
-          },
-          {
-            kind: "Variable",
-            name: "password",
-            variableName: "password"
           }
         ],
-        concreteType: "Auth",
+        concreteType: "ProjectEdge",
         plural: false,
         selections: [
           {
             kind: "ScalarField",
             alias: null,
-            name: "token",
+            name: "cursor",
             args: null,
             storageKey: null
           },
           {
             kind: "LinkedField",
             alias: null,
-            name: "user",
+            name: "node",
             storageKey: null,
             args: null,
-            concreteType: "User",
+            concreteType: "Project",
             plural: false,
             selections: [
               {
                 kind: "ScalarField",
                 alias: null,
                 name: "id",
+                args: null,
+                storageKey: null
+              },
+              {
+                kind: "ScalarField",
+                alias: null,
+                name: "name",
+                args: null,
+                storageKey: null
+              },
+              {
+                kind: "ScalarField",
+                alias: null,
+                name: "description",
                 args: null,
                 storageKey: null
               }
@@ -122,7 +127,7 @@ const node /*: ConcreteRequest*/ = (function() {
     kind: "Request",
     fragment: {
       kind: "Fragment",
-      name: "SignUpUserMutation",
+      name: "ProjectMutationsCreateProjectMutation",
       type: "Mutation",
       metadata: null,
       argumentDefinitions: (v0 /*: any*/),
@@ -130,20 +135,20 @@ const node /*: ConcreteRequest*/ = (function() {
     },
     operation: {
       kind: "Operation",
-      name: "SignUpUserMutation",
+      name: "ProjectMutationsCreateProjectMutation",
       argumentDefinitions: (v0 /*: any*/),
       selections: (v1 /*: any*/)
     },
     params: {
       operationKind: "mutation",
-      name: "SignUpUserMutation",
+      name: "ProjectMutationsCreateProjectMutation",
       id: null,
       text:
-        "mutation SignUpUserMutation(\n  $name: String!\n  $email: EmailAddress!\n  $password: String!\n) {\n  signUp(name: $name, email: $email, password: $password) {\n    token\n    user {\n      id\n    }\n  }\n}\n",
+        "mutation ProjectMutationsCreateProjectMutation(\n  $name: String!\n  $description: String\n) {\n  createProject(name: $name, description: $description) {\n    cursor\n    node {\n      id\n      name\n      description\n    }\n  }\n}\n",
       metadata: {}
     }
   };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '1332ae4cc0c0961027f254c9e1a4ad4d';
+(node/*: any*/).hash = 'aa843e6ee6c890321c0a478aab2e64af';
 module.exports = node;

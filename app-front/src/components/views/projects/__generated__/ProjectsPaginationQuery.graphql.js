@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash c6d10a2221ae78f07690fd84e813561d
+ * @relayHash fd950a5a706dac402bf7e94a976a0833
  */
 
 /* eslint-disable */
@@ -9,30 +9,35 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-type TagsView_tags$ref = any;
-export type TagsViewQueryVariables = {||};
-export type TagsViewQueryResponse = {|
-  +$fragmentRefs: TagsView_tags$ref
+type ProjectsView_projects$ref = any;
+export type ProjectsPaginationQueryVariables = {|
+  first?: ?number,
+  after?: ?string,
 |};
-export type TagsViewQuery = {|
-  variables: TagsViewQueryVariables,
-  response: TagsViewQueryResponse,
+export type ProjectsPaginationQueryResponse = {|
+  +$fragmentRefs: ProjectsView_projects$ref
+|};
+export type ProjectsPaginationQuery = {|
+  variables: ProjectsPaginationQueryVariables,
+  response: ProjectsPaginationQueryResponse,
 |};
 */
 
 /*
-query TagsViewQuery {
-  ...TagsView_tags
+query ProjectsPaginationQuery(
+  $first: PositiveInt = 10
+  $after: String = ""
+) {
+  ...ProjectsView_projects_2HEEH6
 }
 
-fragment TagsView_tags on Query {
-  tags(first: 10, after: "") {
+fragment ProjectsView_projects_2HEEH6 on Query {
+  projects(first: $first, after: $after) {
     edges {
       node {
         id
         name
         description
-        color
         __typename
       }
       cursor
@@ -47,45 +52,59 @@ fragment TagsView_tags on Query {
 
 const node /*: ConcreteRequest*/ = (function() {
   var v0 = [
-    {
-      kind: "Literal",
-      name: "after",
-      value: ""
-    },
-    {
-      kind: "Literal",
-      name: "first",
-      value: 10
-    }
-  ];
+      {
+        kind: "LocalArgument",
+        name: "first",
+        type: "PositiveInt",
+        defaultValue: 10
+      },
+      {
+        kind: "LocalArgument",
+        name: "after",
+        type: "String",
+        defaultValue: ""
+      }
+    ],
+    v1 = [
+      {
+        kind: "Variable",
+        name: "after",
+        variableName: "after"
+      },
+      {
+        kind: "Variable",
+        name: "first",
+        variableName: "first"
+      }
+    ];
   return {
     kind: "Request",
     fragment: {
       kind: "Fragment",
-      name: "TagsViewQuery",
+      name: "ProjectsPaginationQuery",
       type: "Query",
       metadata: null,
-      argumentDefinitions: [],
+      argumentDefinitions: (v0 /*: any*/),
       selections: [
         {
           kind: "FragmentSpread",
-          name: "TagsView_tags",
-          args: null
+          name: "ProjectsView_projects",
+          args: (v1 /*: any*/)
         }
       ]
     },
     operation: {
       kind: "Operation",
-      name: "TagsViewQuery",
-      argumentDefinitions: [],
+      name: "ProjectsPaginationQuery",
+      argumentDefinitions: (v0 /*: any*/),
       selections: [
         {
           kind: "LinkedField",
           alias: null,
-          name: "tags",
-          storageKey: 'tags(after:"",first:10)',
-          args: (v0 /*: any*/),
-          concreteType: "TagCursor",
+          name: "projects",
+          storageKey: null,
+          args: (v1 /*: any*/),
+          concreteType: "ProjectCursor",
           plural: false,
           selections: [
             {
@@ -94,7 +113,7 @@ const node /*: ConcreteRequest*/ = (function() {
               name: "edges",
               storageKey: null,
               args: null,
-              concreteType: "TagEdge",
+              concreteType: "ProjectEdge",
               plural: true,
               selections: [
                 {
@@ -103,7 +122,7 @@ const node /*: ConcreteRequest*/ = (function() {
                   name: "node",
                   storageKey: null,
                   args: null,
-                  concreteType: "Tag",
+                  concreteType: "Project",
                   plural: false,
                   selections: [
                     {
@@ -124,13 +143,6 @@ const node /*: ConcreteRequest*/ = (function() {
                       kind: "ScalarField",
                       alias: null,
                       name: "description",
-                      args: null,
-                      storageKey: null
-                    },
-                    {
-                      kind: "ScalarField",
-                      alias: null,
-                      name: "color",
                       args: null,
                       storageKey: null
                     },
@@ -182,24 +194,27 @@ const node /*: ConcreteRequest*/ = (function() {
         {
           kind: "LinkedHandle",
           alias: null,
-          name: "tags",
-          args: (v0 /*: any*/),
+          name: "projects",
+          args: (v1 /*: any*/),
           handle: "connection",
-          key: "Query_tags",
+          key: "Query_projects",
           filters: []
         }
       ]
     },
     params: {
       operationKind: "query",
-      name: "TagsViewQuery",
+      name: "ProjectsPaginationQuery",
       id: null,
       text:
-        'query TagsViewQuery {\n  ...TagsView_tags\n}\n\nfragment TagsView_tags on Query {\n  tags(first: 10, after: "") {\n    edges {\n      node {\n        id\n        name\n        description\n        color\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n',
-      metadata: {}
+        'query ProjectsPaginationQuery(\n  $first: PositiveInt = 10\n  $after: String = ""\n) {\n  ...ProjectsView_projects_2HEEH6\n}\n\nfragment ProjectsView_projects_2HEEH6 on Query {\n  projects(first: $first, after: $after) {\n    edges {\n      node {\n        id\n        name\n        description\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n',
+      metadata: {
+        derivedFrom: "ProjectsView_projects",
+        isRefetchableQuery: true
+      }
     }
   };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '13abf6105e531c4d91e9d6503d132772';
+(node/*: any*/).hash = '1926d6a2e9bf9f2f606ceac2498a5a34';
 module.exports = node;

@@ -5,7 +5,11 @@ import useMutation from "../../../core/hooks/useMutation";
 import { signIn } from "../../../core/utils/Auth";
 
 export const SignUpUserMutation = graphql`
-  mutation SignUpUserMutation($name: String!, $email: EmailAddress!, $password: String!) {
+  mutation SignUpUserMutation(
+    $name: String!
+    $email: EmailAddress!
+    $password: String!
+  ) {
     signUp(name: $name, email: $email, password: $password) {
       token
       user {

@@ -1,4 +1,3 @@
-
 import React, { useCallback } from "react";
 import {
   graphql,
@@ -39,9 +38,6 @@ function TagsView() {
               description
               color
             }
-          }
-          pageInfo {
-            startCursor
           }
         }
       }

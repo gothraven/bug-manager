@@ -9,36 +9,35 @@
 /*::
 import type { ReaderFragment } from 'relay-runtime';
 import type { FragmentReference } from "relay-runtime";
-declare export opaque type TagsView_tags$ref: FragmentReference;
-declare export opaque type TagsView_tags$fragmentType: TagsView_tags$ref;
-export type TagsView_tags = {|
-  +tags: ?{|
+declare export opaque type ProjectsView_projects$ref: FragmentReference;
+declare export opaque type ProjectsView_projects$fragmentType: ProjectsView_projects$ref;
+export type ProjectsView_projects = {|
+  +projects: ?{|
     +edges: $ReadOnlyArray<{|
       +node: {|
         +id: string,
         +name: string,
         +description: ?string,
-        +color: string,
       |}
     |}>
   |},
-  +$refType: TagsView_tags$ref,
+  +$refType: ProjectsView_projects$ref,
 |};
-export type TagsView_tags$data = TagsView_tags;
-export type TagsView_tags$key = {
-  +$data?: TagsView_tags$data,
-  +$fragmentRefs: TagsView_tags$ref,
+export type ProjectsView_projects$data = ProjectsView_projects;
+export type ProjectsView_projects$key = {
+  +$data?: ProjectsView_projects$data,
+  +$fragmentRefs: ProjectsView_projects$ref,
 };
 */
 
 
 const node/*: ReaderFragment*/ = (function(){
 var v0 = [
-  "tags"
+  "projects"
 ];
 return {
   "kind": "Fragment",
-  "name": "TagsView_tags",
+  "name": "ProjectsView_projects",
   "type": "Query",
   "metadata": {
     "connection": [
@@ -58,7 +57,7 @@ return {
         "backward": null,
         "path": (v0/*: any*/)
       },
-      "operation": require('./TagsPaginationQuery.graphql.js'),
+      "operation": require('./ProjectsPaginationQuery.graphql.js'),
       "fragmentPathInResult": []
     }
   },
@@ -79,11 +78,11 @@ return {
   "selections": [
     {
       "kind": "LinkedField",
-      "alias": "tags",
-      "name": "__Query_tags_connection",
+      "alias": "projects",
+      "name": "__Query_projects_connection",
       "storageKey": null,
       "args": null,
-      "concreteType": "TagCursor",
+      "concreteType": "ProjectCursor",
       "plural": false,
       "selections": [
         {
@@ -92,7 +91,7 @@ return {
           "name": "edges",
           "storageKey": null,
           "args": null,
-          "concreteType": "TagEdge",
+          "concreteType": "ProjectEdge",
           "plural": true,
           "selections": [
             {
@@ -101,7 +100,7 @@ return {
               "name": "node",
               "storageKey": null,
               "args": null,
-              "concreteType": "Tag",
+              "concreteType": "Project",
               "plural": false,
               "selections": [
                 {
@@ -122,13 +121,6 @@ return {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "description",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "color",
                   "args": null,
                   "storageKey": null
                 },
@@ -181,5 +173,5 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '6310f3dc11699852c19c3cb96cef9507';
+(node/*: any*/).hash = '1926d6a2e9bf9f2f606ceac2498a5a34';
 module.exports = node;

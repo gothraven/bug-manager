@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 2387310787170cfa63aa694e4065bd00
+ * @relayHash c372351fd5b5a224c9f25722f1446205
  */
 
 /* eslint-disable */
@@ -44,7 +44,6 @@ fragment TagsView_tags_2HEEH6 on Query {
       cursor
     }
     pageInfo {
-      startCursor
       endCursor
       hasNextPage
     }
@@ -185,13 +184,6 @@ const node /*: ConcreteRequest*/ = (function() {
                 {
                   kind: "ScalarField",
                   alias: null,
-                  name: "startCursor",
-                  args: null,
-                  storageKey: null
-                },
-                {
-                  kind: "ScalarField",
-                  alias: null,
                   name: "endCursor",
                   args: null,
                   storageKey: null
@@ -223,7 +215,7 @@ const node /*: ConcreteRequest*/ = (function() {
       name: "TagsPaginationQuery",
       id: null,
       text:
-        'query TagsPaginationQuery(\n  $first: PositiveInt = 10\n  $after: String = ""\n) {\n  ...TagsView_tags_2HEEH6\n}\n\nfragment TagsView_tags_2HEEH6 on Query {\n  tags(first: $first, after: $after) {\n    edges {\n      node {\n        id\n        name\n        description\n        color\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      startCursor\n      endCursor\n      hasNextPage\n    }\n  }\n}\n',
+        'query TagsPaginationQuery(\n  $first: PositiveInt = 10\n  $after: String = ""\n) {\n  ...TagsView_tags_2HEEH6\n}\n\nfragment TagsView_tags_2HEEH6 on Query {\n  tags(first: $first, after: $after) {\n    edges {\n      node {\n        id\n        name\n        description\n        color\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n',
       metadata: {
         derivedFrom: "TagsView_tags",
         isRefetchableQuery: true
@@ -232,5 +224,5 @@ const node /*: ConcreteRequest*/ = (function() {
   };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '8b67a1c915c35ece250feeec9f9b730b';
+(node/*: any*/).hash = '6310f3dc11699852c19c3cb96cef9507';
 module.exports = node;

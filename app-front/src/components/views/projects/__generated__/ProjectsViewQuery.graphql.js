@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash c6d10a2221ae78f07690fd84e813561d
+ * @relayHash a8681719812ee6db18134575129130e6
  */
 
 /* eslint-disable */
@@ -9,30 +9,29 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-type TagsView_tags$ref = any;
-export type TagsViewQueryVariables = {||};
-export type TagsViewQueryResponse = {|
-  +$fragmentRefs: TagsView_tags$ref
+type ProjectsView_projects$ref = any;
+export type ProjectsViewQueryVariables = {||};
+export type ProjectsViewQueryResponse = {|
+  +$fragmentRefs: ProjectsView_projects$ref
 |};
-export type TagsViewQuery = {|
-  variables: TagsViewQueryVariables,
-  response: TagsViewQueryResponse,
+export type ProjectsViewQuery = {|
+  variables: ProjectsViewQueryVariables,
+  response: ProjectsViewQueryResponse,
 |};
 */
 
 /*
-query TagsViewQuery {
-  ...TagsView_tags
+query ProjectsViewQuery {
+  ...ProjectsView_projects
 }
 
-fragment TagsView_tags on Query {
-  tags(first: 10, after: "") {
+fragment ProjectsView_projects on Query {
+  projects(first: 10, after: "") {
     edges {
       node {
         id
         name
         description
-        color
         __typename
       }
       cursor
@@ -62,30 +61,30 @@ const node /*: ConcreteRequest*/ = (function() {
     kind: "Request",
     fragment: {
       kind: "Fragment",
-      name: "TagsViewQuery",
+      name: "ProjectsViewQuery",
       type: "Query",
       metadata: null,
       argumentDefinitions: [],
       selections: [
         {
           kind: "FragmentSpread",
-          name: "TagsView_tags",
+          name: "ProjectsView_projects",
           args: null
         }
       ]
     },
     operation: {
       kind: "Operation",
-      name: "TagsViewQuery",
+      name: "ProjectsViewQuery",
       argumentDefinitions: [],
       selections: [
         {
           kind: "LinkedField",
           alias: null,
-          name: "tags",
-          storageKey: 'tags(after:"",first:10)',
+          name: "projects",
+          storageKey: 'projects(after:"",first:10)',
           args: (v0 /*: any*/),
-          concreteType: "TagCursor",
+          concreteType: "ProjectCursor",
           plural: false,
           selections: [
             {
@@ -94,7 +93,7 @@ const node /*: ConcreteRequest*/ = (function() {
               name: "edges",
               storageKey: null,
               args: null,
-              concreteType: "TagEdge",
+              concreteType: "ProjectEdge",
               plural: true,
               selections: [
                 {
@@ -103,7 +102,7 @@ const node /*: ConcreteRequest*/ = (function() {
                   name: "node",
                   storageKey: null,
                   args: null,
-                  concreteType: "Tag",
+                  concreteType: "Project",
                   plural: false,
                   selections: [
                     {
@@ -124,13 +123,6 @@ const node /*: ConcreteRequest*/ = (function() {
                       kind: "ScalarField",
                       alias: null,
                       name: "description",
-                      args: null,
-                      storageKey: null
-                    },
-                    {
-                      kind: "ScalarField",
-                      alias: null,
-                      name: "color",
                       args: null,
                       storageKey: null
                     },
@@ -182,24 +174,24 @@ const node /*: ConcreteRequest*/ = (function() {
         {
           kind: "LinkedHandle",
           alias: null,
-          name: "tags",
+          name: "projects",
           args: (v0 /*: any*/),
           handle: "connection",
-          key: "Query_tags",
+          key: "Query_projects",
           filters: []
         }
       ]
     },
     params: {
       operationKind: "query",
-      name: "TagsViewQuery",
+      name: "ProjectsViewQuery",
       id: null,
       text:
-        'query TagsViewQuery {\n  ...TagsView_tags\n}\n\nfragment TagsView_tags on Query {\n  tags(first: 10, after: "") {\n    edges {\n      node {\n        id\n        name\n        description\n        color\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n',
+        'query ProjectsViewQuery {\n  ...ProjectsView_projects\n}\n\nfragment ProjectsView_projects on Query {\n  projects(first: 10, after: "") {\n    edges {\n      node {\n        id\n        name\n        description\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n',
       metadata: {}
     }
   };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '13abf6105e531c4d91e9d6503d132772';
+(node/*: any*/).hash = 'fefb19addae918713c0905aa976a1bc9';
 module.exports = node;

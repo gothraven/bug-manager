@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash e41f4be8b9c31c1d33ab7f9305a994ab
+ * @relayHash af66e10fbf666f84ecf28f2b79ef7f9e
  */
 
 /* eslint-disable */
@@ -9,43 +9,39 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-export type TagMutationsTagPanelUpdateTagMutationVariables = {|
+export type ProjectMutationsUpdateProjectMutationVariables = {|
   id: string,
   name?: ?string,
   description?: ?string,
-  color?: ?string,
 |};
-export type TagMutationsTagPanelUpdateTagMutationResponse = {|
-  +updateTag: {|
+export type ProjectMutationsUpdateProjectMutationResponse = {|
+  +updateProject: {|
     +cursor: string,
     +node: {|
       +id: string,
       +name: string,
       +description: ?string,
-      +color: string,
     |},
   |}
 |};
-export type TagMutationsTagPanelUpdateTagMutation = {|
-  variables: TagMutationsTagPanelUpdateTagMutationVariables,
-  response: TagMutationsTagPanelUpdateTagMutationResponse,
+export type ProjectMutationsUpdateProjectMutation = {|
+  variables: ProjectMutationsUpdateProjectMutationVariables,
+  response: ProjectMutationsUpdateProjectMutationResponse,
 |};
 */
 
 /*
-mutation TagMutationsTagPanelUpdateTagMutation(
+mutation ProjectMutationsUpdateProjectMutation(
   $id: ID!
   $name: String
   $description: String
-  $color: HexColorCode
 ) {
-  updateTag(id: $id, name: $name, description: $description, color: $color) {
+  updateProject(id: $id, name: $name, description: $description) {
     cursor
     node {
       id
       name
       description
-      color
     }
   }
 }
@@ -70,26 +66,15 @@ const node /*: ConcreteRequest*/ = (function() {
         name: "description",
         type: "String",
         defaultValue: null
-      },
-      {
-        kind: "LocalArgument",
-        name: "color",
-        type: "HexColorCode",
-        defaultValue: null
       }
     ],
     v1 = [
       {
         kind: "LinkedField",
         alias: null,
-        name: "updateTag",
+        name: "updateProject",
         storageKey: null,
         args: [
-          {
-            kind: "Variable",
-            name: "color",
-            variableName: "color"
-          },
           {
             kind: "Variable",
             name: "description",
@@ -106,7 +91,7 @@ const node /*: ConcreteRequest*/ = (function() {
             variableName: "name"
           }
         ],
-        concreteType: "TagEdge",
+        concreteType: "ProjectEdge",
         plural: false,
         selections: [
           {
@@ -122,7 +107,7 @@ const node /*: ConcreteRequest*/ = (function() {
             name: "node",
             storageKey: null,
             args: null,
-            concreteType: "Tag",
+            concreteType: "Project",
             plural: false,
             selections: [
               {
@@ -145,13 +130,6 @@ const node /*: ConcreteRequest*/ = (function() {
                 name: "description",
                 args: null,
                 storageKey: null
-              },
-              {
-                kind: "ScalarField",
-                alias: null,
-                name: "color",
-                args: null,
-                storageKey: null
               }
             ]
           }
@@ -162,7 +140,7 @@ const node /*: ConcreteRequest*/ = (function() {
     kind: "Request",
     fragment: {
       kind: "Fragment",
-      name: "TagMutationsTagPanelUpdateTagMutation",
+      name: "ProjectMutationsUpdateProjectMutation",
       type: "Mutation",
       metadata: null,
       argumentDefinitions: (v0 /*: any*/),
@@ -170,20 +148,20 @@ const node /*: ConcreteRequest*/ = (function() {
     },
     operation: {
       kind: "Operation",
-      name: "TagMutationsTagPanelUpdateTagMutation",
+      name: "ProjectMutationsUpdateProjectMutation",
       argumentDefinitions: (v0 /*: any*/),
       selections: (v1 /*: any*/)
     },
     params: {
       operationKind: "mutation",
-      name: "TagMutationsTagPanelUpdateTagMutation",
+      name: "ProjectMutationsUpdateProjectMutation",
       id: null,
       text:
-        "mutation TagMutationsTagPanelUpdateTagMutation(\n  $id: ID!\n  $name: String\n  $description: String\n  $color: HexColorCode\n) {\n  updateTag(id: $id, name: $name, description: $description, color: $color) {\n    cursor\n    node {\n      id\n      name\n      description\n      color\n    }\n  }\n}\n",
+        "mutation ProjectMutationsUpdateProjectMutation(\n  $id: ID!\n  $name: String\n  $description: String\n) {\n  updateProject(id: $id, name: $name, description: $description) {\n    cursor\n    node {\n      id\n      name\n      description\n    }\n  }\n}\n",
       metadata: {}
     }
   };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '05f2edc3ff4675a5cc73d9e3d3c60007';
+(node/*: any*/).hash = 'ba31e9b78663756b488a33a24c9da59f';
 module.exports = node;

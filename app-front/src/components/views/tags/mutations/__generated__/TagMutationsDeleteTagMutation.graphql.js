@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash cfd652ce8e43222bc2491dd4a28d7d14
+ * @relayHash d3023cf3b29aed9733858300d89e4893
  */
 
 /* eslint-disable */
@@ -9,20 +9,20 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-export type TagMutationsTagPanelDeleteTagMutationVariables = {|
+export type TagMutationsDeleteTagMutationVariables = {|
   id: string
 |};
-export type TagMutationsTagPanelDeleteTagMutationResponse = {|
+export type TagMutationsDeleteTagMutationResponse = {|
   +deleteTag: boolean
 |};
-export type TagMutationsTagPanelDeleteTagMutation = {|
-  variables: TagMutationsTagPanelDeleteTagMutationVariables,
-  response: TagMutationsTagPanelDeleteTagMutationResponse,
+export type TagMutationsDeleteTagMutation = {|
+  variables: TagMutationsDeleteTagMutationVariables,
+  response: TagMutationsDeleteTagMutationResponse,
 |};
 */
 
 /*
-mutation TagMutationsTagPanelDeleteTagMutation(
+mutation TagMutationsDeleteTagMutation(
   $id: ID!
 ) {
   deleteTag(id: $id)
@@ -57,7 +57,7 @@ const node /*: ConcreteRequest*/ = (function() {
     kind: "Request",
     fragment: {
       kind: "Fragment",
-      name: "TagMutationsTagPanelDeleteTagMutation",
+      name: "TagMutationsDeleteTagMutation",
       type: "Mutation",
       metadata: null,
       argumentDefinitions: (v0 /*: any*/),
@@ -65,20 +65,20 @@ const node /*: ConcreteRequest*/ = (function() {
     },
     operation: {
       kind: "Operation",
-      name: "TagMutationsTagPanelDeleteTagMutation",
+      name: "TagMutationsDeleteTagMutation",
       argumentDefinitions: (v0 /*: any*/),
       selections: (v1 /*: any*/)
     },
     params: {
       operationKind: "mutation",
-      name: "TagMutationsTagPanelDeleteTagMutation",
+      name: "TagMutationsDeleteTagMutation",
       id: null,
       text:
-        "mutation TagMutationsTagPanelDeleteTagMutation(\n  $id: ID!\n) {\n  deleteTag(id: $id)\n}\n",
+        "mutation TagMutationsDeleteTagMutation(\n  $id: ID!\n) {\n  deleteTag(id: $id)\n}\n",
       metadata: {}
     }
   };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '9c9dbed6c97786dadcbc587ba7c3fbe4';
+(node/*: any*/).hash = '70c8cb9af43159263c30aff0d0e969d7';
 module.exports = node;

@@ -24,7 +24,7 @@ export const CreateTagMutation = graphql`
 `;
 
 const UpdateTagMutation = graphql`
-  mutation TagMutationsTagPanelUpdateTagMutation(
+  mutation TagMutationsUpdateTagMutation(
     $id: ID!
     $name: String
     $description: String
@@ -43,7 +43,7 @@ const UpdateTagMutation = graphql`
 `;
 
 const DeleteTagMutation = graphql`
-  mutation TagMutationsTagPanelDeleteTagMutation($id: ID!) {
+  mutation TagMutationsDeleteTagMutation($id: ID!) {
     deleteTag(id: $id)
   }
 `;

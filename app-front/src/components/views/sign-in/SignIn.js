@@ -65,7 +65,7 @@ export default function SignIn() {
             required
             fullWidth
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
             id="email"
             label="Email Address"
             name="email"
@@ -78,7 +78,7 @@ export default function SignIn() {
             required
             fullWidth
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             name="password"
             label="Password"
             type="password"
@@ -96,7 +96,7 @@ export default function SignIn() {
             color="primary"
             className={classes.submit}
             disabled={isSignInPending}
-            onClick={(e) => {
+            onClick={e => {
               e.preventDefault();
               onSignIn();
             }}

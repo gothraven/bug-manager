@@ -23,7 +23,7 @@ type UserCursor {
 
 type Query {
   user(id: ID!): User!
-  users(after: String, first: UnsignedInt): UserCursor
+  users(after: String, first: PositiveInt): UserCursor
   me: User
 }
 
