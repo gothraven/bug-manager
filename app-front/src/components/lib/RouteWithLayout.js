@@ -17,10 +17,10 @@ function RouteWithLayout(props) {
             </Layout>
           </Suspense>
         ) : (
-            <Redirect
-              to={{ pathname: "/sign-in", state: { from: matchProps.location } }}
-            />
-          )
+          <Redirect
+            to={{ pathname: "/sign-in", state: { from: matchProps.location } }}
+          />
+        )
       }
     />
   );

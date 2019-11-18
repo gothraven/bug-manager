@@ -7,7 +7,6 @@ import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-
 import ProjectCard from "./ProjectCard";
 import { useCreateProject } from "./mutations/ProjectMutations";
 
@@ -91,10 +90,10 @@ function ProjectsView(props) {
 
 ProjectsView.defaultProps = {
   queryData: undefined
-}
+};
 
 ProjectsView.propTypes = {
   queryData: PropTypes.object
-}
+};
 
 export default ProjectsView;

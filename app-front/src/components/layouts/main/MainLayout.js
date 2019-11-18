@@ -1,10 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
-import {
-  graphql,
-  useLazyLoadQuery
-} from "react-relay/hooks";
+import { graphql, useLazyLoadQuery } from "react-relay/hooks";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import SideBar from "./SideBar";
 

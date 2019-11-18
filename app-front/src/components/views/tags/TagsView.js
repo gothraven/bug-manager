@@ -85,10 +85,10 @@ function TagsView(props) {
 
 TagsView.defaultProps = {
   queryData: undefined
-}
+};
 
 TagsView.propTypes = {
   queryData: PropTypes.object
-}
+};
 
 export default TagsView;
