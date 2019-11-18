@@ -1,9 +1,7 @@
 import React, { useCallback } from "react";
-import {
-  graphql,
-  useLazyLoadQuery,
-  usePaginationFragment
-} from "react-relay/hooks";
+import PropTypes from "prop-types";
+import { graphql, usePaginationFragment } from "react-relay/hooks";
+import Divider from "@material-ui/core/Divider";
 import Fab from "@material-ui/core/Fab";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -12,15 +10,9 @@ import AddIcon from "@material-ui/icons/Add";
 import TagPanel from "./TagPanel";
 import { useCreateTag } from "./mutations/TagMutations";
 
-function TagsView() {
+function TagsView(props) {
+  const { queryData } = props;
   const [isTagCreatePending, onCreateTag] = useCreateTag();
-  const queryData = useLazyLoadQuery(
-    graphql`
-      query TagsViewQuery {
-        ...TagsView_tags
-      }
-    `
-  );
   const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment(
     graphql`
       fragment TagsView_tags on Query
@@ -62,6 +54,7 @@ function TagsView() {
       <Typography variant="h1" component="h1" gutterBottom>
         All labels
       </Typography>
+      <Divider />
       <Grid item>
         {data.tags.edges.map(edge => {
           if (edge == null || edge.node == null) {
@@ -88,6 +81,14 @@ function TagsView() {
       </Grid>
     </Grid>
   );
+}
+
+TagsView.defaultProps = {
+  queryData: undefined
+}
+
+TagsView.propTypes = {
+  queryData: PropTypes.object
 }
 
 export default TagsView;

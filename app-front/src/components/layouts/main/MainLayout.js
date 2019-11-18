@@ -1,8 +1,11 @@
-import React, { Suspense } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
+import {
+  graphql,
+  useLazyLoadQuery
+} from "react-relay/hooks";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import SideBar from "./SideBar";
 
 const useStyles = makeStyles(theme => ({
@@ -19,24 +22,28 @@ const useStyles = makeStyles(theme => ({
 const MainLayout = props => {
   const { children } = props;
   const classes = useStyles();
+  const queryData = useLazyLoadQuery(
+    graphql`
+      query MainLayoutViewQuery {
+        ...ProjectsView_projects
+        ...TagsView_tags
+      }
+    `
+  );
 
   return (
     <div className={classes.root}>
       <CssBaseline />
       <SideBar />
       <main className={classes.content}>
-        <Suspense fallback={<CircularProgress />}>{children}</Suspense>
+        {React.cloneElement(children, { queryData })}
       </main>
     </div>
   );
 };
 
-MainLayout.defaultProps = {
-  children: null // this should be replaced with loading later
-};
-
 MainLayout.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node.isRequired
 };
 
 export default MainLayout;

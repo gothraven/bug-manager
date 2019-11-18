@@ -1,9 +1,7 @@
 import React, { useCallback } from "react";
-import {
-  graphql,
-  useLazyLoadQuery,
-  usePaginationFragment
-} from "react-relay/hooks";
+import PropTypes from "prop-types";
+import { graphql, usePaginationFragment } from "react-relay/hooks";
+import Divider from "@material-ui/core/Divider";
 import Fab from "@material-ui/core/Fab";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
@@ -13,15 +11,9 @@ import Typography from "@material-ui/core/Typography";
 import ProjectCard from "./ProjectCard";
 import { useCreateProject } from "./mutations/ProjectMutations";
 
-function ProjectsView() {
+function ProjectsView(props) {
+  const { queryData } = props;
   const [isProjectCreatePending, onCreateProject] = useCreateProject();
-  const queryData = useLazyLoadQuery(
-    graphql`
-      query ProjectsViewQuery {
-        ...ProjectsView_projects
-      }
-    `
-  );
   const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment(
     graphql`
       fragment ProjectsView_projects on Query
@@ -62,6 +54,7 @@ function ProjectsView() {
       <Typography variant="h1" component="h1" gutterBottom>
         All Projects
       </Typography>
+      <Divider />
       <Grid item>
         <Grid container direction="row" alignItems="flex-start">
           {data.projects.edges.map(edge => {
@@ -94,6 +87,14 @@ function ProjectsView() {
       </Grid>
     </Grid>
   );
+}
+
+ProjectsView.defaultProps = {
+  queryData: undefined
+}
+
+ProjectsView.propTypes = {
+  queryData: PropTypes.object
 }
 
 export default ProjectsView;

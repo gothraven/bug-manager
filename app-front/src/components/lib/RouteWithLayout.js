@@ -1,6 +1,7 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
+import Loading from "./Loading";
 
 function RouteWithLayout(props) {
   const { authed, layout: Layout, component: Component, ...rest } = props;
@@ -10,14 +11,16 @@ function RouteWithLayout(props) {
       {...rest}
       render={matchProps =>
         authed === true ? (
-          <Layout>
-            <Component {...matchProps} />
-          </Layout>
+          <Suspense fallback={<Loading />}>
+            <Layout>
+              <Component {...matchProps} />
+            </Layout>
+          </Suspense>
         ) : (
-          <Redirect
-            to={{ pathname: "/sign-in", state: { from: matchProps.location } }}
-          />
-        )
+            <Redirect
+              to={{ pathname: "/sign-in", state: { from: matchProps.location } }}
+            />
+          )
       }
     />
   );
