@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import httpStatus from 'http-status';
 import { omitBy, isNil } from 'lodash';
+import Issue from './issue.model';
 import APIError from '../utils/APIError';
 
 const tagSchema = new mongoose.Schema(
@@ -20,6 +21,15 @@ const tagSchema = new mongoose.Schema(
     timestamps: true
   }
 );
+
+tagSchema.post('remove', async function remove(next) {
+  try {
+    await Issue.updateMany({ tagIds: this.id }, { $pull: { tagIds: this.id } });
+    return next();
+  } catch (error) {
+    return next(error);
+  }
+});
 
 tagSchema.method({
   /**

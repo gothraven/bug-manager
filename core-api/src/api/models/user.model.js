@@ -4,6 +4,8 @@ import { omitBy, isNil } from 'lodash';
 import bcrypt from 'bcryptjs';
 import moment from 'moment-timezone';
 import jwt from 'jwt-simple';
+import Issue from './issue.model';
+import Comment from './comment.model';
 import APIError from '../utils/APIError';
 import { env, jwtSecret, jwtExpirationInterval } from '../../config/vars';
 
@@ -53,6 +55,17 @@ userSchema.pre('save', async function save(next) {
     const hash = await bcrypt.hash(this.password, rounds);
     this.password = hash;
 
+    return next();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+userSchema.post('remove', async function remove(next) {
+  try {
+    await Issue.deleteMany({ creatorId: this.id });
+    await Comment.deleteMany({ creatorId: this.id });
+    await Issue.updateMany({ assignedUserIds: this.id }, { $pull: { assignedUserIds: this.id } });
     return next();
   } catch (error) {
     return next(error);
