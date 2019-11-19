@@ -22,29 +22,27 @@ const useStyles = makeStyles(theme => ({
 
 function IssueItem(props) {
   const { issue } = props;
+  const { title, createdAt, updatedAt, creator, open, assignedUsers, tags, project } = issue;
   const history = useHistory();
   const classes = useStyles();
 
   return (
     <ListItem button divider onClick={() => history.push("/user/projects")}>
       <ListItemIcon>
-        <ErrorIcon style={{ color: issue.open ? "green" : "red" }} />
+        <ErrorIcon style={{ color: open ? "green" : "red" }} />
       </ListItemIcon>
       <ListItemText
         classes={{ primary: classes.title, secondary: classes.inline }}
-        primary={issue.title}
-        secondary={`Created ${moment(issue.createdAt).fromNow()} by ${
-          issue.creator.name
+        primary={title}
+        secondary={`
+          Created ${moment(createdAt).fromNow()} by ${creator.name}
+           - last Updated ${moment(updatedAt).fromNow()}
+          ${assignedUsers.length ? `- Assigned to ${assignedUsers.map(user => ` ${user.name}`)}` : ''}
+          ${project ?.name ? `- this issue opened on ${project.name}` : ''}`
         }
-           -
-          last Updated ${moment(issue.updatedAt).fromNow()}
-           -
-          Assigned to ${issue.assignedUsers.map(user => ` ${user.name}`)}
-           -
-          this issue opened on ${issue.project.name}`}
       />
       <Box>
-        {issue.tags.map(tag => (
+        {tags.map(tag => (
           <Chip
             key={tag.id}
             label={tag.name}

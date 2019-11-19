@@ -22,6 +22,7 @@ const MainLayout = props => {
   const queryData = useLazyLoadQuery(
     graphql`
       query MainLayoutViewQuery {
+        ...SideBar_me
         ...DashboardView_issues
         ...ProjectsView_projects
         ...TagsView_tags
@@ -32,7 +33,7 @@ const MainLayout = props => {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <SideBar />
+      <SideBar queryData={queryData} />
       <main className={classes.content}>
         {React.cloneElement(children, { queryData })}
       </main>

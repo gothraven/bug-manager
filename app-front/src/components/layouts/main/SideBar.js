@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import clsx from "clsx";
+import PropTypes from "prop-types";
+import { graphql, useFragment } from "react-relay/hooks";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 import Fab from "@material-ui/core/Fab";
@@ -9,7 +11,7 @@ import Avatar from "@material-ui/core/Avatar";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
+import Dashboard from "@material-ui/icons/Dashboard";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ClassIcon from "@material-ui/icons/Class";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
@@ -60,7 +62,7 @@ const useStyles = makeStyles(theme => ({
 const menuItems = [
   {
     title: "Dashboard",
-    icon: <InboxIcon />,
+    icon: <Dashboard />,
     link: "/user/dashboard"
   },
   {
@@ -80,10 +82,22 @@ const menuItems = [
   }
 ];
 
-function SideBar() {
+function SideBar(props) {
+  const { queryData } = props;
   const history = useHistory();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const { me } = useFragment(
+    graphql`
+      fragment SideBar_me on Query {
+        me {
+          id
+          name
+        }
+      }
+    `,
+    queryData,
+  );
 
   return (
     <Drawer
@@ -107,9 +121,9 @@ function SideBar() {
         <List>
           <ListItem button classes={{ root: classes.listItem }}>
             <ListItemIcon classes={{ root: classes.listItemIcon }}>
-              <Avatar alt="">RS</Avatar>
+              <Avatar alt="">{me.name.substr(0, 2)}</Avatar>
             </ListItemIcon>
-            {open && <ListItemText primary="Remy Sharp" />}
+            {open && <ListItemText primary={me.name} />}
           </ListItem>
           <ListItem button classes={{ root: classes.listItem }}>
             <Fab
@@ -158,5 +172,13 @@ function SideBar() {
     </Drawer>
   );
 }
+
+SideBar.defaultProps = {
+  queryData: undefined
+};
+
+SideBar.propTypes = {
+  queryData: PropTypes.object
+};
 
 export default SideBar;
