@@ -70,16 +70,22 @@ type Issue {
   open: Boolean!
   creator: User!
   status: Status
-  assignedUsers: [User]!
-  tags: [Tag]!
+  assignedUsers: [User!]!
+  tags: [Tag!]!
   project: Project
   changes: [Change!]!
   comments: [Comment!]!
 }
 
 type IssueCursor {
+  edges: [IssueEdge!]!
   pageInfo: PageInfo!
-  edges: [Issue]!
+  totalCount: Int!
+}
+
+type IssueEdge {
+  cursor: String!
+  node: Issue!
 }
 
 type Mutation {

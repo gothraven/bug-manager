@@ -1,7 +1,6 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { graphql, usePaginationFragment } from "react-relay/hooks";
-import Divider from "@material-ui/core/Divider";
 import Fab from "@material-ui/core/Fab";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -54,7 +53,6 @@ function TagsView(props) {
       <Typography variant="h1" component="h1" gutterBottom>
         All labels
       </Typography>
-      <Divider />
       <Grid item>
         {data.tags.edges.map(edge => {
           if (edge == null || edge.node == null) {

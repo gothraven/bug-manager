@@ -7,7 +7,6 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ErrorIcon from "@material-ui/icons/Error";
 import ListItemText from "@material-ui/core/ListItemText";
 import Box from "@material-ui/core/Box";
-// import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
 import moment from "moment";
 import { invertColor } from "../../core/utils/Functions";

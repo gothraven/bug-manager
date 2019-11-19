@@ -1,7 +1,6 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { graphql, usePaginationFragment } from "react-relay/hooks";
-import Divider from "@material-ui/core/Divider";
 import Fab from "@material-ui/core/Fab";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
@@ -53,7 +52,6 @@ function ProjectsView(props) {
       <Typography variant="h1" component="h1" gutterBottom>
         All Projects
       </Typography>
-      <Divider />
       <Grid item>
         <Grid container direction="row" alignItems="flex-start">
           {data.projects.edges.map(edge => {
