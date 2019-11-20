@@ -15,7 +15,6 @@ type Change {
 
 type ChangeData {
   user: User
-  issue: Issue
   tag: Tag
   status: Status
   project: Project
@@ -66,7 +65,6 @@ type Issue {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
-  content: String!
   open: Boolean!
   creator: User!
   status: Status
@@ -120,8 +118,8 @@ type Mutation {
 }
 
 type PageInfo {
-  startCursor: String!
-  endCursor: String!
+  startCursor: String
+  endCursor: String
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
 }

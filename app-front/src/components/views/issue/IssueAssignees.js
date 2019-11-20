@@ -19,16 +19,13 @@ function IssueAssignees(props) {
         >
           Assignees
         </Typography>
-
         <Divider />
-
         {assignees.map(assignee => (
           <Grid container direction="row" key={assignee.id} alignItems="center">
-            <Avatar style={{ backgroundColor: assignee.color, margin: 5 }}>
-              {assignee.full_name.charAt(0)}
+            <Avatar style={{ margin: 5 }}>
+              {assignee.name.substr(0, 2)}
             </Avatar>
-
-            <Typography>SI MOHAMED NADIR</Typography>
+            <Typography>{assignee.name}</Typography>
           </Grid>
         ))}
       </Paper>

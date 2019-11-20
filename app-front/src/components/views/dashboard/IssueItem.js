@@ -22,12 +22,12 @@ const useStyles = makeStyles(theme => ({
 
 function IssueItem(props) {
   const { issue } = props;
-  const { title, createdAt, updatedAt, creator, open, assignedUsers, tags, project } = issue;
+  const { id, title, createdAt, updatedAt, creator, open, assignedUsers, tags, project } = issue;
   const history = useHistory();
   const classes = useStyles();
 
   return (
-    <ListItem button divider onClick={() => history.push("/user/projects")}>
+    <ListItem button divider onClick={() => history.push(`/user/issue/${id}`)}>
       <ListItemIcon>
         <ErrorIcon style={{ color: open ? "green" : "red" }} />
       </ListItemIcon>

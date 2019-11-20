@@ -6,36 +6,29 @@ import Chip from "@material-ui/core/Chip";
 import EditIcon from "@material-ui/icons/Edit";
 import TurnedInIcon from "@material-ui/icons/TurnedIn";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
+import { ASSIGN_USER, UNASSIGN_USER, ADD_TAG, REMOVE_TAG, CHANGE_STATUS } from "../../core/constants";
 
 function IssueHistory(props) {
-  const { user, type } = props;
-
-  // const name = data.user ? data.user.name : (data.action ? data.action.name : '');
-
+  const { change } = props;
+  const { data, creator, type } = change;
+  const { user, tag, status, project } = data;
   const { icon, text } = issueAdapter[type];
 
   return (
     <Box m={2}>
       <Grid container>
         <Grid item xs={1} />
-
         <Grid item xs>
           <Box flexDirection="row">
             <Chip
-              style={{
-                width: 30,
-                height: 30,
-                padding: 11,
-                paddingLeft: 15
-              }}
+              style={{ width: 30, height: 30, padding: 11, paddingLeft: 15 }}
               icon={icon}
               size="small"
             />
-
             <p style={{ display: "inline", marginLeft: 10 }}>
-              <strong> {user.name.toUpperCase()} </strong>
+              <strong> {creator.name} </strong>
               <span>{text}</span>
-              <strong> {"name".toUpperCase()} </strong>
+              <strong> {(user || tag || status || project).name} </strong>
             </p>
           </Box>
         </Grid>
@@ -45,28 +38,18 @@ function IssueHistory(props) {
 }
 
 const issueAdapter = {
-  assignUser: { icon: <AssignmentIndIcon />, text: "a assigné une tache à " },
-  unassignUser: {
+  [ASSIGN_USER]: { icon: <AssignmentIndIcon />, text: "a assigné une tache à " },
+  [UNASSIGN_USER]: {
     icon: <AssignmentIndIcon />,
     text: "a desassigné une tache à "
   },
-  addTag: { icon: <TurnedInIcon />, text: "a ajouté le tag " },
-  removeTag: { icon: <TurnedInIcon />, text: "a supprimé le TAG " },
-  changeStatus: { icon: <EditIcon />, text: "a changé le STATUS en " }
+  [ADD_TAG]: { icon: <TurnedInIcon />, text: "a ajouté le tag " },
+  [REMOVE_TAG]: { icon: <TurnedInIcon />, text: "a supprimé le TAG " },
+  [CHANGE_STATUS]: { icon: <EditIcon />, text: "a changé le STATUS en " }
 };
 
-// const types = [
-//     'assignUser',
-//     'unassignUser',
-//     'addTag',
-//     'removeTag',
-//     'changeStatus',
-// ];
-
 IssueHistory.propTypes = {
-  user: PropType.object.isRequired,
-  type: PropType.string.isRequired
-  // data: PropType.object.isRequired,
+  change: PropType.object.isRequired,
 };
 
 export default IssueHistory;

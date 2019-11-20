@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import Chip from "@material-ui/core/Chip";
+import { invertColor } from "../../core/utils/Functions";
 
 function IssueToolBar(props) {
   const { tags } = props;
@@ -18,27 +19,17 @@ function IssueToolBar(props) {
         >
           associated tags
         </Typography>
-
         <Divider />
-
         {tags.map(tag => (
           <Chip
             key={tag.id}
-            color="primary"
-            size="small"
-            label={tag.name.toUpperCase()}
-            onDelete={() => {}}
+            label={tag.name}
             style={{
-              fontSize: 12,
-              fontWeight: 400,
-              margin: 5,
-              padding: 1,
-              paddingTop: 10,
-              paddingBottom: 10,
-              marginLeft: 0,
+              borderColor: tag.color,
               backgroundColor: tag.color,
-              textAlign: "center"
+              color: invertColor(tag.color)
             }}
+            variant="outlined"
           />
         ))}
       </Paper>

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Suspense } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 import { graphql, useLazyLoadQuery } from "react-relay/hooks";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import Loading from "../../lib/Loading";
 import SideBar from "./SideBar";
 
 const useStyles = makeStyles(theme => ({
@@ -35,7 +36,9 @@ const MainLayout = props => {
       <CssBaseline />
       <SideBar queryData={queryData} />
       <main className={classes.content}>
-        {React.cloneElement(children, { queryData })}
+        <Suspense fallback={<Loading />}>
+          {React.cloneElement(children, { queryData })}
+        </Suspense>
       </main>
     </div>
   );
