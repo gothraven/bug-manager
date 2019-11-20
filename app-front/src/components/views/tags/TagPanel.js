@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function TagPanel(props) {
-  const { tag } = props;
+  const { disabled, tag } = props;
   const [expanded, setExpanded] = useState(tag.id === undefined);
   const [name, setName] = useState(tag.name);
   const [description, setDescription] = useState(tag.description || "");
@@ -47,8 +47,8 @@ function TagPanel(props) {
   }, [tag]);
 
   return (
-    <ExpansionPanel expanded={expanded} onChange={() => setExpanded(!expanded)}>
-      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+    <ExpansionPanel expanded={!disabled && expanded} onChange={() => setExpanded(!expanded)}>
+      <ExpansionPanelSummary expandIcon={!disabled && <ExpandMoreIcon />}>
         <Grid container justify="flex-start" alignItems="center">
           <Grid item xs={2}>
             <Chip
@@ -130,8 +130,13 @@ function TagPanel(props) {
   );
 }
 
+TagPanel.defaultProps = {
+  disabled: false,
+}
+
 TagPanel.propTypes = {
-  tag: PropType.object.isRequired
+  tag: PropType.object.isRequired,
+  disabled: PropType.bool,
 };
 
 export default TagPanel;

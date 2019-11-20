@@ -8,10 +8,13 @@ import Typography from "@material-ui/core/Typography";
 import AddIcon from "@material-ui/icons/Add";
 import TagPanel from "./TagPanel";
 import { useCreateTag } from "./mutations/TagMutations";
+import { useMe } from "../../layouts/main/queries/MeQuery";
+import { ADMIN } from "../../core/constants";
 
 function TagsView(props) {
   const { queryData } = props;
   const [isTagCreatePending, onCreateTag] = useCreateTag();
+  const me = useMe(queryData);
   const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment(
     graphql`
       fragment TagsView_tags on Query
@@ -58,25 +61,27 @@ function TagsView(props) {
           if (edge == null || edge.node == null) {
             return null;
           }
-          return <TagPanel key={edge.node.id} tag={edge.node} />;
+          return <TagPanel disabled={me.role !== ADMIN} key={edge.node.id} tag={edge.node} />;
         })}
       </Grid>
       <Button onClick={loadMore} disabled={!hasNext}>
         load more
       </Button>
-      <Grid
-        item
-        style={{ display: "grid", justifyContent: "center", padding: 30 }}
-      >
-        <Fab
-          color="primary"
-          aria-label="add"
-          onClick={onCreateTag}
-          disabled={isTagCreatePending}
+      {me.role === ADMIN &&
+        <Grid
+          item
+          style={{ display: "grid", justifyContent: "center", padding: 30 }}
         >
-          <AddIcon />
-        </Fab>
-      </Grid>
+          <Fab
+            color="primary"
+            aria-label="add"
+            onClick={onCreateTag}
+            disabled={isTagCreatePending}
+          >
+            <AddIcon />
+          </Fab>
+        </Grid>
+      }
     </Grid>
   );
 }

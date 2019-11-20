@@ -8,10 +8,13 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import ProjectCard from "./ProjectCard";
 import { useCreateProject } from "./mutations/ProjectMutations";
+import { useMe } from "../../layouts/main/queries/MeQuery";
+import { ADMIN } from "../../core/constants";
 
 function ProjectsView(props) {
   const { queryData } = props;
   const [isProjectCreatePending, onCreateProject] = useCreateProject();
+  const me = useMe(queryData);
   const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment(
     graphql`
       fragment ProjectsView_projects on Query
@@ -69,19 +72,21 @@ function ProjectsView(props) {
       <Button onClick={loadMore} disabled={!hasNext}>
         load more
       </Button>
-      <Grid
-        item
-        style={{ display: "grid", justifyContent: "center", padding: 30 }}
-      >
-        <Fab
-          color="primary"
-          aria-label="add"
-          onClick={onCreateProject}
-          disabled={isProjectCreatePending}
+      {me.role === ADMIN &&
+        <Grid
+          item
+          style={{ display: "grid", justifyContent: "center", padding: 30 }}
         >
-          <AddIcon />
-        </Fab>
-      </Grid>
+          <Fab
+            color="primary"
+            aria-label="add"
+            onClick={onCreateProject}
+            disabled={isProjectCreatePending}
+          >
+            <AddIcon />
+          </Fab>
+        </Grid>
+      }
     </Grid>
   );
 }
