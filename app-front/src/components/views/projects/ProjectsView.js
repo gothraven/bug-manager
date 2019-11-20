@@ -62,8 +62,8 @@ function ProjectsView(props) {
               return null;
             }
             return (
-              <Grid key={edge.node.id} item xs={6}>
-                <ProjectCard project={edge.node} />
+              <Grid key={edge.node.id} item xs={4}>
+                <ProjectCard disabled={me.role !== ADMIN} project={edge.node} />
               </Grid>
             );
           })}

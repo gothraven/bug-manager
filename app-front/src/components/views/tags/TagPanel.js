@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PropType from "prop-types";
+import PropTypes from "prop-types";
 import { TwitterPicker } from "react-color";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -135,8 +135,8 @@ TagPanel.defaultProps = {
 }
 
 TagPanel.propTypes = {
-  tag: PropType.object.isRequired,
-  disabled: PropType.bool,
+  tag: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
 };
 
 export default TagPanel;

@@ -34,7 +34,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ProjectCard(props) {
-  const { project } = props;
+  const { disabled, project } = props;
   const [edition, setEdition] = useState(false);
   const [name, setName] = useState(project.name);
   const [description, setDescription] = useState(project.description || "");
@@ -58,7 +58,7 @@ function ProjectCard(props) {
     <Card className={classes.card}>
       <CardHeader
         className={classes.cardTitle}
-        action={[
+        action={disabled ? [] : [
           <IconButton
             key={0}
             color={edition ? "primary" : "default"}
@@ -91,10 +91,10 @@ function ProjectCard(props) {
             onChange={event => setName(event.target.value)}
           />
         ) : (
-          <Typography variant="h3" color="textPrimary" component="h3">
-            {name}
-          </Typography>
-        )}
+            <Typography variant="h3" color="textPrimary" component="h3">
+              {name}
+            </Typography>
+          )}
         {edition ? (
           <TextField
             label="Description"
@@ -107,10 +107,10 @@ function ProjectCard(props) {
             onChange={event => setDescription(event.target.value)}
           />
         ) : (
-          <Typography variant="body1" color="textSecondary" component="p">
-            {description}
-          </Typography>
-        )}
+            <Typography variant="body1" color="textSecondary" component="p">
+              {description}
+            </Typography>
+          )}
         {edition && (
           <Button
             variant="contained"
@@ -130,8 +130,13 @@ function ProjectCard(props) {
   );
 }
 
+ProjectCard.defaultProps = {
+  disabled: false,
+}
+
 ProjectCard.propTypes = {
-  project: PropTypes.object.isRequired
+  project: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
 };
 
 export default ProjectCard;
