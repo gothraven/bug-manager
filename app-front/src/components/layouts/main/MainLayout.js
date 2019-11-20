@@ -22,10 +22,10 @@ const MainLayout = props => {
   const queryData = useLazyLoadQuery(
     graphql`
       query MainLayoutViewQuery {
-        ...SideBar_me
         ...DashboardView_issues
         ...ProjectsView_projects
         ...TagsView_tags
+        ...MeQuery_me
       }
     `
   );

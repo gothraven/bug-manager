@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
-import { graphql, useFragment } from "react-relay/hooks";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 import Fab from "@material-ui/core/Fab";
@@ -17,6 +16,7 @@ import ClassIcon from "@material-ui/icons/Class";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { signOut } from "../../core/utils/Auth";
+import { useMe } from "./queries/MeQuery";
 
 const drawerWidth = 200;
 
@@ -82,22 +82,13 @@ const menuItems = [
   }
 ];
 
+
 function SideBar(props) {
   const { queryData } = props;
   const history = useHistory();
   const classes = useStyles();
+  const me = useMe(queryData);
   const [open, setOpen] = useState(false);
-  const { me } = useFragment(
-    graphql`
-      fragment SideBar_me on Query {
-        me {
-          id
-          name
-        }
-      }
-    `,
-    queryData,
-  );
 
   return (
     <Drawer

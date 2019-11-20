@@ -8,27 +8,29 @@
 
 /*::
 import type { ReaderFragment } from 'relay-runtime';
+export type Role = "ADMIN" | "USER" | "%future added value";
 import type { FragmentReference } from "relay-runtime";
-declare export opaque type SideBar_me$ref: FragmentReference;
-declare export opaque type SideBar_me$fragmentType: SideBar_me$ref;
-export type SideBar_me = {|
+declare export opaque type MeQuery_me$ref: FragmentReference;
+declare export opaque type MeQuery_me$fragmentType: MeQuery_me$ref;
+export type MeQuery_me = {|
   +me: ?{|
     +id: string,
     +name: string,
+    +role: Role,
   |},
-  +$refType: SideBar_me$ref,
+  +$refType: MeQuery_me$ref,
 |};
-export type SideBar_me$data = SideBar_me;
-export type SideBar_me$key = {
-  +$data?: SideBar_me$data,
-  +$fragmentRefs: SideBar_me$ref,
+export type MeQuery_me$data = MeQuery_me;
+export type MeQuery_me$key = {
+  +$data?: MeQuery_me$data,
+  +$fragmentRefs: MeQuery_me$ref,
 };
 */
 
 
 const node/*: ReaderFragment*/ = {
   "kind": "Fragment",
-  "name": "SideBar_me",
+  "name": "MeQuery_me",
   "type": "Query",
   "metadata": null,
   "argumentDefinitions": [],
@@ -55,11 +57,18 @@ const node/*: ReaderFragment*/ = {
           "name": "name",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "role",
+          "args": null,
+          "storageKey": null
         }
       ]
     }
   ]
 };
 // prettier-ignore
-(node/*: any*/).hash = 'dc8d7b3531ce6f25363e6a02f6b917d4';
+(node/*: any*/).hash = 'ab0aa8c4173d8bfb9590402cefb4b463';
 module.exports = node;

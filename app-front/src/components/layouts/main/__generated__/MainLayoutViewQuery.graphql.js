@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash cccdb21c93ea8c438b805aac5d52bdbe
+ * @relayHash 3908b827c3f0209afebc54a75c3fda2b
  */
 
 /* eslint-disable */
@@ -10,12 +10,12 @@
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
 type DashboardView_issues$ref = any;
+type MeQuery_me$ref = any;
 type ProjectsView_projects$ref = any;
-type SideBar_me$ref = any;
 type TagsView_tags$ref = any;
 export type MainLayoutViewQueryVariables = {||};
 export type MainLayoutViewQueryResponse = {|
-  +$fragmentRefs: SideBar_me$ref & DashboardView_issues$ref & ProjectsView_projects$ref & TagsView_tags$ref
+  +$fragmentRefs: DashboardView_issues$ref & ProjectsView_projects$ref & TagsView_tags$ref & MeQuery_me$ref
 |};
 export type MainLayoutViewQuery = {|
   variables: MainLayoutViewQueryVariables,
@@ -26,10 +26,10 @@ export type MainLayoutViewQuery = {|
 
 /*
 query MainLayoutViewQuery {
-  ...SideBar_me
   ...DashboardView_issues
   ...ProjectsView_projects
   ...TagsView_tags
+  ...MeQuery_me
 }
 
 fragment DashboardView_issues on Query {
@@ -73,6 +73,14 @@ fragment DashboardView_issues on Query {
   }
 }
 
+fragment MeQuery_me on Query {
+  me {
+    id
+    name
+    role
+  }
+}
+
 fragment ProjectsView_projects on Query {
   projects(first: 10, after: "") {
     edges {
@@ -88,13 +96,6 @@ fragment ProjectsView_projects on Query {
       endCursor
       hasNextPage
     }
-  }
-}
-
-fragment SideBar_me on Query {
-  me {
-    id
-    name
   }
 }
 
@@ -119,25 +120,7 @@ fragment TagsView_tags on Query {
 */
 
 const node/*: ConcreteRequest*/ = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
-  "args": null,
-  "storageKey": null
-},
-v2 = [
-  (v0/*: any*/),
-  (v1/*: any*/)
-],
-v3 = [
+var v0 = [
   {
     "kind": "Literal",
     "name": "after",
@@ -148,6 +131,24 @@ v3 = [
     "name": "first",
     "value": 10
   }
+],
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v3 = [
+  (v1/*: any*/),
+  (v2/*: any*/)
 ],
 v4 = {
   "kind": "ScalarField",
@@ -213,11 +214,6 @@ return {
     "selections": [
       {
         "kind": "FragmentSpread",
-        "name": "SideBar_me",
-        "args": null
-      },
-      {
-        "kind": "FragmentSpread",
         "name": "DashboardView_issues",
         "args": null
       },
@@ -230,6 +226,11 @@ return {
         "kind": "FragmentSpread",
         "name": "TagsView_tags",
         "args": null
+      },
+      {
+        "kind": "FragmentSpread",
+        "name": "MeQuery_me",
+        "args": null
       }
     ]
   },
@@ -241,19 +242,9 @@ return {
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "me",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "User",
-        "plural": false,
-        "selections": (v2/*: any*/)
-      },
-      {
-        "kind": "LinkedField",
-        "alias": null,
         "name": "issues",
         "storageKey": "issues(after:\"\",first:10)",
-        "args": (v3/*: any*/),
+        "args": (v0/*: any*/),
         "concreteType": "IssueCursor",
         "plural": false,
         "selections": [
@@ -275,7 +266,7 @@ return {
                 "concreteType": "Issue",
                 "plural": false,
                 "selections": [
-                  (v0/*: any*/),
+                  (v1/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -305,7 +296,7 @@ return {
                     "args": null,
                     "concreteType": "User",
                     "plural": false,
-                    "selections": (v2/*: any*/)
+                    "selections": (v3/*: any*/)
                   },
                   {
                     "kind": "LinkedField",
@@ -315,7 +306,7 @@ return {
                     "args": null,
                     "concreteType": "Status",
                     "plural": false,
-                    "selections": (v2/*: any*/)
+                    "selections": (v3/*: any*/)
                   },
                   {
                     "kind": "ScalarField",
@@ -332,7 +323,7 @@ return {
                     "args": null,
                     "concreteType": "User",
                     "plural": true,
-                    "selections": (v2/*: any*/)
+                    "selections": (v3/*: any*/)
                   },
                   {
                     "kind": "LinkedField",
@@ -343,8 +334,8 @@ return {
                     "concreteType": "Tag",
                     "plural": true,
                     "selections": [
-                      (v0/*: any*/),
                       (v1/*: any*/),
+                      (v2/*: any*/),
                       (v4/*: any*/)
                     ]
                   },
@@ -357,8 +348,8 @@ return {
                     "concreteType": "Project",
                     "plural": false,
                     "selections": [
-                      (v1/*: any*/),
-                      (v0/*: any*/)
+                      (v2/*: any*/),
+                      (v1/*: any*/)
                     ]
                   },
                   (v5/*: any*/)
@@ -374,7 +365,7 @@ return {
         "kind": "LinkedHandle",
         "alias": null,
         "name": "issues",
-        "args": (v3/*: any*/),
+        "args": (v0/*: any*/),
         "handle": "connection",
         "key": "Query_issues",
         "filters": []
@@ -384,7 +375,7 @@ return {
         "alias": null,
         "name": "projects",
         "storageKey": "projects(after:\"\",first:10)",
-        "args": (v3/*: any*/),
+        "args": (v0/*: any*/),
         "concreteType": "ProjectCursor",
         "plural": false,
         "selections": [
@@ -406,8 +397,8 @@ return {
                 "concreteType": "Project",
                 "plural": false,
                 "selections": [
-                  (v0/*: any*/),
                   (v1/*: any*/),
+                  (v2/*: any*/),
                   (v8/*: any*/),
                   (v5/*: any*/)
                 ]
@@ -422,7 +413,7 @@ return {
         "kind": "LinkedHandle",
         "alias": null,
         "name": "projects",
-        "args": (v3/*: any*/),
+        "args": (v0/*: any*/),
         "handle": "connection",
         "key": "Query_projects",
         "filters": []
@@ -432,7 +423,7 @@ return {
         "alias": null,
         "name": "tags",
         "storageKey": "tags(after:\"\",first:10)",
-        "args": (v3/*: any*/),
+        "args": (v0/*: any*/),
         "concreteType": "TagCursor",
         "plural": false,
         "selections": [
@@ -454,8 +445,8 @@ return {
                 "concreteType": "Tag",
                 "plural": false,
                 "selections": [
-                  (v0/*: any*/),
                   (v1/*: any*/),
+                  (v2/*: any*/),
                   (v8/*: any*/),
                   (v4/*: any*/),
                   (v5/*: any*/)
@@ -471,10 +462,30 @@ return {
         "kind": "LinkedHandle",
         "alias": null,
         "name": "tags",
-        "args": (v3/*: any*/),
+        "args": (v0/*: any*/),
         "handle": "connection",
         "key": "Query_tags",
         "filters": []
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "User",
+        "plural": false,
+        "selections": [
+          (v1/*: any*/),
+          (v2/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "role",
+            "args": null,
+            "storageKey": null
+          }
+        ]
       }
     ]
   },
@@ -482,11 +493,11 @@ return {
     "operationKind": "query",
     "name": "MainLayoutViewQuery",
     "id": null,
-    "text": "query MainLayoutViewQuery {\n  ...SideBar_me\n  ...DashboardView_issues\n  ...ProjectsView_projects\n  ...TagsView_tags\n}\n\nfragment DashboardView_issues on Query {\n  issues(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        createdAt\n        updatedAt\n        title\n        creator {\n          id\n          name\n        }\n        status {\n          id\n          name\n        }\n        open\n        assignedUsers {\n          id\n          name\n        }\n        tags {\n          id\n          name\n          color\n        }\n        project {\n          name\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment ProjectsView_projects on Query {\n  projects(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        name\n        description\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment SideBar_me on Query {\n  me {\n    id\n    name\n  }\n}\n\nfragment TagsView_tags on Query {\n  tags(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        name\n        description\n        color\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n",
+    "text": "query MainLayoutViewQuery {\n  ...DashboardView_issues\n  ...ProjectsView_projects\n  ...TagsView_tags\n  ...MeQuery_me\n}\n\nfragment DashboardView_issues on Query {\n  issues(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        createdAt\n        updatedAt\n        title\n        creator {\n          id\n          name\n        }\n        status {\n          id\n          name\n        }\n        open\n        assignedUsers {\n          id\n          name\n        }\n        tags {\n          id\n          name\n          color\n        }\n        project {\n          name\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment MeQuery_me on Query {\n  me {\n    id\n    name\n    role\n  }\n}\n\nfragment ProjectsView_projects on Query {\n  projects(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        name\n        description\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TagsView_tags on Query {\n  tags(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        name\n        description\n        color\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '41f1f895dbc44c11ef8ca67c631c0b48';
+(node/*: any*/).hash = '4fcd899f0a72728249e64680d1be8ddb';
 module.exports = node;
