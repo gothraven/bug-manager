@@ -1,14 +1,14 @@
 import mongoose from 'mongoose';
 
-export const ASSIGN_USER = 'assignUser';
-export const UNASSIGN_USER = 'unassignUser';
-export const ADD_TAG = 'addTag';
-export const REMOVE_TAG = 'removeTag';
-export const CHANGE_STATUS = 'changeStatus';
-export const ATTACH_TO_PROJECT = 'attachToProject';
-export const DETATCH_FROM_PROJECT = 'detatchFromProject';
-export const CLOSE_ISSUE = 'closeIssue';
-export const REOPEN_ISSUE = 'reopenIssue';
+export const ASSIGN_USER = 'ASSIGN_USER';
+export const UNASSIGN_USER = 'UNASSIGN_USER';
+export const ADD_TAG = 'ADD_TAG';
+export const REMOVE_TAG = 'REMOVE_TAG';
+export const CHANGE_STATUS = 'CHANGE_STATUS';
+export const ATTACH_TO_PROJECT = 'ATTACH_TO_PROJECT';
+export const DETATCH_FROM_PROJECT = 'DETATCH_FROM_PROJECT';
+export const CLOSE_ISSUE = 'CLOSE_ISSUE';
+export const REOPEN_ISSUE = 'REOPE_NISSUE';
 
 const types = [
   ASSIGN_USER,

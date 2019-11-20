@@ -6,7 +6,6 @@ type Issue {
   createdAt: Date!
   updatedAt: Date!
   title: String!
-  content: String!
   open: Boolean!
   creator: User!
   status: Status

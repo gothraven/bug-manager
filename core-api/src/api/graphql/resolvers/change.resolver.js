@@ -6,8 +6,6 @@ export default {
   ChangeData: {
     user: async (changeData, args, { loaders }) =>
       changeData.userId && loaders.users.load(changeData.userId),
-    issue: async (changeData, args, { loaders }) =>
-      changeData.issueId && loaders.issues.load(changeData.issueId),
     tag: async (changeData, args, { loaders }) =>
       changeData.tagId && loaders.tags.load(changeData.tagId),
     status: async (changeData, args, { loaders }) =>

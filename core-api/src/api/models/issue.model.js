@@ -9,10 +9,6 @@ const issueSchema = new mongoose.Schema(
       required: true,
       index: true
     },
-    content: {
-      type: String,
-      required: true
-    },
     creatorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
@@ -69,7 +65,6 @@ issueSchema.method({
       'title',
       'createdAt',
       'updatedAt',
-      'content',
       'creatorId',
       'open',
       'statusId',

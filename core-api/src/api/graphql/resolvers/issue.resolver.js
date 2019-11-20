@@ -30,8 +30,11 @@ export default {
   Mutation: {
     createIssue: combineResolvers(
       authorize(USER),
-      async (parent, { title, content }, { models, me }) =>
-        models.Issue.create({ title, content, creatorId: me.id })
+      async (parent, { title, content }, { models, me }) => {
+        const issue = await models.Issue.create({ title, creatorId: me.id });
+        await models.Comment.create({ creatorId: me.id, issueId: issue.id, content });
+        return issue;
+      }
     ),
     updateIssue: combineResolvers(
       authorize(USER),

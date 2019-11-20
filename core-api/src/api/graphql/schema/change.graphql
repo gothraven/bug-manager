@@ -24,7 +24,6 @@ type Change {
 
 type ChangeData {
   user: User
-  issue: Issue
   tag: Tag
   status: Status
   project: Project
