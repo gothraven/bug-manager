@@ -22,7 +22,7 @@ const tagSchema = new mongoose.Schema(
   }
 );
 
-tagSchema.post('remove', async function remove(next) {
+tagSchema.post('remove', async function remove(_, next) {
   try {
     await Issue.updateMany({ tagIds: this.id }, { $pull: { tagIds: this.id } });
     return next();

@@ -44,7 +44,7 @@ const issueSchema = new mongoose.Schema(
   }
 );
 
-issueSchema.post('remove', async function remove(next) {
+issueSchema.post('remove', async function remove(_, next) {
   try {
     Comment.remove({ issueId: this.id });
     Change.remove({ issueId: this.id });
