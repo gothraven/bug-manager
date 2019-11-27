@@ -6,7 +6,6 @@ import { makeStyles } from "@material-ui/styles";
 import Fab from "@material-ui/core/Fab";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
-import Avatar from "@material-ui/core/Avatar";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -17,6 +16,7 @@ import BookmarksIcon from "@material-ui/icons/Bookmarks";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { signOut } from "../../core/utils/Auth";
 import { useMe } from "./queries/MeQuery";
+import UserAvatar from "../../lib/UserAvatar";
 
 const drawerWidth = 200;
 
@@ -112,7 +112,7 @@ function SideBar(props) {
         <List>
           <ListItem button classes={{ root: classes.listItem }}>
             <ListItemIcon classes={{ root: classes.listItemIcon }}>
-              <Avatar alt="">{me.name.substr(0, 2)}</Avatar>
+              <UserAvatar email={me.email} />
             </ListItemIcon>
             {open && <ListItemText primary={me.name} />}
           </ListItem>

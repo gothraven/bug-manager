@@ -4,8 +4,8 @@ import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
-import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
+import UserAvatar from "../../lib/UserAvatar";
 
 function IssueAssignees(props) {
   const { assignees } = props;
@@ -22,9 +22,7 @@ function IssueAssignees(props) {
         <Divider />
         {assignees.map(assignee => (
           <Grid container direction="row" key={assignee.id} alignItems="center">
-            <Avatar style={{ margin: 5 }}>
-              {assignee.name.substr(0, 2)}
-            </Avatar>
+            <UserAvatar email={assignee.email} />
             <Typography>{assignee.name}</Typography>
           </Grid>
         ))}

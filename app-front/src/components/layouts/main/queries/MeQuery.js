@@ -7,6 +7,7 @@ export const MeFragment = graphql`
       id
       name
       role
+      email
     }
   }
 `;

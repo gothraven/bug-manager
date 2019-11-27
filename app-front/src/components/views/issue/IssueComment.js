@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import PropType from "prop-types";
+import UserAvatar from "../../lib/UserAvatar";
 
 function IssueComment(props) {
   const { creation, content, user } = props;
@@ -16,7 +16,7 @@ function IssueComment(props) {
     <Box m={2}>
       <Grid container>
         <Grid item xs={1}>
-          <Avatar>{user.name.slice(0, 2).toUpperCase()}</Avatar>
+          <UserAvatar email={user.email} />
         </Grid>
         <Grid item xs>
           {creation ? (
@@ -40,8 +40,8 @@ function IssueComment(props) {
               </Box>
             </>
           ) : (
-            <Paper style={{ padding: 10 }}>{value}</Paper>
-          )}
+              <Paper style={{ padding: 10 }}>{value}</Paper>
+            )}
         </Grid>
       </Grid>
     </Box>

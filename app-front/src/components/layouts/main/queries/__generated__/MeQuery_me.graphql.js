@@ -17,6 +17,7 @@ export type MeQuery_me = {|
     +id: string,
     +name: string,
     +role: Role,
+    +email: any,
   |},
   +$refType: MeQuery_me$ref,
 |};
@@ -64,11 +65,18 @@ const node/*: ReaderFragment*/ = {
           "name": "role",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "email",
+          "args": null,
+          "storageKey": null
         }
       ]
     }
   ]
 };
 // prettier-ignore
-(node/*: any*/).hash = 'ab0aa8c4173d8bfb9590402cefb4b463';
+(node/*: any*/).hash = '3c184c08f91082162e0ec8ae956fadce';
 module.exports = node;

@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 3908b827c3f0209afebc54a75c3fda2b
+ * @relayHash 09be755a12f7ba0a131416582c4dbe60
  */
 
 /* eslint-disable */
@@ -78,6 +78,7 @@ fragment MeQuery_me on Query {
     id
     name
     role
+    email
   }
 }
 
@@ -484,6 +485,13 @@ return {
             "name": "role",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "email",
+            "args": null,
+            "storageKey": null
           }
         ]
       }
@@ -493,7 +501,7 @@ return {
     "operationKind": "query",
     "name": "MainLayoutViewQuery",
     "id": null,
-    "text": "query MainLayoutViewQuery {\n  ...DashboardView_issues\n  ...ProjectsView_projects\n  ...TagsView_tags\n  ...MeQuery_me\n}\n\nfragment DashboardView_issues on Query {\n  issues(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        createdAt\n        updatedAt\n        title\n        creator {\n          id\n          name\n        }\n        status {\n          id\n          name\n        }\n        open\n        assignedUsers {\n          id\n          name\n        }\n        tags {\n          id\n          name\n          color\n        }\n        project {\n          name\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment MeQuery_me on Query {\n  me {\n    id\n    name\n    role\n  }\n}\n\nfragment ProjectsView_projects on Query {\n  projects(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        name\n        description\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TagsView_tags on Query {\n  tags(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        name\n        description\n        color\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n",
+    "text": "query MainLayoutViewQuery {\n  ...DashboardView_issues\n  ...ProjectsView_projects\n  ...TagsView_tags\n  ...MeQuery_me\n}\n\nfragment DashboardView_issues on Query {\n  issues(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        createdAt\n        updatedAt\n        title\n        creator {\n          id\n          name\n        }\n        status {\n          id\n          name\n        }\n        open\n        assignedUsers {\n          id\n          name\n        }\n        tags {\n          id\n          name\n          color\n        }\n        project {\n          name\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment MeQuery_me on Query {\n  me {\n    id\n    name\n    role\n    email\n  }\n}\n\nfragment ProjectsView_projects on Query {\n  projects(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        name\n        description\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TagsView_tags on Query {\n  tags(first: 10, after: \"\") {\n    edges {\n      node {\n        id\n        name\n        description\n        color\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n",
     "metadata": {}
   }
 };
