@@ -16,7 +16,7 @@ function IssueComment(props) {
     <Box m={2}>
       <Grid container>
         <Grid item xs={1}>
-          <UserAvatar email={user.email} />
+          <UserAvatar user={user} />
         </Grid>
         <Grid item xs>
           {creation ? (

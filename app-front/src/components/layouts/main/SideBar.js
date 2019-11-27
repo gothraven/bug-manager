@@ -112,7 +112,7 @@ function SideBar(props) {
         <List>
           <ListItem button classes={{ root: classes.listItem }}>
             <ListItemIcon classes={{ root: classes.listItemIcon }}>
-              <UserAvatar email={me.email} />
+              <UserAvatar user={me} />
             </ListItemIcon>
             {open && <ListItemText primary={me.name} />}
           </ListItem>

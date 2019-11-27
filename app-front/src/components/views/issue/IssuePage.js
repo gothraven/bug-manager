@@ -23,12 +23,10 @@ function IssuePage() {
           creator {
             id
             name
-            email
           }
           assignedUsers {
             id
             name
-            email
           }
           tags {
             id
@@ -71,7 +69,6 @@ function IssuePage() {
             creator {
               id
               name
-              email
             }
           }
         }

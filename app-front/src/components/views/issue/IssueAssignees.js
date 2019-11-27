@@ -22,7 +22,7 @@ function IssueAssignees(props) {
         <Divider />
         {assignees.map(assignee => (
           <Grid container direction="row" key={assignee.id} alignItems="center">
-            <UserAvatar email={assignee.email} />
+            <UserAvatar user={assignee} />
             <Typography>{assignee.name}</Typography>
           </Grid>
         ))}

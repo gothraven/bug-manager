@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 9718faafaa511d8be5b5d7132a4eddfa
+ * @relayHash fbde476f3853df5bc1e5a62da4de13c8
  */
 
 /* eslint-disable */
@@ -22,12 +22,10 @@ export type IssuePageQueryResponse = {|
     +creator: {|
       +id: string,
       +name: string,
-      +email: any,
     |},
     +assignedUsers: $ReadOnlyArray<{|
       +id: string,
       +name: string,
-      +email: any,
     |}>,
     +tags: $ReadOnlyArray<{|
       +id: string,
@@ -70,7 +68,6 @@ export type IssuePageQueryResponse = {|
       +creator: {|
         +id: string,
         +name: string,
-        +email: any,
       |},
     |}>,
   |}
@@ -94,12 +91,10 @@ query IssuePageQuery(
     creator {
       id
       name
-      email
     }
     assignedUsers {
       id
       name
-      email
     }
     tags {
       id
@@ -146,7 +141,6 @@ query IssuePageQuery(
       creator {
         id
         name
-        email
       }
     }
   }
@@ -206,14 +200,7 @@ v6 = {
 },
 v7 = [
   (v2/*: any*/),
-  (v6/*: any*/),
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "email",
-    "args": null,
-    "storageKey": null
-  }
+  (v6/*: any*/)
 ],
 v8 = {
   "kind": "LinkedField",
@@ -255,11 +242,7 @@ v10 = {
     }
   ]
 },
-v11 = [
-  (v2/*: any*/),
-  (v6/*: any*/)
-],
-v12 = {
+v11 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "project",
@@ -267,29 +250,19 @@ v12 = {
   "args": null,
   "concreteType": "Project",
   "plural": false,
-  "selections": (v11/*: any*/)
+  "selections": (v7/*: any*/)
 },
-v13 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "creator",
-  "storageKey": null,
-  "args": null,
-  "concreteType": "User",
-  "plural": false,
-  "selections": (v11/*: any*/)
-},
-v14 = {
+v12 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "type",
   "args": null,
   "storageKey": null
 },
-v15 = [
+v13 = [
   (v6/*: any*/)
 ],
-v16 = {
+v14 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "comments",
@@ -311,7 +284,7 @@ v16 = {
     (v8/*: any*/)
   ]
 },
-v17 = [
+v15 = [
   (v6/*: any*/),
   (v2/*: any*/)
 ];
@@ -340,7 +313,7 @@ return {
           (v8/*: any*/),
           (v9/*: any*/),
           (v10/*: any*/),
-          (v12/*: any*/),
+          (v11/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -353,8 +326,8 @@ return {
               (v2/*: any*/),
               (v4/*: any*/),
               (v5/*: any*/),
-              (v13/*: any*/),
-              (v14/*: any*/),
+              (v8/*: any*/),
+              (v12/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -372,7 +345,7 @@ return {
                     "args": null,
                     "concreteType": "User",
                     "plural": false,
-                    "selections": (v15/*: any*/)
+                    "selections": (v13/*: any*/)
                   },
                   {
                     "kind": "LinkedField",
@@ -382,7 +355,7 @@ return {
                     "args": null,
                     "concreteType": "Tag",
                     "plural": false,
-                    "selections": (v15/*: any*/)
+                    "selections": (v13/*: any*/)
                   },
                   {
                     "kind": "LinkedField",
@@ -392,7 +365,7 @@ return {
                     "args": null,
                     "concreteType": "Project",
                     "plural": false,
-                    "selections": (v15/*: any*/)
+                    "selections": (v13/*: any*/)
                   },
                   {
                     "kind": "LinkedField",
@@ -402,13 +375,13 @@ return {
                     "args": null,
                     "concreteType": "Status",
                     "plural": false,
-                    "selections": (v15/*: any*/)
+                    "selections": (v13/*: any*/)
                   }
                 ]
               }
             ]
           },
-          (v16/*: any*/)
+          (v14/*: any*/)
         ]
       }
     ]
@@ -434,7 +407,7 @@ return {
           (v8/*: any*/),
           (v9/*: any*/),
           (v10/*: any*/),
-          (v12/*: any*/),
+          (v11/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -447,8 +420,8 @@ return {
               (v2/*: any*/),
               (v4/*: any*/),
               (v5/*: any*/),
-              (v13/*: any*/),
-              (v14/*: any*/),
+              (v8/*: any*/),
+              (v12/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -466,7 +439,7 @@ return {
                     "args": null,
                     "concreteType": "User",
                     "plural": false,
-                    "selections": (v17/*: any*/)
+                    "selections": (v15/*: any*/)
                   },
                   {
                     "kind": "LinkedField",
@@ -476,7 +449,7 @@ return {
                     "args": null,
                     "concreteType": "Tag",
                     "plural": false,
-                    "selections": (v17/*: any*/)
+                    "selections": (v15/*: any*/)
                   },
                   {
                     "kind": "LinkedField",
@@ -486,7 +459,7 @@ return {
                     "args": null,
                     "concreteType": "Project",
                     "plural": false,
-                    "selections": (v17/*: any*/)
+                    "selections": (v15/*: any*/)
                   },
                   {
                     "kind": "LinkedField",
@@ -496,13 +469,13 @@ return {
                     "args": null,
                     "concreteType": "Status",
                     "plural": false,
-                    "selections": (v17/*: any*/)
+                    "selections": (v15/*: any*/)
                   }
                 ]
               }
             ]
           },
-          (v16/*: any*/)
+          (v14/*: any*/)
         ]
       }
     ]
@@ -511,11 +484,11 @@ return {
     "operationKind": "query",
     "name": "IssuePageQuery",
     "id": null,
-    "text": "query IssuePageQuery(\n  $id: ID!\n) {\n  issue(id: $id) {\n    id\n    title\n    createdAt\n    updatedAt\n    creator {\n      id\n      name\n      email\n    }\n    assignedUsers {\n      id\n      name\n      email\n    }\n    tags {\n      id\n      name\n      color\n    }\n    project {\n      id\n      name\n    }\n    changes {\n      id\n      createdAt\n      updatedAt\n      creator {\n        id\n        name\n      }\n      type\n      data {\n        user {\n          name\n          id\n        }\n        tag {\n          name\n          id\n        }\n        project {\n          name\n          id\n        }\n        status {\n          name\n          id\n        }\n      }\n    }\n    comments {\n      id\n      createdAt\n      updatedAt\n      content\n      creator {\n        id\n        name\n        email\n      }\n    }\n  }\n}\n",
+    "text": "query IssuePageQuery(\n  $id: ID!\n) {\n  issue(id: $id) {\n    id\n    title\n    createdAt\n    updatedAt\n    creator {\n      id\n      name\n    }\n    assignedUsers {\n      id\n      name\n    }\n    tags {\n      id\n      name\n      color\n    }\n    project {\n      id\n      name\n    }\n    changes {\n      id\n      createdAt\n      updatedAt\n      creator {\n        id\n        name\n      }\n      type\n      data {\n        user {\n          name\n          id\n        }\n        tag {\n          name\n          id\n        }\n        project {\n          name\n          id\n        }\n        status {\n          name\n          id\n        }\n      }\n    }\n    comments {\n      id\n      createdAt\n      updatedAt\n      content\n      creator {\n        id\n        name\n      }\n    }\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '0a42ecc15a5eafd985f9d8e7b255babf';
+(node/*: any*/).hash = '2ded9b7628708ed81081440fb6105a53';
 module.exports = node;

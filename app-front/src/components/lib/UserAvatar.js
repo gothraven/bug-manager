@@ -7,8 +7,8 @@ import { hexToRgbA } from "../core/utils/Functions";
 
 
 function UserAvatar(props) {
-  const { email } = props;
-  const hash = md5(email);
+  const { user } = props;
+  const hash = md5(user.id + user.name);
   const hashcolor = `#${hash.slice(0, 6)}`;
   const options = {
     foreground: hexToRgbA(hashcolor),
@@ -23,7 +23,7 @@ function UserAvatar(props) {
 
 
 UserAvatar.propTypes = {
-  email: PropTypes.string.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 export default UserAvatar;
