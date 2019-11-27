@@ -16,7 +16,7 @@ export function invertColor(hexColor, bw = true) {
     hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
   }
   if (hex.length !== 6) {
-    throw new Error("Invalid HEX color.");
+    throw new Error(`Invalid HEX color ${hexColor}`);
   }
   let r = parseInt(hex.slice(0, 2), 16);
   let g = parseInt(hex.slice(2, 4), 16);
@@ -34,15 +34,16 @@ export function invertColor(hexColor, bw = true) {
 }
 
 
-export function hexToRgbA(hex) {
+export function hexToRgbA(hexColor) {
   let c;
-  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-    c = hex.substring(1).split('');
+  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hexColor)) {
+    c = hexColor.substring(1).split('');
     if (c.length === 3) {
       c = [c[0], c[0], c[1], c[1], c[2], c[2]];
     }
-    c = '0x' + c.join('');
+    c = `0x${c.join('')}`;
+    // eslint-disable-next-line no-bitwise
     return [(c >> 16) & 255, (c >> 8) & 255, c & 255, 255];
   }
-  throw new Error('Bad Hex');
+  throw new Error(`Invalid HEX color ${hexColor}`);
 }
