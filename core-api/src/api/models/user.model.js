@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.pre('save', async function save(_, next) {
+userSchema.pre('save', async function save(next) {
   try {
     if (!this.isModified('password')) return next();
 
@@ -54,14 +54,13 @@ userSchema.pre('save', async function save(_, next) {
 
     const hash = await bcrypt.hash(this.password, rounds);
     this.password = hash;
-
     return next();
   } catch (error) {
     return next(error);
   }
 });
 
-userSchema.post('remove', async function remove(next) {
+userSchema.post('remove', async function remove(_, next) {
   try {
     await Issue.deleteMany({ creatorId: this.id });
     await Comment.deleteMany({ creatorId: this.id });
