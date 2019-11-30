@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/react-hooks": "^3.1.3",
     "@material-ui/core": "^4.4.3",
     "@material-ui/icons": "^4.4.3",
     "@material-ui/styles": "^4.4.3",
+    "apollo-boost": "^0.4.4",
     "clsx": "^1.0.4",
     "history": "^4.10.1",
     "identicon.js": "^2.3.3",
@@ -18,22 +20,18 @@
     "react-color": "^2.17.3",
     "react-dom": "^16.10.0",
     "react-perfect-scrollbar": "^1.5.3",
-    "react-relay": "0.0.0-experimental-a1a40b68",
     "react-router-dom": "^5.1.1",
     "react-scripts": "^3.1.2",
-    "relay-runtime": "^7.1.0",
     "typeface-roboto": "0.0.75"
   },
   "scripts": {
-    "start": "npm run relay && react-app-rewired start",
-    "build": "npm run relay && react-app-rewired build",
-    "relay": "relay-compiler --schema schema.graphql --src ./src/ --watchman false $@",
-    "test:cli": "CI=true react-app-rewired test --env=jsdom",
-    "test": "react-app-rewired test",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test:cli": "CI=true react-scripts test --env=jsdom",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.js' --fix",
-    "format": "prettier 'src/**/*.{js,json}' --write",
-    "update-schema": "get-graphql-schema http://localhost:3030/ > schema.graphql"
+    "format": "prettier 'src/**/*.{js,json}' --write"
   },
   "husky": {
     "hooks": {
@@ -63,10 +61,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-optional-chaining": "^7.6.0",
     "babel-eslint": "^10.0.3",
-    "babel-plugin-relay": "^7.1.0",
-    "customize-cra": "^0.8.0",
     "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.3.0",
@@ -78,9 +73,6 @@
     "lint-staged": "^9.4.0",
     "prettier": "^1.18.2",
     "prettier-eslint": "^9.0.0",
-    "pretty-quick": "^1.11.1",
-    "react-app-rewired": "^2.1.5",
-    "relay-compiler": "^7.1.0",
-    "relay-config": "^7.1.0"
+    "pretty-quick": "^1.11.1"
   }
 }
