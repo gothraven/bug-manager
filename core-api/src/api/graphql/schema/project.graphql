@@ -9,15 +9,9 @@ type Project {
   description: String
 }
 
-type ProjectEdge {
-  cursor: String!
-  node: Project!
-}
-
 type ProjectCursor {
-  edges: [ProjectEdge!]!
+  edges: [Project!]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type Query {
@@ -26,7 +20,7 @@ type Query {
 }
 
 type Mutation {
-  createProject(name: String!, description: String): ProjectEdge!
-  updateProject(id: ID!, name: String, description: String): ProjectEdge!
+  createProject(name: String!, description: String): Project!
+  updateProject(id: ID!, name: String, description: String): Project!
   deleteProject(id: ID!): Boolean!
 }

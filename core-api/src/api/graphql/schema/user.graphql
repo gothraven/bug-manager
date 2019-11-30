@@ -17,8 +17,8 @@ type User {
 }
 
 type UserCursor {
-  pageInfo: PageInfo!
   edges: [User!]!
+  pageInfo: PageInfo!
 }
 
 type Query {
