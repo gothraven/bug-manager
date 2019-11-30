@@ -1,50 +1,40 @@
-import React, { useCallback } from "react";
-import PropTypes from "prop-types";
-import { graphql, usePaginationFragment } from "react-relay/hooks";
+import React from "react";
+import propTypes from "prop-types";
+import { useMutation } from "@apollo/react-hooks";
 import Fab from "@material-ui/core/Fab";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import AddIcon from "@material-ui/icons/Add";
 import TagPanel from "./TagPanel";
-import { useCreateTag } from "./mutations/TagMutations";
-import { useMe } from "../../layouts/main/queries/MeQuery";
 import { ADMIN } from "../../core/constants";
+import Loading from "../../lib/Loading";
+import { usePagination } from "../../core/hooks";
+import { TAGS_QUERY, CREATE_TAG } from "../../core/models/tags/tags.queries";
+
 
 function TagsView(props) {
-  const { queryData } = props;
-  const [isTagCreatePending, onCreateTag] = useCreateTag();
-  const me = useMe(queryData);
-  const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment(
-    graphql`
-      fragment TagsView_tags on Query
-        @argumentDefinitions(
-          first: { type: "PositiveInt", defaultValue: 10 }
-          after: { type: "String", defaultValue: "" }
-        )
-        @refetchable(queryName: "TagsPaginationQuery") {
-        tags(first: $first, after: $after)
-          @connection(key: "Query_tags", filters: []) {
-          edges {
-            node {
-              id
-              name
-              description
-              color
-            }
-          }
-        }
-      }
-    `,
-    queryData
-  );
-
-  const loadMore = useCallback(() => {
-    if (isLoadingNext) {
-      return;
+  const { me } = props;
+  const { data, loading: loadingTags, fetchMore } = usePagination(TAGS_QUERY, 'tags');
+  const [addTags, { loading: isTagCreatePending }] = useMutation(CREATE_TAG, {
+    variables: { name: "Tag", description: "", color: "#22194D" },
+    update: (proxy, result) => {
+      const { createTag } = result.data;
+      const { tags } = proxy.readQuery({ query: TAGS_QUERY });
+      proxy.writeQuery({
+        query: TAGS_QUERY,
+        data: {
+          tags: { ...tags, edges: [createTag, ...tags.edges] }
+        },
+      });
     }
-    loadNext(10);
-  }, [isLoadingNext, loadNext]);
+  });
+
+  if (loadingTags) {
+    return <Loading />;
+  }
+
+  const { hasNextPage } = data.tags.pageInfo;
 
   return (
     <Grid
@@ -57,16 +47,14 @@ function TagsView(props) {
         All labels
       </Typography>
       <Grid item>
-        {data.tags.edges.map(edge => {
-          if (edge == null || edge.node == null) {
+        {data.tags.edges.map(node => {
+          if (node === null) {
             return null;
           }
-          return <TagPanel disabled={me.role !== ADMIN} key={edge.node.id} tag={edge.node} />;
+          return <TagPanel disabled={me.role !== ADMIN} key={node.id} tag={node} />;
         })}
       </Grid>
-      <Button onClick={loadMore} disabled={!hasNext}>
-        load more
-      </Button>
+      {hasNextPage && <Button onClick={fetchMore}>load more</Button>}
       {me.role === ADMIN &&
         <Grid
           item
@@ -75,7 +63,7 @@ function TagsView(props) {
           <Fab
             color="primary"
             aria-label="add"
-            onClick={onCreateTag}
+            onClick={addTags}
             disabled={isTagCreatePending}
           >
             <AddIcon />
@@ -86,12 +74,13 @@ function TagsView(props) {
   );
 }
 
-TagsView.defaultProps = {
-  queryData: undefined
-};
-
 TagsView.propTypes = {
-  queryData: PropTypes.object
+  me: propTypes.shape({
+    id: propTypes.string,
+    name: propTypes.string,
+    email: propTypes.string,
+    role: propTypes.string,
+  }).isRequired,
 };
 
 export default TagsView;
