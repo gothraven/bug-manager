@@ -1,6 +1,5 @@
 import React from "react";
 import PropType from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -11,14 +10,8 @@ import Chip from "@material-ui/core/Chip";
 import moment from "moment";
 import { invertColor } from "../../core/utils/Functions";
 
-const useStyles = makeStyles(theme => ({
-  inline: {
-    fontSize: theme.typography.body1
-  },
-  title: {
-    fontWeight: theme.typography.fontWeightBold
-  }
-}));
+import useStyles from './IssueItem.scss';
+
 
 function IssueItem(props) {
   const { issue } = props;
@@ -38,7 +31,7 @@ function IssueItem(props) {
           Created ${moment(createdAt).fromNow()} by ${creator.name}
            - last Updated ${moment(updatedAt).fromNow()}
           ${assignedUsers.length ? `- Assigned to ${assignedUsers.map(user => ` ${user.name}`)}` : ''}
-          ${project ?.name ? `- this issue opened on ${project.name}` : ''}`
+          ${(project || {}).name ? `- this issue opened on ${project.name}` : ''}`
         }
       />
       <Box>
@@ -58,6 +51,7 @@ function IssueItem(props) {
     </ListItem>
   );
 }
+
 IssueItem.propTypes = {
   issue: PropType.object.isRequired
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useMutation } from "@apollo/react-hooks";
 import PropTypes from "prop-types";
 import { TwitterPicker } from "react-color";
-import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
@@ -14,30 +14,69 @@ import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 
+import { DELETE_TAG, TAGS_QUERY, UPDATE_TAG } from "../../core/models/tags/tags.queries";
 import { invertColor } from "../../core/utils/Functions";
-import { useUpdateTag, useDeleteTag } from "./mutations/TagMutations";
 
-const useStyles = makeStyles(theme => ({
-  description: {
-    fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary
-  }
-}));
+import useStyles from './TagPanel.scss';
+
 
 function TagPanel(props) {
+  const classes = useStyles();
   const { disabled, tag } = props;
   const [expanded, setExpanded] = useState(tag.id === undefined);
   const [name, setName] = useState(tag.name);
   const [description, setDescription] = useState(tag.description || "");
   const [color, setColor] = useState(tag.color);
-  const [isTagUpdatePending, onUpdateTag] = useUpdateTag(
-    tag.id,
-    name,
-    description,
-    color
-  );
-  const [isTagDeletePending, onDeleteTag] = useDeleteTag(tag.id);
-  const classes = useStyles();
+  const [onTagUpdate, { loading: isTagUpdatePending }] = useMutation(UPDATE_TAG, {
+    variables: { id: tag.id, name, description, color },
+    optimisticResponse: {
+      __typename: "Mutation",
+      updateTag: {
+        __typename: "Tag",
+        id: tag.id,
+        name,
+        description,
+        color
+      }
+    },
+    update: (proxy, result) => {
+      const { updateTag } = result.data;
+      const { tags } = proxy.readQuery({ query: TAGS_QUERY });
+      proxy.writeQuery({
+        query: TAGS_QUERY,
+        data: {
+          tags: {
+            ...tags,
+            edges: tags.edges.map(edge =>
+              (edge.id === tag.id ? updateTag : edge))
+          }
+        },
+      });
+    }
+  });
+  const [onDeleteTag, { loading: isTagDeletePending }] = useMutation(DELETE_TAG, {
+    variables: { id: tag.id },
+    optimisticResponse: {
+      __typename: "Mutation",
+      deleteTag: true
+    },
+    update: (proxy, result) => {
+      const { deleteTag } = result.data;
+      if (deleteTag) {
+        const { tags } = proxy.readQuery({ query: TAGS_QUERY });
+        proxy.writeQuery({
+          query: TAGS_QUERY,
+          data: {
+            tags: {
+              ...tags,
+              edges: tags.edges.filter(edge => edge.id !== tag.id)
+            }
+          },
+        });
+      }
+    }
+  });
+
   const isPending = isTagUpdatePending || isTagDeletePending;
 
   useEffect(() => {
@@ -107,7 +146,7 @@ function TagPanel(props) {
       <Divider />
       <ExpansionPanelActions>
         <Button
-          color="primary"
+          color="secondary"
           size="small"
           onClick={onDeleteTag}
           disabled={isPending}
@@ -120,7 +159,7 @@ function TagPanel(props) {
           disabled={isPending}
           onClick={() => {
             setExpanded(false);
-            onUpdateTag();
+            onTagUpdate();
           }}
         >
           Save

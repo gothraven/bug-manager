@@ -1,7 +1,6 @@
-import { graphql, useFragment } from "react-relay/hooks";
 
 
-export const MeFragment = graphql`
+export const MeFragment = `
   fragment MeQuery_me on Query {
     me {
       id
@@ -13,7 +12,12 @@ export const MeFragment = graphql`
 `;
 
 export function useMe(queryData) {
-  const { me } = useFragment(MeFragment, queryData);
+  console.log('useMe', queryData)
 
-  return me;
+  return {
+    id: 'something',
+    name: 'Safiy',
+    email: 'foo@bar.co',
+    role: 'ADMIN'
+  };
 }

@@ -16,15 +16,9 @@ type Issue {
   comments: [Comment!]!
 }
 
-type IssueEdge {
-  cursor: String!
-  node: Issue!
-}
-
 type IssueCursor {
-  edges: [IssueEdge!]!
+  edges: [Issue!]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type Query {

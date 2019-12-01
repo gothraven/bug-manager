@@ -10,8 +10,8 @@ type Status {
 }
 
 type StatusCursor {
-  pageInfo: PageInfo!
   edges: [Status!]!
+  pageInfo: PageInfo!
 }
 
 type Query {

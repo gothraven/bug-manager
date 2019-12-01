@@ -11,15 +11,9 @@ type Tag {
   color: HexColorCode!
 }
 
-type TagEdge {
-  cursor: String!
-  node: Tag!
-}
-
 type TagCursor {
-  edges: [TagEdge!]!
+  edges: [Tag!]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type Query {
@@ -28,12 +22,12 @@ type Query {
 }
 
 type Mutation {
-  createTag(name: String!, description: String, color: HexColorCode!): TagEdge!
+  createTag(name: String!, description: String, color: HexColorCode!): Tag!
   updateTag(
     id: ID!
     name: String
     description: String
     color: HexColorCode
-  ): TagEdge!
+  ): Tag!
   deleteTag(id: ID!): Boolean!
 }

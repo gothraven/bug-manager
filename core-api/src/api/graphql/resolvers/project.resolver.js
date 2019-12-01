@@ -1,8 +1,8 @@
-import { combineResolvers, pipeResolvers } from 'graphql-resolvers';
+import { combineResolvers } from 'graphql-resolvers';
 import { omitBy, isNil } from 'lodash';
 import { authorize } from './auth.resolver';
 import { USER, ADMIN } from '../../models/user.model';
-import { Paginate, Edgify } from './pagination.resolver';
+import { Paginate } from './pagination.resolver';
 
 export default {
   Query: {
@@ -11,20 +11,18 @@ export default {
     projects: combineResolvers(authorize(USER), Paginate('Project'))
   },
   Mutation: {
-    createProject: pipeResolvers(
+    createProject: combineResolvers(
       authorize(ADMIN),
       async (parent, { name, description }, { models }) =>
-        models.Project.create({ name, description }),
-      Edgify()
+        models.Project.create({ name, description })
     ),
 
-    updateProject: pipeResolvers(
+    updateProject: combineResolvers(
       authorize(ADMIN),
       async (parent, { id, name, description }, { models }) => {
         const options = omitBy({ name, description }, isNil);
         return models.Project.findByIdAndUpdate(id, options, { new: true });
-      },
-      Edgify()
+      }
     ),
 
     deleteProject: combineResolvers(authorize(ADMIN), async (parent, { id }, { models }) => {

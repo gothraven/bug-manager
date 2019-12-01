@@ -1,10 +1,10 @@
-import React, { Suspense } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
-import { graphql, useLazyLoadQuery } from "react-relay/hooks";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Loading from "../../lib/Loading";
 import SideBar from "./SideBar";
+import { useMe } from "../../core/hooks";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,26 +19,19 @@ const useStyles = makeStyles(theme => ({
 
 const MainLayout = props => {
   const { children } = props;
+  const { me, loading } = useMe();
   const classes = useStyles();
-  const queryData = useLazyLoadQuery(
-    graphql`
-      query MainLayoutViewQuery {
-        ...DashboardView_issues
-        ...ProjectsView_projects
-        ...TagsView_tags
-        ...MeQuery_me
-      }
-    `
-  );
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <SideBar queryData={queryData} />
+      <SideBar me={me} />
       <main className={classes.content}>
-        <Suspense fallback={<Loading />}>
-          {React.cloneElement(children, { queryData })}
-        </Suspense>
+        {React.cloneElement(children, { me })}
       </main>
     </div>
   );
