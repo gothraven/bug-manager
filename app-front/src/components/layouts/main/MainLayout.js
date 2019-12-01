@@ -22,7 +22,6 @@ const MainLayout = props => {
   const { me, loading } = useMe();
   const classes = useStyles();
 
-  console.log(me, loading)
   if (loading) {
     return <Loading />;
   }
