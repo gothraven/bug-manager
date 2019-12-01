@@ -10,7 +10,20 @@ const client = new ApolloClient({
         "x-bearer-token": CORE_API_AUTH_TOKEN,
       }
     })
-  }
+  },
+  onError: (({ graphQLErrors, networkError }) => {
+    if (graphQLErrors)
+      graphQLErrors.forEach(({ message, locations, path }) => {
+        if (message.includes('Sign in again.')) {
+          window._history.push('/sign-in');
+        } else {
+          console.log(
+            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+          )
+        }
+      });
+    if (networkError) console.log(`[Network error]: ${networkError}`);
+  })
 });
 
 export default client;
