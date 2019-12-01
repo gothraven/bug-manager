@@ -12,7 +12,6 @@ import {
   NotFoundView,
   IssuePageView,
   DashboardView,
-  NewIssueView
 } from "../views";
 
 if (window !== "undefined") {
@@ -43,13 +42,6 @@ function MainRouter() {
         path="/user/dashboard"
         authed={isAuthenticated}
         component={DashboardView}
-        layout={MainLayout}
-      />
-      <RouteWithLayout
-        exact
-        path="/user/issue/new"
-        authed={isAuthenticated}
-        component={NewIssueView}
         layout={MainLayout}
       />
       <RouteWithLayout
