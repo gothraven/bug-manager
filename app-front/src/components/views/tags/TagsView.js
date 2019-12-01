@@ -16,7 +16,7 @@ import { TAGS_QUERY, CREATE_TAG } from "../../core/models/tags/tags.queries";
 function TagsView(props) {
   const { me } = props;
   const { data, loading: loadingTags, fetchMore } = usePagination(TAGS_QUERY, 'tags');
-  const [addTags, { loading: isTagCreatePending }] = useMutation(CREATE_TAG, {
+  const [onCreateTag, { loading: isTagCreatePending }] = useMutation(CREATE_TAG, {
     variables: { name: "Tag", description: "", color: "#22194D" },
     update: (proxy, result) => {
       const { createTag } = result.data;
@@ -63,7 +63,7 @@ function TagsView(props) {
           <Fab
             color="primary"
             aria-label="add"
-            onClick={addTags}
+            onClick={onCreateTag}
             disabled={isTagCreatePending}
           >
             <AddIcon />

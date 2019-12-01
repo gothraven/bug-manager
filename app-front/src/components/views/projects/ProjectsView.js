@@ -1,49 +1,40 @@
-import React, { useCallback } from "react";
-import PropTypes from "prop-types";
-import { graphql, usePaginationFragment } from "react-relay/hooks";
+import React from "react";
+import { useMutation } from "@apollo/react-hooks";
+import propTypes from "prop-types";
 import Fab from "@material-ui/core/Fab";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import ProjectCard from "./ProjectCard";
-import { useCreateProject } from "./mutations/ProjectMutations";
-import { useMe } from "../../layouts/main/queries/MeQuery";
 import { ADMIN } from "../../core/constants";
+import { PROJECTS_QUERY, CREATE_PROJECT } from "../../core/models/projects/projects.queries";
+import { usePagination } from "../../core/hooks";
+import Loading from "../../lib/Loading";
+
 
 function ProjectsView(props) {
-  const { queryData } = props;
-  const [isProjectCreatePending, onCreateProject] = useCreateProject();
-  const me = useMe(queryData);
-  const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment(
-    graphql`
-      fragment ProjectsView_projects on Query
-        @argumentDefinitions(
-          first: { type: "PositiveInt", defaultValue: 10 }
-          after: { type: "String", defaultValue: "" }
-        )
-        @refetchable(queryName: "ProjectsPaginationQuery") {
-        projects(first: $first, after: $after)
-          @connection(key: "Query_projects", filters: []) {
-          edges {
-            node {
-              id
-              name
-              description
-            }
-          }
-        }
-      }
-    `,
-    queryData
-  );
-
-  const loadMore = useCallback(() => {
-    if (isLoadingNext) {
-      return;
+  const { me } = props;
+  const { data, loading: loadingProjects, fetchMore } = usePagination(PROJECTS_QUERY, 'projects');
+  const [onCreateProject, { loading: isProjectCreatePending }] = useMutation(CREATE_PROJECT, {
+    variables: { name: "Project X", description: "Lorem ipsum dolor sit amet" },
+    update: (proxy, result) => {
+      const { createProject } = result.data;
+      const { projects } = proxy.readQuery({ query: PROJECTS_QUERY });
+      proxy.writeQuery({
+        query: PROJECTS_QUERY,
+        data: {
+          projects: { ...projects, edges: [createProject, ...projects.edges] }
+        },
+      });
     }
-    loadNext(10);
-  }, [isLoadingNext, loadNext]);
+  });
+
+  if (loadingProjects) {
+    return <Loading />;
+  }
+
+  const { hasNextPage } = data.projects.pageInfo;
 
   return (
     <Grid
@@ -57,21 +48,19 @@ function ProjectsView(props) {
       </Typography>
       <Grid item>
         <Grid container direction="row" alignItems="flex-start">
-          {data.projects.edges.map(edge => {
-            if (edge == null || edge.node == null) {
+          {data.projects.edges.map(node => {
+            if (node == null) {
               return null;
             }
             return (
-              <Grid key={edge.node.id} item xs={4}>
-                <ProjectCard disabled={me.role !== ADMIN} project={edge.node} />
+              <Grid key={node.id} item xs={4}>
+                <ProjectCard disabled={me.role !== ADMIN} project={node} />
               </Grid>
             );
           })}
         </Grid>
       </Grid>
-      <Button onClick={loadMore} disabled={!hasNext}>
-        load more
-      </Button>
+      {hasNextPage && <Button onClick={fetchMore}>load more</Button>}
       {me.role === ADMIN &&
         <Grid
           item
@@ -91,12 +80,13 @@ function ProjectsView(props) {
   );
 }
 
-ProjectsView.defaultProps = {
-  queryData: undefined
-};
-
 ProjectsView.propTypes = {
-  queryData: PropTypes.object
+  me: propTypes.shape({
+    id: propTypes.string,
+    name: propTypes.string,
+    email: propTypes.string,
+    role: propTypes.string,
+  }).isRequired,
 };
 
 export default ProjectsView;

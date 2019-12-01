@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { useMutation } from "@apollo/react-hooks";
 import Card from "@material-ui/core/Card";
-import { makeStyles } from "@material-ui/core/styles";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import IconButton from "@material-ui/core/IconButton";
@@ -10,42 +10,65 @@ import CloseIcon from "@material-ui/icons/Close";
 import EditIcon from "@material-ui/icons/Edit";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import { UPDATE_PROJECT, PROJECTS_QUERY, DELETE_PROJECT } from "../../core/models/projects/projects.queries";
 
-import {
-  useDeleteProject,
-  useUpdateProject
-} from "./mutations/ProjectMutations";
+import useStyles from './ProjectCard.scss';
 
-const useStyles = makeStyles(() => ({
-  card: {
-    minWidth: 350,
-    margin: 10,
-    borderBottom: "2px solid #0B9ED9"
-  },
-  cardTitle: {
-    marginRight: "0px",
-    "& button": {
-      transition: "background .3s ease-in-out",
-      "& svg": {
-        fontSize: 20
-      }
-    }
-  }
-}));
 
 function ProjectCard(props) {
   const { disabled, project } = props;
   const [edition, setEdition] = useState(false);
   const [name, setName] = useState(project.name);
   const [description, setDescription] = useState(project.description || "");
-  const [isProjectUpdatePending, onUpdateProject] = useUpdateProject(
-    project.id,
-    name,
-    description
-  );
-  const [isProjectDeletePending, onDeleteProject] = useDeleteProject(
-    project.id
-  );
+  const [onProjectUpdate, { loading: isProjectUpdatePending }] = useMutation(UPDATE_PROJECT, {
+    variables: { id: project.id, name, description },
+    optimisticResponse: {
+      __typename: "Mutation",
+      updateProject: {
+        __typename: "Project",
+        id: project.id,
+        name,
+        description,
+      }
+    },
+    update: (proxy, result) => {
+      const { updateProject } = result.data;
+      const { projects } = proxy.readQuery({ query: PROJECTS_QUERY });
+      proxy.writeQuery({
+        query: PROJECTS_QUERY,
+        data: {
+          projects: {
+            ...projects,
+            edges: projects.edges.map(edge =>
+              (edge.id === project.id ? updateProject : edge))
+          }
+        },
+      });
+    }
+  });
+  const [onDeleteProject, { loading: isProjectDeletePending }] = useMutation(DELETE_PROJECT, {
+    variables: { id: project.id },
+    optimisticResponse: {
+      __typename: "Mutation",
+      deleteProject: true
+    },
+    update: (proxy, result) => {
+      const { deleteProject } = result.data;
+      if (deleteProject) {
+        const { projects } = proxy.readQuery({ query: PROJECTS_QUERY });
+        proxy.writeQuery({
+          query: PROJECTS_QUERY,
+          data: {
+            projects: {
+              ...projects,
+              edges: projects.edges.filter(edge => edge.id !== project.id)
+            }
+          },
+        });
+      }
+    }
+  });
+
   const isPending = isProjectUpdatePending || isProjectDeletePending;
   const classes = useStyles();
 
@@ -118,7 +141,7 @@ function ProjectCard(props) {
             className={classes.button}
             disabled={isPending}
             onClick={() => {
-              onUpdateProject();
+              onProjectUpdate();
               setEdition(false);
             }}
           >
