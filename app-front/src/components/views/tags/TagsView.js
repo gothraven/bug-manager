@@ -74,13 +74,17 @@ function TagsView(props) {
   );
 }
 
+TagsView.defaultProps = {
+  me: null,
+};
+
 TagsView.propTypes = {
   me: propTypes.shape({
     id: propTypes.string,
     name: propTypes.string,
     email: propTypes.string,
     role: propTypes.string,
-  }).isRequired,
+  }),
 };
 
 export default TagsView;

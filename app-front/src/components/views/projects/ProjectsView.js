@@ -80,13 +80,17 @@ function ProjectsView(props) {
   );
 }
 
+ProjectsView.defaultProps = {
+  me: null,
+};
+
 ProjectsView.propTypes = {
   me: propTypes.shape({
     id: propTypes.string,
     name: propTypes.string,
     email: propTypes.string,
     role: propTypes.string,
-  }).isRequired,
+  }),
 };
 
 export default ProjectsView;
