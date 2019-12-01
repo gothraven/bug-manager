@@ -11,7 +11,7 @@ import {
   ProjectsView,
   NotFoundView,
   IssuePageView,
-  DashboardView,
+  DashboardView
 } from "../views";
 
 if (window !== "undefined") {

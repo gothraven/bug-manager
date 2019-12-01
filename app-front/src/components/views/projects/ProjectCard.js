@@ -10,64 +10,74 @@ import CloseIcon from "@material-ui/icons/Close";
 import EditIcon from "@material-ui/icons/Edit";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { UPDATE_PROJECT, PROJECTS_QUERY, DELETE_PROJECT } from "../../core/models/projects/projects.queries";
+import {
+  UPDATE_PROJECT,
+  PROJECTS_QUERY,
+  DELETE_PROJECT
+} from "../../core/models/projects/projects.graphql";
 
-import useStyles from './ProjectCard.scss';
-
+import useStyles from "./ProjectCard.scss";
 
 function ProjectCard(props) {
   const { disabled, project } = props;
   const [edition, setEdition] = useState(false);
   const [name, setName] = useState(project.name);
   const [description, setDescription] = useState(project.description || "");
-  const [onProjectUpdate, { loading: isProjectUpdatePending }] = useMutation(UPDATE_PROJECT, {
-    variables: { id: project.id, name, description },
-    optimisticResponse: {
-      __typename: "Mutation",
-      updateProject: {
-        __typename: "Project",
-        id: project.id,
-        name,
-        description,
-      }
-    },
-    update: (proxy, result) => {
-      const { updateProject } = result.data;
-      const { projects } = proxy.readQuery({ query: PROJECTS_QUERY });
-      proxy.writeQuery({
-        query: PROJECTS_QUERY,
-        data: {
-          projects: {
-            ...projects,
-            edges: projects.edges.map(edge =>
-              (edge.id === project.id ? updateProject : edge))
-          }
-        },
-      });
-    }
-  });
-  const [onDeleteProject, { loading: isProjectDeletePending }] = useMutation(DELETE_PROJECT, {
-    variables: { id: project.id },
-    optimisticResponse: {
-      __typename: "Mutation",
-      deleteProject: true
-    },
-    update: (proxy, result) => {
-      const { deleteProject } = result.data;
-      if (deleteProject) {
+  const [onProjectUpdate, { loading: isProjectUpdatePending }] = useMutation(
+    UPDATE_PROJECT,
+    {
+      variables: { id: project.id, name, description },
+      optimisticResponse: {
+        __typename: "Mutation",
+        updateProject: {
+          __typename: "Project",
+          id: project.id,
+          name,
+          description
+        }
+      },
+      update: (proxy, result) => {
+        const { updateProject } = result.data;
         const { projects } = proxy.readQuery({ query: PROJECTS_QUERY });
         proxy.writeQuery({
           query: PROJECTS_QUERY,
           data: {
             projects: {
               ...projects,
-              edges: projects.edges.filter(edge => edge.id !== project.id)
+              edges: projects.edges.map(edge =>
+                edge.id === project.id ? updateProject : edge
+              )
             }
-          },
+          }
         });
       }
     }
-  });
+  );
+  const [onDeleteProject, { loading: isProjectDeletePending }] = useMutation(
+    DELETE_PROJECT,
+    {
+      variables: { id: project.id },
+      optimisticResponse: {
+        __typename: "Mutation",
+        deleteProject: true
+      },
+      update: (proxy, result) => {
+        const { deleteProject } = result.data;
+        if (deleteProject) {
+          const { projects } = proxy.readQuery({ query: PROJECTS_QUERY });
+          proxy.writeQuery({
+            query: PROJECTS_QUERY,
+            data: {
+              projects: {
+                ...projects,
+                edges: projects.edges.filter(edge => edge.id !== project.id)
+              }
+            }
+          });
+        }
+      }
+    }
+  );
 
   const isPending = isProjectUpdatePending || isProjectDeletePending;
   const classes = useStyles();
@@ -81,25 +91,29 @@ function ProjectCard(props) {
     <Card className={classes.card}>
       <CardHeader
         className={classes.cardTitle}
-        action={disabled ? [] : [
-          <IconButton
-            key={0}
-            color={edition ? "primary" : "default"}
-            aria-label="edit"
-            disabled={isPending}
-            onClick={() => setEdition(!edition)}
-          >
-            <EditIcon />
-          </IconButton>,
-          <IconButton
-            key={1}
-            aria-label="delete"
-            disabled={isPending}
-            onClick={onDeleteProject}
-          >
-            <CloseIcon />
-          </IconButton>
-        ]}
+        action={
+          disabled
+            ? []
+            : [
+                <IconButton
+                  key={0}
+                  color={edition ? "primary" : "default"}
+                  aria-label="edit"
+                  disabled={isPending}
+                  onClick={() => setEdition(!edition)}
+                >
+                  <EditIcon />
+                </IconButton>,
+                <IconButton
+                  key={1}
+                  aria-label="delete"
+                  disabled={isPending}
+                  onClick={onDeleteProject}
+                >
+                  <CloseIcon />
+                </IconButton>
+              ]
+        }
       />
       <CardContent>
         {edition ? (
@@ -114,10 +128,10 @@ function ProjectCard(props) {
             onChange={event => setName(event.target.value)}
           />
         ) : (
-            <Typography variant="h3" color="textPrimary" component="h3">
-              {name}
-            </Typography>
-          )}
+          <Typography variant="h3" color="textPrimary" component="h3">
+            {name}
+          </Typography>
+        )}
         {edition ? (
           <TextField
             label="Description"
@@ -130,10 +144,10 @@ function ProjectCard(props) {
             onChange={event => setDescription(event.target.value)}
           />
         ) : (
-            <Typography variant="body1" color="textSecondary" component="p">
-              {description}
-            </Typography>
-          )}
+          <Typography variant="body1" color="textSecondary" component="p">
+            {description}
+          </Typography>
+        )}
         {edition && (
           <Button
             variant="contained"
@@ -154,12 +168,12 @@ function ProjectCard(props) {
 }
 
 ProjectCard.defaultProps = {
-  disabled: false,
-}
+  disabled: false
+};
 
 ProjectCard.propTypes = {
   project: PropTypes.object.isRequired,
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
 export default ProjectCard;

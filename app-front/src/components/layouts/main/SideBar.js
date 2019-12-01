@@ -16,7 +16,7 @@ import { signOut } from "../../core/utils/Auth";
 import UserAvatar from "../../lib/UserAvatar";
 import NewIssueDialog from "../../lib/NewIssueDialog";
 
-import useStyles from './SideBar.scss';
+import useStyles from "./SideBar.scss";
 
 const menuItems = [
   {
@@ -40,7 +40,6 @@ const menuItems = [
     link: "/user/settings"
   }
 ];
-
 
 function SideBar(props) {
   const { me } = props;
@@ -106,7 +105,7 @@ function SideBar(props) {
           </List>
         </Grid>
       </Grid>
-    </Drawer >
+    </Drawer>
   );
 }
 
@@ -115,8 +114,8 @@ SideBar.propTypes = {
     id: propTypes.string,
     name: propTypes.string,
     email: propTypes.string,
-    role: propTypes.string,
-  }).isRequired,
+    role: propTypes.string
+  }).isRequired
 };
 
 export default SideBar;

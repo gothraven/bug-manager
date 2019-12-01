@@ -9,17 +9,15 @@ function RouteWithLayout(props) {
     <Route
       {...rest}
       render={matchProps =>
-        authed === true
-          ? (
-            <Layout>
-              <Component {...matchProps} />
-            </Layout>
-          )
-          : (
-            <Redirect
-              to={{ pathname: "/sign-in", state: { from: matchProps.location } }}
-            />
-          )
+        authed === true ? (
+          <Layout>
+            <Component {...matchProps} />
+          </Layout>
+        ) : (
+          <Redirect
+            to={{ pathname: "/sign-in", state: { from: matchProps.location } }}
+          />
+        )
       }
     />
   );

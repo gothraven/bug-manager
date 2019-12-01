@@ -40,8 +40,8 @@ function IssueComment(props) {
               </Box>
             </>
           ) : (
-              <Paper style={{ padding: 10 }}>{value}</Paper>
-            )}
+            <Paper style={{ padding: 10 }}>{value}</Paper>
+          )}
         </Grid>
       </Grid>
     </Box>

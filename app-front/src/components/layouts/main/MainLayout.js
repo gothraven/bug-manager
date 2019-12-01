@@ -3,10 +3,9 @@ import propTypes from "prop-types";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Loading from "../../lib/Loading";
 import SideBar from "./SideBar";
-import { useMe } from "../../core/hooks";
+import { useMe } from "../../core/models/users/users.hooks";
 
 import useStyles from "./MainLayout.scss";
-
 
 const MainLayout = props => {
   const { children } = props;

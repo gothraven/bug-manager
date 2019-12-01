@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { gql } from 'apollo-boost';
-import { useMutation } from '@apollo/react-hooks';
+import { gql } from "apollo-boost";
+import { useMutation } from "@apollo/react-hooks";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -16,7 +16,7 @@ import Container from "@material-ui/core/Container";
 import Copyright from "../../lib/Copyright";
 import { signIn } from "../../core/utils/Auth";
 
-import useStyles from './SignUp.scss';
+import useStyles from "./SignUp.scss";
 
 const SIGN_UP_USER = gql`
   mutation SignUpUserMutation(
@@ -44,7 +44,10 @@ export default function SignUp() {
   const [signUpUser, { loading: isSignUpPending }] = useMutation(SIGN_UP_USER, {
     variables: { name, email, password },
     update: (proxy, { data }) => {
-      const { token, user: { id } } = data.signUp;
+      const {
+        token,
+        user: { id }
+      } = data.signUp;
       signIn(id, token);
       window._history.push("/");
     }

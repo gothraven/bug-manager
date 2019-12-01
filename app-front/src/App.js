@@ -1,7 +1,7 @@
 import React from "react";
 import { Router } from "react-router-dom";
-import { SnackbarProvider } from 'notistack';
-import { ApolloProvider } from '@apollo/react-hooks';
+import { SnackbarProvider } from "notistack";
+import { ApolloProvider } from "@apollo/react-hooks";
 import { ThemeProvider } from "@material-ui/styles";
 import MainRouter from "./components/routes/MainRouter";
 import Client from "./components/core/api/Client";

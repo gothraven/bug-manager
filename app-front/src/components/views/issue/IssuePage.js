@@ -9,17 +9,17 @@ import IssueComment from "./IssueComment";
 import IssueHistory from "./IssueHistory";
 import IssueTags from "./IssueTags";
 import IssueAssignees from "./IssueAssignees";
-import { ISSUE_QUERY } from "../../core/models/issues/issues.queries";
+import { ISSUE_QUERY } from "../../core/models/issues/issues.graphql";
 import Loading from "../../lib/Loading";
 
 function IssuePage() {
   const { id } = useParams();
   const { data, loading } = useQuery(ISSUE_QUERY, {
-    variables: { id },
+    variables: { id }
   });
 
   if (loading) {
-    return <Loading />
+    return <Loading />;
   }
 
   const { issue } = data;
@@ -47,7 +47,9 @@ function IssuePage() {
 }
 
 function IssueHeader(props) {
-  const { issue: { title } } = props;
+  const {
+    issue: { title }
+  } = props;
 
   return (
     <Typography variant="h1" component="h1" gutterBottom>
@@ -62,18 +64,21 @@ function IssueBody(props) {
 
   function issueBodyNodes() {
     return [
-      ...comments.concat(changes)
+      ...comments
+        .concat(changes)
         .sort((a, b) => a.createdAt - b.createdAt)
         .map(change => {
           if (change.type === undefined) {
             const comment = change;
             return (
-              <IssueComment key={comment.id} user={comment.creator} content={comment.content} />
+              <IssueComment
+                key={comment.id}
+                user={comment.creator}
+                content={comment.content}
+              />
             );
           }
-          return (
-            <IssueHistory key={change.id} change={change} />
-          );
+          return <IssueHistory key={change.id} change={change} />;
         })
     ];
   }

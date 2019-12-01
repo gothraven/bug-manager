@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
 export const PROJECTS_QUERY = gql`
   query Projects($cursor: String) {
@@ -17,7 +17,7 @@ export const PROJECTS_QUERY = gql`
 `;
 
 export const CREATE_PROJECT = gql`
-  mutation CreateProjectMutation($name: String! $description: String) {
+  mutation CreateProjectMutation($name: String!, $description: String) {
     createProject(name: $name, description: $description) {
       id
       name

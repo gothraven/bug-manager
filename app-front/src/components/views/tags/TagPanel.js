@@ -13,12 +13,14 @@ import Chip from "@material-ui/core/Chip";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
-
-import { DELETE_TAG, TAGS_QUERY, UPDATE_TAG } from "../../core/models/tags/tags.queries";
+import {
+  DELETE_TAG,
+  TAGS_QUERY,
+  UPDATE_TAG
+} from "../../core/models/tags/tags.graphql";
 import { invertColor } from "../../core/utils/Functions";
 
-import useStyles from './TagPanel.scss';
-
+import useStyles from "./TagPanel.scss";
 
 function TagPanel(props) {
   const classes = useStyles();
@@ -27,55 +29,62 @@ function TagPanel(props) {
   const [name, setName] = useState(tag.name);
   const [description, setDescription] = useState(tag.description || "");
   const [color, setColor] = useState(tag.color);
-  const [onTagUpdate, { loading: isTagUpdatePending }] = useMutation(UPDATE_TAG, {
-    variables: { id: tag.id, name, description, color },
-    optimisticResponse: {
-      __typename: "Mutation",
-      updateTag: {
-        __typename: "Tag",
-        id: tag.id,
-        name,
-        description,
-        color
-      }
-    },
-    update: (proxy, result) => {
-      const { updateTag } = result.data;
-      const { tags } = proxy.readQuery({ query: TAGS_QUERY });
-      proxy.writeQuery({
-        query: TAGS_QUERY,
-        data: {
-          tags: {
-            ...tags,
-            edges: tags.edges.map(edge =>
-              (edge.id === tag.id ? updateTag : edge))
-          }
-        },
-      });
-    }
-  });
-  const [onDeleteTag, { loading: isTagDeletePending }] = useMutation(DELETE_TAG, {
-    variables: { id: tag.id },
-    optimisticResponse: {
-      __typename: "Mutation",
-      deleteTag: true
-    },
-    update: (proxy, result) => {
-      const { deleteTag } = result.data;
-      if (deleteTag) {
+  const [onTagUpdate, { loading: isTagUpdatePending }] = useMutation(
+    UPDATE_TAG,
+    {
+      variables: { id: tag.id, name, description, color },
+      optimisticResponse: {
+        __typename: "Mutation",
+        updateTag: {
+          __typename: "Tag",
+          id: tag.id,
+          name,
+          description,
+          color
+        }
+      },
+      update: (proxy, result) => {
+        const { updateTag } = result.data;
         const { tags } = proxy.readQuery({ query: TAGS_QUERY });
         proxy.writeQuery({
           query: TAGS_QUERY,
           data: {
             tags: {
               ...tags,
-              edges: tags.edges.filter(edge => edge.id !== tag.id)
+              edges: tags.edges.map(edge =>
+                edge.id === tag.id ? updateTag : edge
+              )
             }
-          },
+          }
         });
       }
     }
-  });
+  );
+  const [onDeleteTag, { loading: isTagDeletePending }] = useMutation(
+    DELETE_TAG,
+    {
+      variables: { id: tag.id },
+      optimisticResponse: {
+        __typename: "Mutation",
+        deleteTag: true
+      },
+      update: (proxy, result) => {
+        const { deleteTag } = result.data;
+        if (deleteTag) {
+          const { tags } = proxy.readQuery({ query: TAGS_QUERY });
+          proxy.writeQuery({
+            query: TAGS_QUERY,
+            data: {
+              tags: {
+                ...tags,
+                edges: tags.edges.filter(edge => edge.id !== tag.id)
+              }
+            }
+          });
+        }
+      }
+    }
+  );
 
   const isPending = isTagUpdatePending || isTagDeletePending;
 
@@ -86,7 +95,10 @@ function TagPanel(props) {
   }, [tag]);
 
   return (
-    <ExpansionPanel expanded={!disabled && expanded} onChange={() => setExpanded(!expanded)}>
+    <ExpansionPanel
+      expanded={!disabled && expanded}
+      onChange={() => setExpanded(!expanded)}
+    >
       <ExpansionPanelSummary expandIcon={!disabled && <ExpandMoreIcon />}>
         <Grid container justify="flex-start" alignItems="center">
           <Grid item xs={2}>
@@ -170,12 +182,12 @@ function TagPanel(props) {
 }
 
 TagPanel.defaultProps = {
-  disabled: false,
-}
+  disabled: false
+};
 
 TagPanel.propTypes = {
   tag: PropTypes.object.isRequired,
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
 export default TagPanel;

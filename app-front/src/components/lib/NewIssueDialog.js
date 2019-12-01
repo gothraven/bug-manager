@@ -2,32 +2,37 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/react-hooks";
 import Fab from "@material-ui/core/Fab";
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Typography from '@material-ui/core/Typography';
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import { CREATE_ISSUE, ISSUES_QUERY } from "../core/models/issues/issues.queries";
-
+import {
+  CREATE_ISSUE,
+  ISSUES_QUERY
+} from "../core/models/issues/issues.graphql";
 
 function NewIssueView() {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const history = useHistory();
-  const [onCreateIssue, { loading: isIssueCreatePending }] = useMutation(CREATE_ISSUE, {
-    variables: { title, content },
-    refetchQueries: [{ query: ISSUES_QUERY }],
-    update: (proxy, result) => {
-      const { createIssue } = result.data;
-      setTitle("");
-      setContent("");
-      history.push(`/user/issue/${createIssue.id}`);
+  const [onCreateIssue, { loading: isIssueCreatePending }] = useMutation(
+    CREATE_ISSUE,
+    {
+      variables: { title, content },
+      refetchQueries: [{ query: ISSUES_QUERY }],
+      update: (proxy, result) => {
+        const { createIssue } = result.data;
+        setTitle("");
+        setContent("");
+        history.push(`/user/issue/${createIssue.id}`);
+      }
     }
-  });
+  );
 
   return (
     <>
@@ -45,7 +50,7 @@ function NewIssueView() {
       <Dialog
         open={open}
         fullWidth
-        maxWidth='sm'
+        maxWidth="sm"
         onClose={() => setOpen(false)}
       >
         <DialogTitle>

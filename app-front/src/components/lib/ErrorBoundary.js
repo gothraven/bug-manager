@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 import propTypes from "prop-types";
 import { Redirect } from "react-router-dom";
-import { withSnackbar } from 'notistack';
+import { withSnackbar } from "notistack";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class ErrorBoundary extends React.Component {
     const { enqueueSnackbar } = this.props;
     // eslint-disable-next-line no-console
     console.log(error, errorInfo);
-    enqueueSnackbar('Error happeened', { variant: 'error' });
+    enqueueSnackbar("Error happeened", { variant: "error" });
   }
 
   render() {
@@ -33,7 +33,7 @@ class ErrorBoundary extends React.Component {
 
 ErrorBoundary.propTypes = {
   children: propTypes.node.isRequired,
-  enqueueSnackbar: propTypes.func.isRequired,
+  enqueueSnackbar: propTypes.func.isRequired
 };
 
 export default withSnackbar(ErrorBoundary);

@@ -10,25 +10,30 @@ import TagPanel from "./TagPanel";
 import { ADMIN } from "../../core/constants";
 import Loading from "../../lib/Loading";
 import { usePagination } from "../../core/hooks";
-import { TAGS_QUERY, CREATE_TAG } from "../../core/models/tags/tags.queries";
-
+import { TAGS_QUERY, CREATE_TAG } from "../../core/models/tags/tags.graphql";
 
 function TagsView(props) {
   const { me } = props;
-  const { data, loading: loadingTags, fetchMore } = usePagination(TAGS_QUERY, 'tags');
-  const [onCreateTag, { loading: isTagCreatePending }] = useMutation(CREATE_TAG, {
-    variables: { name: "Tag", description: "", color: "#22194D" },
-    update: (proxy, result) => {
-      const { createTag } = result.data;
-      const { tags } = proxy.readQuery({ query: TAGS_QUERY });
-      proxy.writeQuery({
-        query: TAGS_QUERY,
-        data: {
-          tags: { ...tags, edges: [createTag, ...tags.edges] }
-        },
-      });
+  const { data, loading: loadingTags, fetchMore } = usePagination(
+    TAGS_QUERY,
+    "tags"
+  );
+  const [onCreateTag, { loading: isTagCreatePending }] = useMutation(
+    CREATE_TAG,
+    {
+      variables: { name: "Tag", description: "", color: "#22194D" },
+      update: (proxy, result) => {
+        const { createTag } = result.data;
+        const { tags } = proxy.readQuery({ query: TAGS_QUERY });
+        proxy.writeQuery({
+          query: TAGS_QUERY,
+          data: {
+            tags: { ...tags, edges: [createTag, ...tags.edges] }
+          }
+        });
+      }
     }
-  });
+  );
 
   if (loadingTags) {
     return <Loading />;
@@ -51,11 +56,13 @@ function TagsView(props) {
           if (node === null) {
             return null;
           }
-          return <TagPanel disabled={me.role !== ADMIN} key={node.id} tag={node} />;
+          return (
+            <TagPanel disabled={me.role !== ADMIN} key={node.id} tag={node} />
+          );
         })}
       </Grid>
       {hasNextPage && <Button onClick={fetchMore}>load more</Button>}
-      {me.role === ADMIN &&
+      {me.role === ADMIN && (
         <Grid
           item
           style={{ display: "grid", justifyContent: "center", padding: 30 }}
@@ -69,13 +76,13 @@ function TagsView(props) {
             <AddIcon />
           </Fab>
         </Grid>
-      }
+      )}
     </Grid>
   );
 }
 
 TagsView.defaultProps = {
-  me: null,
+  me: null
 };
 
 TagsView.propTypes = {
@@ -83,8 +90,8 @@ TagsView.propTypes = {
     id: propTypes.string,
     name: propTypes.string,
     email: propTypes.string,
-    role: propTypes.string,
-  }),
+    role: propTypes.string
+  })
 };
 
 export default TagsView;

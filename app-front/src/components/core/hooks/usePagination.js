@@ -1,6 +1,5 @@
 import { useCallback } from "react";
-import { useQuery } from '@apollo/react-hooks';
-
+import { useQuery } from "@apollo/react-hooks";
 
 export default function usePagination(query, model) {
   const { data, error, loading, fetchMore } = useQuery(query);
@@ -22,17 +21,16 @@ export default function usePagination(query, model) {
 
         return newEdges.length
           ? {
-            [model]: {
-              __typename: previousResult[model].__typename,
-              edges: [...previousResult[model].edges, ...newEdges],
-              pageInfo,
-            },
-          }
+              [model]: {
+                __typename: previousResult[model].__typename,
+                edges: [...previousResult[model].edges, ...newEdges],
+                pageInfo
+              }
+            }
           : previousResult;
       }
     });
-
   }, [data, loading, fetchMore, model]);
 
-  return { data, error, loading, fetchMore: loadMore }
+  return { data, error, loading, fetchMore: loadMore };
 }

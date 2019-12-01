@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost';
+import { gql } from "apollo-boost";
 
 export const ISSUES_QUERY = gql`
   query Issues($cursor: String) {
@@ -98,13 +98,10 @@ export const ISSUE_QUERY = gql`
       }
     }
   }
-`
+`;
 
 export const CREATE_ISSUE = gql`
-  mutation CreateIssueMutation(
-    $title: String!
-    $content: String!
-  ) {
+  mutation CreateIssueMutation($title: String!, $content: String!) {
     createIssue(title: $title, content: $content) {
       id
     }

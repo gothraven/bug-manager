@@ -6,10 +6,10 @@ export default makeStyles(theme => ({
     width: theme.spacing(7),
     [theme.breakpoints.up("sm")]: {
       width: theme.spacing(9)
-    },
+    }
   },
   grid: {
-    height: '100%',
+    height: "100%"
   },
   listItem: {
     color: "#fff",
