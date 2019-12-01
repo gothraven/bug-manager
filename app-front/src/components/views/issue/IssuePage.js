@@ -1,6 +1,6 @@
 import React from "react";
+import { useQuery } from "@apollo/react-hooks";
 import { useParams } from "react-router-dom";
-import { graphql, useLazyLoadQuery } from "react-relay/hooks";
 import PropType from "prop-types";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
@@ -9,74 +9,20 @@ import IssueComment from "./IssueComment";
 import IssueHistory from "./IssueHistory";
 import IssueTags from "./IssueTags";
 import IssueAssignees from "./IssueAssignees";
+import { ISSUE_QUERY } from "../../core/models/issues/issues.queries";
+import Loading from "../../lib/Loading";
 
 function IssuePage() {
   const { id } = useParams();
-  const { issue } = useLazyLoadQuery(
-    graphql`
-      query IssuePageQuery($id: ID!) {
-        issue(id: $id) {
-          id
-          title
-          createdAt
-          updatedAt
-          creator {
-            id
-            name
-          }
-          assignedUsers {
-            id
-            name
-          }
-          tags {
-            id
-            name
-            color
-          }
-          project {
-            id
-            name
-          }
-          changes {
-            id
-            createdAt
-            updatedAt
-            creator {
-              id
-              name
-            }
-            type
-            data {
-              user {
-                name
-              }
-              tag {
-                name
-              }
-              project {
-                name
-              }
-              status {
-                name
-              }
-            }
-          }
-          comments {
-            id
-            createdAt
-            updatedAt
-            content
-            creator {
-              id
-              name
-            }
-          }
-        }
-      }
-    `,
-    { id },
-    { fetchPolicy: 'store-or-network' },
-  );
+  const { data, loading } = useQuery(ISSUE_QUERY, {
+    variables: { id },
+  });
+
+  if (loading) {
+    return <Loading />
+  }
+
+  const { issue } = data;
 
   return (
     <Grid
