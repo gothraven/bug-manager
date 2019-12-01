@@ -6,7 +6,13 @@ import Chip from "@material-ui/core/Chip";
 import EditIcon from "@material-ui/icons/Edit";
 import TurnedInIcon from "@material-ui/icons/TurnedIn";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
-import { ASSIGN_USER, UNASSIGN_USER, ADD_TAG, REMOVE_TAG, CHANGE_STATUS } from "../../core/constants";
+import {
+  ASSIGN_USER,
+  UNASSIGN_USER,
+  ADD_TAG,
+  REMOVE_TAG,
+  CHANGE_STATUS
+} from "../../core/constants";
 
 function IssueHistory(props) {
   const { change } = props;
@@ -38,7 +44,10 @@ function IssueHistory(props) {
 }
 
 const issueAdapter = {
-  [ASSIGN_USER]: { icon: <AssignmentIndIcon />, text: "a assigné une tache à " },
+  [ASSIGN_USER]: {
+    icon: <AssignmentIndIcon />,
+    text: "a assigné une tache à "
+  },
   [UNASSIGN_USER]: {
     icon: <AssignmentIndIcon />,
     text: "a desassigné une tache à "
@@ -49,7 +58,7 @@ const issueAdapter = {
 };
 
 IssueHistory.propTypes = {
-  change: PropType.object.isRequired,
+  change: PropType.object.isRequired
 };
 
 export default IssueHistory;

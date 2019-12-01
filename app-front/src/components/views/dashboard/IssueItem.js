@@ -10,12 +10,21 @@ import Chip from "@material-ui/core/Chip";
 import moment from "moment";
 import { invertColor } from "../../core/utils/Functions";
 
-import useStyles from './IssueItem.scss';
-
+import useStyles from "./IssueItem.scss";
 
 function IssueItem(props) {
   const { issue } = props;
-  const { id, title, createdAt, updatedAt, creator, open, assignedUsers, tags, project } = issue;
+  const {
+    id,
+    title,
+    createdAt,
+    updatedAt,
+    creator,
+    open,
+    assignedUsers,
+    tags,
+    project
+  } = issue;
   const history = useHistory();
   const classes = useStyles();
 
@@ -30,9 +39,14 @@ function IssueItem(props) {
         secondary={`
           Created ${moment(createdAt).fromNow()} by ${creator.name}
            - last Updated ${moment(updatedAt).fromNow()}
-          ${assignedUsers.length ? `- Assigned to ${assignedUsers.map(user => ` ${user.name}`)}` : ''}
-          ${(project || {}).name ? `- this issue opened on ${project.name}` : ''}`
-        }
+          ${
+            assignedUsers.length
+              ? `- Assigned to ${assignedUsers.map(user => ` ${user.name}`)}`
+              : ""
+          }
+          ${
+            (project || {}).name ? `- this issue opened on ${project.name}` : ""
+          }`}
       />
       <Box>
         {tags.map(tag => (

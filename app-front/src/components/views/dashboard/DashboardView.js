@@ -9,10 +9,9 @@ import Box from "@material-ui/core/Box";
 import ErrorIcon from "@material-ui/icons/Error";
 import IssueItem from "./IssueItem";
 import Loading from "../../lib/Loading";
-import { ISSUES_QUERY } from "../../core/models/issues/issues.queries";
+import { ISSUES_QUERY } from "../../core/models/issues/issues.graphql";
 
-import useStyles from './DashboardView.scss';
-
+import useStyles from "./DashboardView.scss";
 
 function DashboardView() {
   const classes = useStyles();
@@ -35,16 +34,15 @@ function DashboardView() {
 
         return newEdges.length
           ? {
-            issues: {
-              __typename: previousResult.issues.__typename,
-              edges: [...previousResult.issues.edges, ...newEdges],
-              pageInfo,
-            },
-          }
+              issues: {
+                __typename: previousResult.issues.__typename,
+                edges: [...previousResult.issues.edges, ...newEdges],
+                pageInfo
+              }
+            }
           : previousResult;
       }
     });
-
   }, [data, loading, fetchMore]);
 
   if (loading) {

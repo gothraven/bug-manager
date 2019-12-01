@@ -1,62 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import propTypes from "prop-types";
-import clsx from "clsx";
 import { useHistory } from "react-router-dom";
-import { makeStyles } from "@material-ui/styles";
-import Fab from "@material-ui/core/Fab";
 import Drawer from "@material-ui/core/Drawer";
+import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import Dashboard from "@material-ui/icons/Dashboard";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import HelpIcon from "@material-ui/icons/HelpRounded";
+import SignOutIcon from "@material-ui/icons/PowerSettingsNew";
 import ClassIcon from "@material-ui/icons/Class";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { signOut } from "../../core/utils/Auth";
 import UserAvatar from "../../lib/UserAvatar";
+import NewIssueDialog from "../../lib/NewIssueDialog";
 
-const drawerWidth = 200;
-
-const useStyles = makeStyles(theme => ({
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: "nowrap"
-  },
-  drawerOpen: {
-    width: drawerWidth,
-    background: "#0747A6",
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
-  },
-  drawerClose: {
-    background: "#0747A6",
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    }),
-    overflowX: "hidden",
-    width: theme.spacing(7) + 20,
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9) + 20
-    },
-    icons: {
-      color: "white"
-    }
-  },
-  listItem: {
-    color: "#fff"
-  },
-  listItemIcon: {
-    display: "grid",
-    justifyContent: "center",
-    color: "#fff"
-  }
-}));
+import useStyles from "./SideBar.scss";
 
 const menuItems = [
   {
@@ -81,83 +41,70 @@ const menuItems = [
   }
 ];
 
-
 function SideBar(props) {
   const { me } = props;
   const history = useHistory();
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
 
   return (
     <Drawer
       variant="permanent"
-      className={clsx(classes.drawer, {
-        [classes.drawerOpen]: open,
-        [classes.drawerClose]: !open
-      })}
-      classes={{
-        paper: clsx({
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open
-        })
-      }}
-      open={open}
+      className={classes.drawer}
+      classes={{ paper: classes.drawer }}
     >
-      <div
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
+      <Grid
+        container
+        className={classes.grid}
+        direction="column"
+        justify="space-between"
       >
-        <List>
-          <ListItem button classes={{ root: classes.listItem }}>
-            <ListItemIcon classes={{ root: classes.listItemIcon }}>
-              <UserAvatar user={me} />
-            </ListItemIcon>
-            {open && <ListItemText primary={me.name} />}
-          </ListItem>
-          <ListItem button classes={{ root: classes.listItem }}>
-            <Fab
-              variant="extended"
-              aria-label="add-issue"
-              style={{ backgroundColor: "#fff" }}
-              onClick={() => history.push("/user/issue/new")}
-            >
-              <img
-                style={{ width: 30, margin: 5 }}
-                src="/images/create_32dp.png"
-                alt="Under development"
-              />
-              {open && "New Issue"}
-            </Fab>
-          </ListItem>
-          {menuItems.map(item => (
+        <Grid item>
+          <List>
+            <ListItem button classes={{ root: classes.listItem }}>
+              <ListItemIcon classes={{ root: classes.listItemIcon }}>
+                <UserAvatar user={me} />
+              </ListItemIcon>
+            </ListItem>
+            <ListItem button classes={{ root: classes.listItem }}>
+              <NewIssueDialog />
+            </ListItem>
+            {menuItems.map(item => (
+              <ListItem
+                key={item.title}
+                button
+                classes={{ root: classes.listItem }}
+                onClick={() => history.push(item.link)}
+              >
+                <ListItemIcon classes={{ root: classes.listItemIcon }}>
+                  {item.icon}
+                </ListItemIcon>
+              </ListItem>
+            ))}
+          </List>
+        </Grid>
+        <Grid item>
+          <List>
+            <ListItem button classes={{ root: classes.listItem }}>
+              <ListItemIcon classes={{ root: classes.listItemIcon }}>
+                <HelpIcon />
+              </ListItemIcon>
+            </ListItem>
             <ListItem
-              key={item.title}
+              key="Logout"
               button
               classes={{ root: classes.listItem }}
-              onClick={() => history.push(item.link)}
+              onClick={() => {
+                signOut();
+                history.push("/sign-in");
+              }}
             >
               <ListItemIcon classes={{ root: classes.listItemIcon }}>
-                {item.icon}
+                <SignOutIcon />
               </ListItemIcon>
-              {open && <ListItemText primary={item.title} />}
             </ListItem>
-          ))}
-        </List>
-        <ListItem
-          key="Logout"
-          button
-          classes={{ root: classes.listItem }}
-          onClick={() => {
-            signOut();
-            history.push("/sign-in");
-          }}
-        >
-          <ListItemIcon classes={{ root: classes.listItemIcon }}>
-            <ExitToAppIcon />
-          </ListItemIcon>
-          {open && <ListItemText primary="Logout" />}
-        </ListItem>
-      </div>
+          </List>
+        </Grid>
+      </Grid>
     </Drawer>
   );
 }
@@ -167,8 +114,8 @@ SideBar.propTypes = {
     id: propTypes.string,
     name: propTypes.string,
     email: propTypes.string,
-    role: propTypes.string,
-  }).isRequired,
+    role: propTypes.string
+  }).isRequired
 };
 
 export default SideBar;
