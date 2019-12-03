@@ -1,5 +1,4 @@
-import React from "react";
-import propTypes from "prop-types";
+import React, { useContext } from "react";
 import { useMutation } from "@apollo/react-hooks";
 import Fab from "@material-ui/core/Fab";
 import Button from "@material-ui/core/Button";
@@ -7,13 +6,13 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import AddIcon from "@material-ui/icons/Add";
 import TagPanel from "./TagPanel";
-import { ADMIN } from "../../core/constants";
 import Loading from "../../lib/Loading";
 import { usePagination } from "../../core/hooks";
+import { Can, AbilityContext } from "../../core/Ability";
 import { TAGS_QUERY, CREATE_TAG } from "../../core/models/tags/tags.graphql";
 
-function TagsView(props) {
-  const { me } = props;
+function TagsView() {
+  const ability = useContext(AbilityContext)
   const { data, loading: loadingTags, fetchMore } = usePagination(
     TAGS_QUERY,
     "tags"
@@ -57,41 +56,27 @@ function TagsView(props) {
             return null;
           }
           return (
-            <TagPanel disabled={me.role !== ADMIN} key={node.id} tag={node} />
+            <TagPanel disabled={!ability.can("edit", 'Tag')} key={node.id} tag={node} />
           );
         })}
       </Grid>
       {hasNextPage && <Button onClick={fetchMore}>load more</Button>}
-      {me.role === ADMIN && (
-        <Grid
-          item
-          style={{ display: "grid", justifyContent: "center", padding: 30 }}
-        >
-          <Fab
-            color="primary"
-            aria-label="add"
-            onClick={onCreateTag}
-            disabled={isTagCreatePending}
-          >
-            <AddIcon />
-          </Fab>
-        </Grid>
-      )}
+      <Can I="create" a="Tag">
+        {() => (
+          <Grid item style={{ display: "grid", justifyContent: "center", padding: 30 }}>
+            <Fab
+              color="primary"
+              aria-label="add"
+              onClick={onCreateTag}
+              disabled={isTagCreatePending}
+            >
+              <AddIcon />
+            </Fab>
+          </Grid>
+        )}
+      </Can>
     </Grid>
   );
 }
-
-TagsView.defaultProps = {
-  me: null
-};
-
-TagsView.propTypes = {
-  me: propTypes.shape({
-    id: propTypes.string,
-    name: propTypes.string,
-    email: propTypes.string,
-    role: propTypes.string
-  })
-};
 
 export default TagsView;

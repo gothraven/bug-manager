@@ -1,5 +1,11 @@
 import { combineResolvers, skip } from 'graphql-resolvers';
-import { ADMIN } from '../../models/user.model';
+import { ADMIN, DEVELOPER, USER } from '../../models/user.model';
+
+const authRank = {
+  [ADMIN]: 3,
+  [DEVELOPER]: 2,
+  [USER]: 1
+};
 
 export const isAuthenticated = (parent, args, { me }) =>
   (me ? skip : new Error('Not authenticated'));
@@ -9,7 +15,7 @@ export const authorize = role =>
     if (me instanceof Error) {
       return new Error(me);
     }
-    if (me.role === ADMIN || role === me.role) {
+    if (authRank[me.role] && authRank[me.role] >= authRank[role]) {
       return skip;
     }
     return new Error(`Not authorized as ${role}`);

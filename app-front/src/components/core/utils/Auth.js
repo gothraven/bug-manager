@@ -6,6 +6,6 @@ export function signIn(userId, token) {
 }
 
 export function signOut() {
-  localStorage.setItem(APP_USER_ID, null);
-  localStorage.setItem(APP_AUTH_TOKEN, null);
+  localStorage.setItem(APP_USER_ID, "");
+  localStorage.setItem(APP_AUTH_TOKEN, "");
 }

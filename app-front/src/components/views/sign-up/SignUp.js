@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
 import Avatar from "@material-ui/core/Avatar";
@@ -14,9 +15,11 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Copyright from "../../lib/Copyright";
+import { ability, defineRulesFor } from "../../core/Ability";
 import { signIn } from "../../core/utils/Auth";
 
 import useStyles from "./SignUp.scss";
+import { ME_QUERY } from "../../core/models/users/users.graphql";
 
 const SIGN_UP_USER = gql`
   mutation SignUpUserMutation(
@@ -38,18 +41,21 @@ const SIGN_UP_USER = gql`
 
 export default function SignUp() {
   const classes = useStyles();
+  const history = useHistory();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signUpUser, { loading: isSignUpPending }] = useMutation(SIGN_UP_USER, {
     variables: { name, email, password },
     update: (proxy, { data }) => {
-      const {
-        token,
-        user: { id }
-      } = data.signUp;
-      signIn(id, token);
-      window._history.push("/");
+      const { token, user } = data.signUp;
+      signIn(user.id, token);
+      ability.update(defineRulesFor(user.role))
+      proxy.writeQuery({
+        query: ME_QUERY,
+        data: { me: user }
+      });
+      history.push("/");
     }
   });
 

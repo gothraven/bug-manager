@@ -15,6 +15,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import { signOut } from "../../core/utils/Auth";
 import UserAvatar from "../../lib/UserAvatar";
 import NewIssueDialog from "../../lib/NewIssueDialog";
+import { Can } from "../../core/Ability";
 
 import useStyles from "./SideBar.scss";
 
@@ -30,12 +31,12 @@ const menuItems = [
     link: "/user/projects"
   },
   {
-    title: "tags",
+    title: "Tags",
     icon: <BookmarksIcon />,
     link: "/user/tags"
   },
   {
-    title: "settings",
+    title: "Settings",
     icon: <SettingsIcon />,
     link: "/user/settings"
   }
@@ -69,16 +70,19 @@ function SideBar(props) {
               <NewIssueDialog />
             </ListItem>
             {menuItems.map(item => (
-              <ListItem
-                key={item.title}
-                button
-                classes={{ root: classes.listItem }}
-                onClick={() => history.push(item.link)}
-              >
-                <ListItemIcon classes={{ root: classes.listItemIcon }}>
-                  {item.icon}
-                </ListItemIcon>
-              </ListItem>
+              <Can key={item.title} I="see" this={item.title}>
+                {() => (
+                  <ListItem
+                    button
+                    classes={{ root: classes.listItem }}
+                    onClick={() => history.push(item.link)}
+                  >
+                    <ListItemIcon classes={{ root: classes.listItemIcon }}>
+                      {item.icon}
+                    </ListItemIcon>
+                  </ListItem>
+                )}
+              </Can>
             ))}
           </List>
         </Grid>

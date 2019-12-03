@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
 import Avatar from "@material-ui/core/Avatar";
@@ -14,6 +15,8 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Copyright from "../../lib/Copyright";
+import Loading from "../../lib/Loading";
+import { ME_QUERY } from "../../core/models/users/users.graphql";
 import { signIn } from "../../core/utils/Auth";
 
 import useStyles from "./SignIn.scss";
@@ -34,19 +37,25 @@ const SIGN_IN_USER = gql`
 
 export default function SignIn() {
   const classes = useStyles();
+  const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signInUser, { loading: isSignInPending }] = useMutation(SIGN_IN_USER, {
     variables: { email, password },
     update: (proxy, { data }) => {
-      const {
-        token,
-        user: { id }
-      } = data.signIn;
-      signIn(id, token);
-      window._history.push("/");
+      const { token, user } = data.signIn;
+      signIn(user.id, token);
+      proxy.writeQuery({
+        query: ME_QUERY,
+        data: { me: user }
+      });
+      history.push("/");
     }
   });
+
+  if (isSignInPending) {
+    return <Loading />;
+  }
 
   return (
     <Container component="main" maxWidth="xs">

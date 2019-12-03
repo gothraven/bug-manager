@@ -1,5 +1,6 @@
 import ApolloClient from "apollo-boost";
 import { BASE_URL, APP_AUTH_TOKEN } from "../constants";
+import { signOut } from "../utils/Auth";
 
 const client = new ApolloClient({
   uri: BASE_URL,
@@ -14,7 +15,8 @@ const client = new ApolloClient({
   onError: ({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
       graphQLErrors.forEach(({ message, locations, path }) => {
-        if (message.includes("Sign in again.")) {
+        if (["Sign in again.", "Not authenticated"].includes(message)) {
+          signOut();
           window._history.push("/sign-in");
         } else {
           // eslint-disable-next-line no-console
