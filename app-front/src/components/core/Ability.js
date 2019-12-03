@@ -29,5 +29,6 @@ export function defineRulesFor(role) {
     can("see", "Projects");
   }
   can("see", "Dashboard");
+  can("see", "Issue");
   return rules
 }
