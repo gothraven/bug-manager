@@ -8,6 +8,7 @@ export const BASE_URL = "http://localhost:3030/";
 
 // Roles
 export const ADMIN = "ADMIN";
+export const DEVELOPER = "DEVELOPER";
 export const USER = "USER";
 
 // Change types
