@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import RouteWithLayout from "../lib/RouteWithLayout";
 import { MainLayout } from "../layouts";
@@ -13,15 +13,32 @@ import {
   IssuePageView,
   DashboardView
 } from "../views";
+import { useMe } from "../core/models/users/users.hooks";
+import { ability, defineRulesFor } from "../core/Ability";
+import Loading from "../lib/Loading";
 
 if (window !== "undefined") {
   window._history = history;
 }
 
 function MainRouter() {
-  const isAuthenticated = ![null, undefined].includes(
+  const isAuthenticated = ![null, undefined, ""].includes(
     localStorage.getItem(APP_USER_ID)
   );
+  const { me, loading } = useMe();
+  const [ready, setReady] = useState(false);
+
+
+  useEffect(() => {
+    if (me) {
+      ability.update(defineRulesFor(me.role));
+      setReady(true);
+    }
+  }, [me]);
+
+  if (isAuthenticated && (loading || !ready)) {
+    return <Loading />;
+  }
 
   return (
     <Switch>
@@ -43,12 +60,14 @@ function MainRouter() {
         authed={isAuthenticated}
         component={DashboardView}
         layout={MainLayout}
+        name="Dashboard"
       />
       <RouteWithLayout
         path="/user/issue/:id"
         authed={isAuthenticated}
         component={IssuePageView}
         layout={MainLayout}
+        name="Issue"
       />
       <RouteWithLayout
         exact
@@ -56,6 +75,7 @@ function MainRouter() {
         authed={isAuthenticated}
         component={ProjectsView}
         layout={MainLayout}
+        name="Projects"
       />
       <RouteWithLayout
         exact
@@ -63,6 +83,7 @@ function MainRouter() {
         authed={isAuthenticated}
         component={TagsView}
         layout={MainLayout}
+        name="Tags"
       />
       <RouteWithLayout
         exact
@@ -70,6 +91,7 @@ function MainRouter() {
         authed={isAuthenticated}
         component={NotFoundView}
         layout={MainLayout}
+        name="NotFound"
       />
       <Redirect to="/not-found" />
     </Switch>
