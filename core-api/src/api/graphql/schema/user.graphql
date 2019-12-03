@@ -4,6 +4,7 @@ scalar PositiveInt
 
 enum Role {
   USER
+  DEVELOPER
   ADMIN
 }
 

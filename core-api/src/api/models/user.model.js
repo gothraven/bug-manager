@@ -10,8 +10,9 @@ import APIError from '../utils/APIError';
 import { env, jwtSecret, jwtExpirationInterval } from '../../config/vars';
 
 export const ADMIN = 'ADMIN';
+export const DEVELOPER = 'DEVELOPER';
 export const USER = 'USER';
-const roles = [ADMIN, USER];
+const roles = [ADMIN, DEVELOPER, USER];
 
 const userSchema = new mongoose.Schema(
   {
