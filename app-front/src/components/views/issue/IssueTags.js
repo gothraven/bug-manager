@@ -13,6 +13,7 @@ import DoneIcon from '@material-ui/icons/Done';
 import { TAGS_QUERY } from "../../core/models/tags/tags.graphql";
 import { usePagination } from "../../core/hooks";
 import TagChip from "../../lib/TagChip";
+import { Can } from "../../core/Ability";
 import AutoCompletePopper from "../../lib/AutoCompletePopper";
 
 import useStyles from "./IssueTags.scss";
@@ -52,7 +53,6 @@ function IssueTags(props) {
     setAnchorEl(null);
   };
 
-
   const open = Boolean(anchorEl);
   let hasMore = false;
 
@@ -71,9 +71,13 @@ function IssueTags(props) {
           >
             Tags
           </Typography>
-          <IconButton component="span" style={{ padding: 0 }} onClick={handleClick}>
-            <SettingsIcon />
-          </IconButton>
+          <Can I="use" this="AssignTags">
+            {() => (
+              <IconButton component="span" style={{ padding: 0 }} onClick={handleClick}>
+                <SettingsIcon />
+              </IconButton>
+            )}
+          </Can>
         </Grid>
         <Divider />
         {tags.map((tag, index) => (
@@ -94,7 +98,7 @@ function IssueTags(props) {
           onClose={handleClose}
           multiple
           pendingValues={pendingTags}
-          allValues={loadingTags ? [] : _.uniqBy([...props.tags, ...data.tags.edges], 'id')}
+          allValues={loadingTags ? [] : _.uniqBy([...tags, ...data.tags.edges], 'id')}
           selectedValues={tags}
           onChange={(event, newValue) => setPendingTags(newValue)}
           hasMore={hasMore}
