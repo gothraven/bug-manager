@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useMutation } from "@apollo/react-hooks";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 import { TwitterPicker } from "react-color";
 import TextField from "@material-ui/core/TextField";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
@@ -9,7 +9,6 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Chip from "@material-ui/core/Chip";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
@@ -18,9 +17,9 @@ import {
   TAGS_QUERY,
   UPDATE_TAG
 } from "../../core/models/tags/tags.graphql";
-import { invertColor } from "../../core/utils/Functions";
 
 import useStyles from "./TagPanel.scss";
+import TagChip from "../../lib/TagChip";
 
 function TagPanel(props) {
   const classes = useStyles();
@@ -102,15 +101,7 @@ function TagPanel(props) {
       <ExpansionPanelSummary expandIcon={!disabled && <ExpandMoreIcon />}>
         <Grid container justify="flex-start" alignItems="center">
           <Grid item xs={2}>
-            <Chip
-              label={name}
-              style={{
-                borderColor: color,
-                backgroundColor: color,
-                color: invertColor(color)
-              }}
-              variant="outlined"
-            />
+            <TagChip tag={tag} />
           </Grid>
           <Grid item xs={8}>
             <Typography className={classes.description}>
@@ -186,8 +177,8 @@ TagPanel.defaultProps = {
 };
 
 TagPanel.propTypes = {
-  tag: PropTypes.object.isRequired,
-  disabled: PropTypes.bool
+  tag: propTypes.object.isRequired,
+  disabled: propTypes.bool
 };
 
 export default TagPanel;
