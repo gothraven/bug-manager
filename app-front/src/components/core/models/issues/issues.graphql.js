@@ -56,6 +56,7 @@ export const ISSUE_QUERY = gql`
       tags {
         id
         name
+        description
         color
       }
       project {
@@ -104,6 +105,80 @@ export const CREATE_ISSUE = gql`
   mutation CreateIssueMutation($title: String!, $content: String!) {
     createIssue(title: $title, content: $content) {
       id
+    }
+  }
+`;
+
+export const ISSUE_ADD_TAG = gql`
+  mutation IssueAddTagMutation($id: ID!, $tagId: ID!) {
+    addTag(id: $id, tagId: $tagId) {
+      tags {
+        id
+        name
+        description
+        color
+      }
+      changes {
+        id
+        createdAt
+        updatedAt
+        creator {
+          id
+          name
+        }
+        type
+        data {
+          user {
+            name
+          }
+          tag {
+            name
+          }
+          project {
+            name
+          }
+          status {
+            name
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const ISSUE_REMOVE_TAG = gql`
+  mutation IssueRemoveTagMutation($id: ID!, $tagId: ID!) {
+    removeTag(id: $id, tagId: $tagId) {
+      tags {
+        id
+        name
+        description
+        color
+      }
+      changes {
+        id
+        createdAt
+        updatedAt
+        creator {
+          id
+          name
+        }
+        type
+        data {
+          user {
+            name
+          }
+          tag {
+            name
+          }
+          project {
+            name
+          }
+          status {
+            name
+          }
+        }
+      }
     }
   }
 `;
