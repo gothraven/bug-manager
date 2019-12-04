@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import { useParams } from "react-router-dom";
 import PropType from "prop-types";
 import Divider from "@material-ui/core/Divider";
@@ -9,14 +9,14 @@ import IssueComment from "./IssueComment";
 import IssueHistory from "./IssueHistory";
 import IssueTags from "./IssueTags";
 import IssueAssignees from "./IssueAssignees";
-import { ISSUE_QUERY } from "../../core/models/issues/issues.graphql";
+import { ISSUE_QUERY, ISSUE_ADD_TAG, ISSUE_REMOVE_TAG } from "../../core/models/issues/issues.graphql";
 import Loading from "../../lib/Loading";
 
 function IssuePage() {
   const { id } = useParams();
-  const { data, loading } = useQuery(ISSUE_QUERY, {
-    variables: { id }
-  });
+  const { data, loading } = useQuery(ISSUE_QUERY, { variables: { id } });
+  const [onIssueAddTag] = useMutation(ISSUE_ADD_TAG);
+  const [onIssueRemoveTag] = useMutation(ISSUE_REMOVE_TAG);
 
   if (loading) {
     return <Loading />;
@@ -39,7 +39,39 @@ function IssuePage() {
         </Grid>
         <Grid item xs={3}>
           <IssueAssignees assignees={issue.assignedUsers} />
-          <IssueTags tags={issue.tags} />
+          <IssueTags
+            tags={issue.tags}
+            onTagAdded={(tag) => {
+              onIssueAddTag({
+                variables: { id: issue.id, tagId: tag.id },
+                update: (proxy, result) => {
+                  const { addTag } = result.data;
+                  const { issue: cachedIssue } = proxy.readQuery({
+                    query: ISSUE_QUERY, variables: { id: issue.id }
+                  });
+                  proxy.writeQuery({
+                    query: ISSUE_QUERY,
+                    data: { issue: { ...cachedIssue, tags: addTag.tags, changes: addTag.changes } }
+                  });
+                }
+              })
+            }}
+            onTagRemoved={(tag) => {
+              onIssueRemoveTag({
+                variables: { id: issue.id, tagId: tag.id },
+                update: (proxy, result) => {
+                  const { removeTag } = result.data;
+                  const { issue: cachedIssue } = proxy.readQuery({
+                    query: ISSUE_QUERY, variables: { id: issue.id }
+                  });
+                  proxy.writeQuery({
+                    query: ISSUE_QUERY,
+                    data: { issue: { ...cachedIssue, tags: removeTag.tags, changes: removeTag.changes } }
+                  });
+                }
+              })
+            }}
+          />
         </Grid>
       </Grid>
     </Grid>
