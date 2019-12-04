@@ -21,6 +21,7 @@
     "no-underscore-dangle": 0,
     "no-multi-str": 0,
     "eslint-disable-next-line no-use-before-define": "off",
+    "react/destructuring-assignment": "off",
     "import/no-extraneous-dependencies": [
       "error",
       {
