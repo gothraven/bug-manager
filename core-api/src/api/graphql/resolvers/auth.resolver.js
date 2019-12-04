@@ -22,7 +22,7 @@ export const authorize = role =>
   });
 
 export const own = model => async (parent, { id }, { models, me }) => {
-  if (me.role === ADMIN) {
+  if (me.role === ADMIN || me.role === DEVELOPER) {
     return skip;
   }
   const data = await models[model].findOne({ _id: id, creatorId: me.id });

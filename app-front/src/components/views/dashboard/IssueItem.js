@@ -6,11 +6,10 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ErrorIcon from "@material-ui/icons/Error";
 import ListItemText from "@material-ui/core/ListItemText";
 import Box from "@material-ui/core/Box";
-import Chip from "@material-ui/core/Chip";
 import moment from "moment";
-import { invertColor } from "../../core/utils/Functions";
 
 import useStyles from "./IssueItem.scss";
+import TagChip from "../../lib/TagChip";
 
 function IssueItem(props) {
   const { issue } = props;
@@ -40,25 +39,20 @@ function IssueItem(props) {
           Created ${moment(createdAt).fromNow()} by ${creator.name}
            - last Updated ${moment(updatedAt).fromNow()}
           ${
-            assignedUsers.length
-              ? `- Assigned to ${assignedUsers.map(user => ` ${user.name}`)}`
-              : ""
+          assignedUsers.length
+            ? `- Assigned to ${assignedUsers.map(user => ` ${user.name}`)}`
+            : ""
           }
           ${
-            (project || {}).name ? `- this issue opened on ${project.name}` : ""
+          (project || {}).name ? `- this issue opened on ${project.name}` : ""
           }`}
       />
       <Box>
         {tags.map(tag => (
-          <Chip
+          <TagChip
             key={tag.id}
-            label={tag.name}
-            size="small"
-            style={{
-              margin: 2,
-              backgroundColor: tag.color,
-              color: invertColor(tag.color)
-            }}
+            tag={tag}
+            style={{ height: 25, margin: 2, fontWeight: 400 }}
           />
         ))}
       </Box>
