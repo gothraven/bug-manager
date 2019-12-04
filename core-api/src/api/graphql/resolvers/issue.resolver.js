@@ -1,7 +1,7 @@
 import { combineResolvers, pipeResolvers } from 'graphql-resolvers';
 import { omitBy, isNil } from 'lodash';
 import { authorize, own, objectExists } from './auth.resolver';
-import { USER, ADMIN } from '../../models/user.model';
+import { USER, ADMIN, DEVELOPER } from '../../models/user.model';
 import { Paginate } from './pagination.resolver';
 import {
   ASSIGN_USER,
@@ -39,14 +39,14 @@ export default {
     updateIssue: combineResolvers(
       authorize(USER),
       own('Issue'),
-      async (parent, { id, title, content }, { models }) => {
-        const options = omitBy({ title, content }, isNil);
+      async (parent, { id, title }, { models }) => {
+        const options = omitBy({ title }, isNil);
         const issue = models.Issue.findByIdAndUpdate(id, options, { new: true });
         return issue || new Error('Something went wrong');
       }
     ),
     assignUser: pipeResolvers(
-      authorize(USER),
+      authorize(DEVELOPER),
       objectExists('User', 'userId'),
       async (parent, { id, userId }, { models }) => {
         const issue = await models.Issue.findByIdAndUpdate(
@@ -59,7 +59,7 @@ export default {
       recordChange(ASSIGN_USER, 'userId')
     ),
     unassignUser: pipeResolvers(
-      authorize(USER),
+      authorize(DEVELOPER),
       objectExists('User', 'userId'),
       async (parent, { id, userId }, { models }) => {
         const issue = await models.Issue.findByIdAndUpdate(
@@ -72,7 +72,7 @@ export default {
       recordChange(UNASSIGN_USER, 'userId')
     ),
     addTag: pipeResolvers(
-      authorize(USER),
+      authorize(DEVELOPER),
       objectExists('Tag', 'tagId'),
       async (parent, { id, tagId }, { models }) => {
         const issue = await models.Issue.findByIdAndUpdate(
@@ -85,7 +85,7 @@ export default {
       recordChange(ADD_TAG, 'tagId')
     ),
     removeTag: pipeResolvers(
-      authorize(USER),
+      authorize(DEVELOPER),
       objectExists('Tag', 'tagId'),
       async (parent, { id, tagId }, { models }) => {
         const issue = await models.Issue.findByIdAndUpdate(
@@ -98,7 +98,7 @@ export default {
       recordChange(REMOVE_TAG, 'tagId')
     ),
     attachToProject: pipeResolvers(
-      authorize(USER),
+      authorize(DEVELOPER),
       objectExists('Project', 'projectId'),
       async (parent, { id, projectId }, { models }) => {
         const issue = await models.Issue.findByIdAndUpdate(id, { projectId }, { new: true });
@@ -107,7 +107,7 @@ export default {
       recordChange(ATTACH_TO_PROJECT, 'projectId')
     ),
     detatchFromProject: pipeResolvers(
-      authorize(USER),
+      authorize(DEVELOPER),
       objectExists('Project', 'projectId'),
       async (parent, { id }, { models }) => {
         const issue = await models.Issue.findByIdAndUpdate(id, { projectId: null }, { new: true });
@@ -116,7 +116,7 @@ export default {
       recordChange(DETATCH_FROM_PROJECT, 'projectId')
     ),
     updateIssueStatus: pipeResolvers(
-      authorize(USER),
+      authorize(DEVELOPER),
       objectExists('Status', 'statusId'),
       async (parent, { id, statusId }, { models }) => {
         const issue = await models.Issue.findByIdAndUpdate(id, { statusId }, { new: true });
@@ -125,7 +125,7 @@ export default {
       recordChange(CHANGE_STATUS, 'statusId')
     ),
     closeIssue: pipeResolvers(
-      authorize(USER),
+      authorize(DEVELOPER),
       async (parent, { id }, { models }) => {
         const issue = models.Issue.findByIdAndUpdate(id, { open: false }, { new: true });
         return issue || new Error('Something went wrong');
@@ -133,7 +133,7 @@ export default {
       recordChange(CLOSE_ISSUE)
     ),
     reopenIssue: pipeResolvers(
-      authorize(USER),
+      authorize(DEVELOPER),
       async (parent, { id }, { models }) => {
         const issue = models.Issue.findByIdAndUpdate(id, { open: true }, { new: true });
         return issue || new Error('Something went wrong');
