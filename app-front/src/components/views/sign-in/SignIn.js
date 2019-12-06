@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
 import Avatar from "@material-ui/core/Avatar";
@@ -38,8 +38,11 @@ const SIGN_IN_USER = gql`
 export default function SignIn() {
   const classes = useStyles();
   const history = useHistory();
+  const location = useLocation();
+  const { from } = location.state || { from: { pathname: '/user/dashboard' } };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [signInUser, { loading: isSignInPending }] = useMutation(SIGN_IN_USER, {
     variables: { email, password },
     update: (proxy, { data }) => {
@@ -49,7 +52,7 @@ export default function SignIn() {
         query: ME_QUERY,
         data: { me: user }
       });
-      history.push("/");
+      history.push(from);
     }
   });
 
@@ -114,12 +117,12 @@ export default function SignIn() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="forget-password" variant="body2">
+              <Link href="/user/forget-password" variant="body2">
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link href="sign-up" variant="body2">
+              <Link href="/user/sign-up" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

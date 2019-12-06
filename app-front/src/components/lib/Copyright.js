@@ -6,7 +6,7 @@ export default function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://bug-manager.io/">
+      <Link color="inherit" href="/">
         Bug Manager
       </Link>{" "}
       {new Date().getFullYear()}

@@ -1,6 +1,9 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
-import { Grid, Typography } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(() => ({
   image: {
@@ -13,6 +16,7 @@ const useStyles = makeStyles(() => ({
 
 const NotFoundView = () => {
   const classes = useStyles();
+  const history = useHistory();
 
   return (
     <Grid
@@ -37,8 +41,11 @@ const NotFoundView = () => {
             src="/images/page_not_found.svg"
           />
         </div>
+        <Button onClick={() => history.push("/")}>
+          Go back to safety
+        </Button>
       </Grid>
-    </Grid>
+    </Grid >
   );
 };
 

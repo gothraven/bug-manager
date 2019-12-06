@@ -99,7 +99,7 @@ function SideBar(props) {
               classes={{ root: classes.listItem }}
               onClick={() => {
                 signOut();
-                history.push("/sign-in");
+                history.push("/user/sign-in");
               }}
             >
               <ListItemIcon classes={{ root: classes.listItemIcon }}>
