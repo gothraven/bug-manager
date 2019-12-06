@@ -101,7 +101,7 @@ function TagPanel(props) {
       <ExpansionPanelSummary expandIcon={!disabled && <ExpandMoreIcon />}>
         <Grid container justify="flex-start" alignItems="center">
           <Grid item xs={2}>
-            <TagChip tag={{ ...tag, name }} />
+            <TagChip tag={{ ...tag, name, color }} />
           </Grid>
           <Grid item xs={8}>
             <Typography className={classes.description}>
