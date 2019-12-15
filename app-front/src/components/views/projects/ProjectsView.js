@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
 import Fab from "@material-ui/core/Fab";
 import Button from "@material-ui/core/Button";
@@ -13,8 +13,11 @@ import {
 import { Can, AbilityContext } from "../../core/Ability";
 import { usePagination } from "../../core/hooks";
 import Loading from "../../lib/Loading";
+import SafeCheck from "../../lib/SafeCheck";
 
 function ProjectsView() {
+  const [open, setOpen] = useState(true);
+
   const ability = useContext(AbilityContext)
   const { data, loading: loadingProjects, fetchMore } = usePagination(
     PROJECTS_QUERY,
@@ -53,6 +56,15 @@ function ProjectsView() {
       justify="flex-start"
       alignItems="stretch"
     >
+      <SafeCheck
+        action={() => { }}
+        title='IRREVESIBLE ACTION'
+        content='Are you sure to delete all projects ?'
+        opened={open}
+        handleCancel={() => setOpen(false)}
+        handleConfirm={() => { }}
+      />
+
       <Typography variant="h1" component="h1" gutterBottom>
         All Projects
       </Typography>
