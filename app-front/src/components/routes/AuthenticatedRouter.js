@@ -30,16 +30,18 @@ function AuthenticatedRouter() {
   }, [me]);
 
   if (!isAuthenticated) {
-    if (location.pathname.startsWith('/user')) {
-      return (<Redirect
-        push
-        to={{
-          pathname: '/user/sign-in',
-          state: { from: location },
-        }}
-      />);
+    if (location.pathname.startsWith("/user")) {
+      return (
+        <Redirect
+          push
+          to={{
+            pathname: "/user/sign-in",
+            state: { from: location }
+          }}
+        />
+      );
     }
-    return <Redirect to='/not-found' />;
+    return <Redirect to="/not-found" />;
   }
 
   if (isAuthenticated && (loading || !ready)) {

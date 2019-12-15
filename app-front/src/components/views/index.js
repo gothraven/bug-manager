@@ -6,3 +6,4 @@ export { default as ProjectsView } from "./projects/ProjectsView";
 export { default as NotFoundView } from "./not-found/NotFoundView";
 export { default as DashboardView } from "./dashboard/DashboardView";
 export { default as IssuePageView } from "./issue/IssuePage";
+export { default as LandingPageView } from "./landing-page/LandingPage";

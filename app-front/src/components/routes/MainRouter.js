@@ -7,6 +7,7 @@ import {
   SignInView,
   SignUpView,
   NotFoundView,
+  LandingPageView
 } from "../views";
 
 if (window !== "undefined") {
@@ -30,11 +31,16 @@ function MainRouter() {
           return <Redirect to="/user/sign-in" />;
         }}
       />
+
+      <Route exact path="/landing-page" component={LandingPageView} />
+
       <Route exact path="/user/sign-in" component={SignInView} />
       <Route exact path="/user/sign-up" component={SignUpView} />
       <Route exact path="/user/forget-password" component={NotFoundView} />
       <Route exact path="/not-found" component={NotFoundView} />
+
       <AuthetnticatedRouter />
+
       <Redirect to="/not-found" />
     </Switch>
   );
