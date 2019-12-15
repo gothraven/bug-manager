@@ -10,14 +10,17 @@ import IssueHistory from "./IssueHistory";
 import IssueTags from "./IssueTags";
 import IssueAssignees from "./IssueAssignees";
 import { ISSUE_QUERY, ISSUE_ADD_TAG, ISSUE_REMOVE_TAG } from "../../core/models/issues/issues.graphql";
+import { CREATE_COMMENT, DELETE_COMMENT, UPDATE_COMMENT } from "../../core/models/comments/comments.graphql";
+
 import Loading from "../../lib/Loading";
 
 function IssuePage() {
   const { id } = useParams();
-  const { data, loading } = useQuery(ISSUE_QUERY, { variables: { id } });
+  
+  const { data, loading } = useQuery(ISSUE_QUERY, { variables: { id } });  
   const [onIssueAddTag] = useMutation(ISSUE_ADD_TAG);
   const [onIssueRemoveTag] = useMutation(ISSUE_REMOVE_TAG);
-
+  
   if (loading) {
     return <Loading />;
   }
@@ -93,7 +96,10 @@ function IssueHeader(props) {
 function IssueBody(props) {
   const { issue } = props;
   const { comments, changes } = issue;
-
+  const [onCreateComment] = useMutation(CREATE_COMMENT);
+  const [onDeleteComment] = useMutation(DELETE_COMMENT);
+  const [onUpdateComment] = useMutation(UPDATE_COMMENT);
+  
   function issueBodyNodes() {
     return [
       ...comments
@@ -104,8 +110,60 @@ function IssueBody(props) {
             const comment = change;
             return (
               <IssueComment
-                key={comment.id}
+                onCommentUpdated={content => {
+                  onUpdateComment({
+                    variables: { id: comment.id, content },
+                    update: (proxy, result) => {
+                      const { updateComment } = result.data;
+                      const { issue: cachedIssue } = proxy.readQuery({
+                        query: ISSUE_QUERY, variables: { id: issue.id }
+                      });
+                      proxy.writeQuery({
+                        query: ISSUE_QUERY,
+                        data: {
+                          issue: {
+                            ...cachedIssue,
+                            comments: issue.comments.map(x => {
+                              if (x.id === updateComment.id)
+                                return updateComment;
+                              return x;
+                            })
+                          }
+                        }
+                      });
+                    }
+                  });
+                }}
+                onCommentDeleted={() => {
+                  onDeleteComment({
+                    variables: { id: comment.id },
+                    optimisticResponse: {
+                      __typename: "Mutation",
+                      deleteComment: true
+                    },
+                    update: (proxy, result) => {
+                      const { deleteComment } = result.data;
+                      if (deleteComment) {
+                        const { issue: cachedIssue } = proxy.readQuery({
+                          query: ISSUE_QUERY, variables: { id: issue.id }
+                        });
+                        proxy.writeQuery({
+                          query: ISSUE_QUERY,
+                          data: {
+                            issue: {
+                              ...cachedIssue,
+                              comments: issue.comments.filter(x => x.id !== comment.id)
+                            }
+                          }
+                        });
+                      }
+                    }
+                  })
+                }}
+                key={comment.id} 
                 user={comment.creator}
+                createdAt={comment.createdAt}
+                updatedAt={comment.updatedAt}
                 content={comment.content}
               />
             );
@@ -118,7 +176,26 @@ function IssueBody(props) {
   return (
     <>
       {issueBodyNodes()}
-      <IssueComment creation user={issue.creator} />
+      <IssueComment
+        creation
+        user={issue.creator}
+        issueId={issue.id}
+        onCommentCreated={(content) => {
+          onCreateComment({
+            variables: { content, issueId: issue.id },
+            update: (proxy, result) => {
+              const { createComment } = result.data;
+              const { issue: cachedIssue } = proxy.readQuery({
+                query: ISSUE_QUERY, variables: { id: issue.id }
+              });
+              proxy.writeQuery({
+                query: ISSUE_QUERY,
+                data: { issue: { ...cachedIssue, comments: [...issue.comments , createComment] } }
+              });
+            }
+          })
+        }}
+      />
     </>
   );
 }
@@ -132,3 +209,69 @@ IssueBody.propTypes = {
 };
 
 export default IssuePage;
+
+
+/* 
+import { CREATE_COMMENT, DELETE_COMMENT, UPDATE_COMMENT } from "../../core/models/comments/comments.graphql";
+
+
+const [onIssueRemoveCommnet] = useMutation(DELETE_COMMENT); 
+const [onCreateComment] = useMutation(CREATE_COMMENT);
+const [onUpdateComment] = useMutation(UPDATE_COMMENT);
+
+{(comm) => {
+                  onCreateComment({
+                    variables: {content: comm.content,issueId: issue.id },
+                    update: (proxy, result) => {
+                      const { addComment } = result.data;
+                      const { issue: cachedIssue } = proxy.readQuery({
+                        query: ISSUE_QUERY, variables: { id: issue.id }
+                      });
+                      proxy.writeQuery({
+                        query: ISSUE_QUERY,
+                        data: {
+                          issue: {
+                            ...cachedIssue,
+                            comments: [ ...issue.comments,addComment ],
+                          }
+                        }
+                      });
+                    }
+                  })
+                }}
+={(comm) => {
+              onIssueRemoveComment({
+                variables: { id: issue.id, commentId: comm.id },
+                update: (proxy, result) => {
+                  const { removeComment } = result.data;
+                  const { issue: cachedIssue } = proxy.readQuery({
+                    query: ISSUE_QUERY, variables: { id: issue.id }
+                  });
+                  proxy.writeQuery({
+                    query: ISSUE_QUERY,
+                    data: { issue: { ...cachedIssue, tags: removeComment.comment, changes: removeComment.changes } }
+                  });
+                }
+              })
+            }}
+issue.comments.map(x => {
+  if x.id === updateComment.id
+    return updateComment
+  return x
+})
+={(comm) => {
+              onUpdateComment({
+                variables: { id: issue.id, commentId: comm.id , content: comm.id },
+                update: (proxy, result) => {
+                  const { updateComment } = result.data;
+                  const { issue: cachedIssue } = proxy.readQuery({
+                    query: ISSUE_QUERY, variables: { id: issue.id }
+                  });
+                  proxy.writeQuery({
+                    query: ISSUE_QUERY,
+                    data: { issue: { ...cachedIssue, comments: updateComment.comments, changes: updateComment.changes } }
+                  });
+                }
+              })
+            }}
+*/
