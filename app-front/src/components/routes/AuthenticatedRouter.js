@@ -5,6 +5,7 @@ import { MainLayout } from "../layouts";
 import { APP_USER_ID } from "../core/constants";
 import {
   TagsView,
+  CycleView,
   ProjectsView,
   IssuePageView,
   DashboardView,
@@ -54,6 +55,13 @@ function AuthenticatedRouter() {
         component={DashboardView}
         layout={MainLayout}
         name="Dashboard"
+      />
+      <RouteWithLayout
+        exact
+        path="/user/cycle"
+        component={CycleView}
+        layout={MainLayout}
+        name="Cycle"
       />
       <RouteWithLayout
         path="/user/issue/:id"

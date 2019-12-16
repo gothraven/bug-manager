@@ -11,10 +11,11 @@ import HelpIcon from "@material-ui/icons/HelpRounded";
 import SignOutIcon from "@material-ui/icons/PowerSettingsNew";
 import ClassIcon from "@material-ui/icons/Class";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
+import TableChartIcon from "@material-ui/icons/TableChart";
 import SettingsIcon from "@material-ui/icons/Settings";
-import { signOut } from "../../core/utils/Auth";
 import UserAvatar from "../../lib/UserAvatar";
 import NewIssueDialog from "../../lib/NewIssueDialog";
+import { signOut } from "../../core/utils/Auth";
 import { Can } from "../../core/Ability";
 
 import useStyles from "./SideBar.scss";
@@ -24,6 +25,11 @@ const menuItems = [
     title: "Dashboard",
     icon: <Dashboard />,
     link: "/user/dashboard"
+  },
+  {
+    title: "Cycle",
+    icon: <TableChartIcon />,
+    link: "/user/cycle"
   },
   {
     title: "Projects",

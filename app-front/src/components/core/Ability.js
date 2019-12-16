@@ -27,6 +27,7 @@ export function defineRulesFor(role) {
   if (role === ADMIN || role === DEVELOPER) {
     can("see", "Tags");
     can("see", "Projects");
+    can("see", "Cycle");
     can("use", "AssignTags");
   }
   can("see", "Dashboard");

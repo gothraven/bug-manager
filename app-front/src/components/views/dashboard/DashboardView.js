@@ -34,12 +34,12 @@ function DashboardView() {
 
         return newEdges.length
           ? {
-              issues: {
-                __typename: previousResult.issues.__typename,
-                edges: [...previousResult.issues.edges, ...newEdges],
-                pageInfo
-              }
+            issues: {
+              __typename: previousResult.issues.__typename,
+              edges: [...previousResult.issues.edges, ...newEdges],
+              pageInfo
             }
+          }
           : previousResult;
       }
     });
