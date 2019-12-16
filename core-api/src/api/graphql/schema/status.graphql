@@ -7,16 +7,12 @@ type Status {
   updatedAt: Date!
   name: String!
   description: String
-}
-
-type StatusCursor {
-  edges: [Status!]!
-  pageInfo: PageInfo!
+  issues: [Issue!]!
 }
 
 type Query {
   status(id: ID!): Status!
-  statuses(after: String, first: PositiveInt): StatusCursor
+  statuses: [Status!]!
 }
 
 type Mutation {

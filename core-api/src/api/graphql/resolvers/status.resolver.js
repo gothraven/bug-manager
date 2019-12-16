@@ -1,14 +1,14 @@
 import { combineResolvers } from 'graphql-resolvers';
 import { omitBy, isNil } from 'lodash';
 import { authorize } from './auth.resolver';
-import { USER, ADMIN } from '../../models/user.model';
-import { Paginate } from './pagination.resolver';
+import { DEVELOPER, ADMIN } from '../../models/user.model';
 
 export default {
   Query: {
-    status: combineResolvers(authorize(USER), async (parent, { id }, { models }) =>
+    status: combineResolvers(authorize(DEVELOPER), async (parent, { id }, { models }) =>
       models.Status.findById(id)),
-    statuses: combineResolvers(authorize(USER), Paginate('Status'))
+    statuses: combineResolvers(authorize(DEVELOPER), async (parent, args, { models }) =>
+      models.Status.find({}))
   },
   Mutation: {
     createStatus: combineResolvers(
@@ -34,5 +34,8 @@ export default {
       }
       return false;
     })
+  },
+  Status: {
+    issues: async (status, args, { models }) => models.Issue.find({ statusId: status.id })
   }
 };
