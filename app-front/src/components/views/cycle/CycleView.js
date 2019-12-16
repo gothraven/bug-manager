@@ -2,40 +2,26 @@ import React from "react";
 import Board from "react-trello";
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
+import { useQuery } from "@apollo/react-hooks";
+import { STATUSES_QUERY } from "../../core/models/statuses/statuses.graphql";
+import Loading from "../../lib/Loading";
+import BoardCard from "./BoardCard";
 
-const data = {
-  lanes: [
-    {
-      id: 'lane1',
-      title: 'Blocked',
-      label: '0/0',
-      cards: []
-    },
-    {
-      id: 'lane2',
-      title: 'Planned Tasks',
-      label: '2/2',
-      cards: [
-        { id: 'Card1', title: 'Write Blog', description: 'Can AI make memes', label: '30 mins' },
-        { id: 'Card2', title: 'Pay Rent', description: 'Transfer via NEFT', label: '5 mins', metadata: { sha: 'be312a1' } }
-      ]
-    },
-    {
-      id: 'lane3',
-      title: 'In Progress',
-      label: '0/0',
-      cards: []
-    },
-    {
-      id: 'lane4',
-      title: 'Completed',
-      label: '0/0',
-      cards: []
-    }
-  ]
-}
 
 function CycleView() {
+  const { data, loading: loadingStatuses } = useQuery(STATUSES_QUERY);
+
+  if (loadingStatuses) {
+    return (<Loading />);
+  }
+  const convertData = {
+    lanes: data.statuses.map(status => ({
+      id: status.id,
+      title: status.name,
+      cards: status.issues,
+    }))
+  };
+
   return (
     <Grid
       container
@@ -48,9 +34,10 @@ function CycleView() {
       </Typography>
       <Grid item xs={12}>
         <Board
-          data={data}
+          data={convertData}
           draggable
           hideCardDeleteIcon
+          components={{ Card: BoardCard }}
           laneStyle={{ maxHeight: "calc(100vh - 116px)", }}
           style={{
             backgroundColor: "#FFFFFF",
