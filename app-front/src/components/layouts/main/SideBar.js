@@ -11,6 +11,7 @@ import HelpIcon from "@material-ui/icons/HelpRounded";
 import SignOutIcon from "@material-ui/icons/PowerSettingsNew";
 import ClassIcon from "@material-ui/icons/Class";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
+import PersonIcon from "@material-ui/icons/Person";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { signOut } from "../../core/utils/Auth";
 import UserAvatar from "../../lib/UserAvatar";
@@ -34,6 +35,11 @@ const menuItems = [
     title: "Tags",
     icon: <BookmarksIcon />,
     link: "/user/tags"
+  },
+  {
+    title: "Profil",
+    icon: <PersonIcon />,
+    link: "/user/profil"
   },
   {
     title: "Settings",
