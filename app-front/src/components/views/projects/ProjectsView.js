@@ -56,14 +56,15 @@ function ProjectsView() {
       justify="flex-start"
       alignItems="stretch"
     >
+
       <SafeCheck
-        action={() => { }}
-        title='IRREVESIBLE ACTION'
+        title='WARNING'
         content='Are you sure to delete all projects ?'
-        opened={open}
-        handleCancel={() => setOpen(false)}
-        handleConfirm={() => { }}
-      />
+      >
+        <Button variant="outlined" color="primary">Delete all projects</Button>
+      </SafeCheck>
+
+
 
       <Typography variant="h1" component="h1" gutterBottom>
         All Projects
