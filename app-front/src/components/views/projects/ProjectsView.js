@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { useMutation } from "@apollo/react-hooks";
 import Fab from "@material-ui/core/Fab";
 import Button from "@material-ui/core/Button";
@@ -16,13 +16,13 @@ import Loading from "../../lib/Loading";
 import SafeCheck from "../../lib/SafeCheck";
 
 function ProjectsView() {
-  const [open, setOpen] = useState(true);
 
   const ability = useContext(AbilityContext)
   const { data, loading: loadingProjects, fetchMore } = usePagination(
     PROJECTS_QUERY,
     "projects"
   );
+
   const [onCreateProject, { loading: isProjectCreatePending }] = useMutation(
     CREATE_PROJECT,
     {
@@ -59,9 +59,10 @@ function ProjectsView() {
 
       <SafeCheck
         title='WARNING'
-        content='Are you sure to delete all projects ?'
+        content='Are you sure to test this action ?'
+        action={() => { }}
       >
-        <Button variant="outlined" color="primary">Delete all projects</Button>
+        <Button variant="outlined" color="primary">Test Safe Delete</Button>
       </SafeCheck>
 
 

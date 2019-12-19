@@ -10,45 +10,60 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 
 function SafeCheck(props) {
-    const { title, content, children } = props;
+    const { title, content, children, action } = props;
 
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const onClose = () => setOpen(false);
 
     return (
-        <Dialog
-            open={open}
-            onClose={onClose}
-            aria-labelledby="title"
-        >
-            <DialogTitle id="title">
-                {title}
-            </DialogTitle>
+        <>
+            <div onClick={() => setOpen(true)}>{children}</div>
 
-            <DialogContent>
-                <DialogContentText>{content}</DialogContentText>
-            </DialogContent>
+            <Dialog
+                open={open}
+                onClose={onClose}
+                aria-labelledby="title"
+            >
+                <DialogTitle id="title">
+                    {title}
+                </DialogTitle>
 
-            <DialogActions>
-                <Button
-                    onClick={onClose}
-                    color="secondary"
-                    variant='contained'
-                >
-                    Cancel
-                </Button>
+                <DialogContent>
+                    <DialogContentText>{content}</DialogContentText>
+                </DialogContent>
 
-                {children}
+                <DialogActions>
+                    <Button
+                        onClick={onClose}
+                        color="secondary"
+                        variant='contained'
+                    >
+                        Cancel
+                    </Button>
 
-            </DialogActions>
-        </Dialog>
+                    <Button
+                        onClick={() => {
+                            action();
+                            onClose();
+                        }}
+                        color="primary"
+                    >
+                        Confirm
+                    </Button>
+
+                </DialogActions>
+            </Dialog>
+        </>
+
     );
 }
 
 SafeCheck.propTypes = {
     title: PropTypes.string.isRequired,
     content: PropTypes.any.isRequired,
+    action: PropTypes.func.isRequired,
+    children: PropTypes.any.isRequired,
 };
 
 export default SafeCheck;
