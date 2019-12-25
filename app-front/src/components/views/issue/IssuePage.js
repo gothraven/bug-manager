@@ -9,6 +9,7 @@ import IssueComment from "./IssueComment";
 import IssueHistory from "./IssueHistory";
 import IssueTags from "./IssueTags";
 import IssueAssignees from "./IssueAssignees";
+import { useMe } from "../../core/models/users/users.hooks";
 import { ISSUE_QUERY, ISSUE_ADD_TAG, ISSUE_REMOVE_TAG } from "../../core/models/issues/issues.graphql";
 import { CREATE_COMMENT, DELETE_COMMENT, UPDATE_COMMENT } from "../../core/models/comments/comments.graphql";
 
@@ -96,6 +97,7 @@ function IssueHeader(props) {
 function IssueBody(props) {
   const { issue } = props;
   const { comments, changes } = issue;
+  const { me } = useMe();
   const [onCreateComment] = useMutation(CREATE_COMMENT);
   const [onDeleteComment] = useMutation(DELETE_COMMENT);
   const [onUpdateComment] = useMutation(UPDATE_COMMENT);
@@ -178,7 +180,7 @@ function IssueBody(props) {
       {issueBodyNodes()}
       <IssueComment
         creation
-        user={issue.creator}
+        user={me}
         issueId={issue.id}
         onCommentCreated={(content) => {
           onCreateComment({
