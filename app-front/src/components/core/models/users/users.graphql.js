@@ -13,7 +13,7 @@ export const ME_QUERY = gql`
 `;
 
 export const UPDATE_USER_PASSWORD =  gql`
-    mutation UpdateUserPasswordMutation($oldPassword : String!, $newPassword : String!, $confirmPassword : String!) {
+    mutation UpdateUserPasswordMutation($oldPassword : String!, $newPassword : String!) {
         updateUserPassword(oldPassword: $oldPassword, newPassword : $newPassword) 
     }
 `;
