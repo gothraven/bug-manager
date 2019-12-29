@@ -37,11 +37,6 @@ const menuItems = [
     link: "/user/tags"
   },
   {
-    title: "Profil",
-    icon: <PersonIcon />,
-    link: "/user/profil"
-  },
-  {
     title: "Settings",
     icon: <SettingsIcon />,
     link: "/user/settings"
@@ -67,7 +62,14 @@ function SideBar(props) {
       >
         <Grid item>
           <List>
-            <ListItem button classes={{ root: classes.listItem }}>
+            <ListItem 
+              button 
+              classes={{ root: classes.listItem }}
+              key="Profil"
+              onClick={() => {
+                history.push("/user/profil");
+              }}
+            >
               <ListItemIcon classes={{ root: classes.listItemIcon }}>
                 <UserAvatar user={me} />
               </ListItemIcon>

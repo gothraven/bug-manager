@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
   
-export default function VerticalTabs() {
+export default function() {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
   
@@ -57,12 +57,10 @@ export default function VerticalTabs() {
             variant="scrollable"
             value={value}
             onChange={handleChange}
-            aria-label="Vertical tabs example"
             className={classes.tabs}
           >
             <Tab label="Account" {...a11yProps(0)} />
             <Tab label="Security" {...a11yProps(1)} />
-            {/* <Tab label="Users" {...a11yProps(2)} /> */}
           </Tabs>
           <TabPanel value={value} index={0}>
             <SettingAccount/>
@@ -70,9 +68,6 @@ export default function VerticalTabs() {
           <TabPanel value={value} index={1}>
             <SettingSecurity/>
           </TabPanel>
-          {/* <TabPanel value={value} index={2}>
-            <SettingUsers/>
-          </TabPanel> */}
         </div>
     );
 }

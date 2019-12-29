@@ -51,7 +51,7 @@ export default {
     updateUser: combineResolvers(authorize(USER), async (parent, { name, email }, { models, me }) =>
       models.User.findByIdAndUpdate(me.id, { name, email }, { new: true })),
 
-    setPassword: async (parent, { oldPassword, newPassword, confirmPassword }, { models, me }) => {
+    updateUserPassword: async (parent, { oldPassword, newPassword }, { models, me }) => {
       const user = await models.User.findById(me.id);
       if (!user) throw new Error('No user found');
 
@@ -62,9 +62,7 @@ export default {
 
       const hash = await bcrypt.hash(newPassword, rounds);
 
-      if (newPassword === confirmPassword) {
-        models.User.findByIdAndUpdate(me.id, { password: hash }, { new: true });
-      } else return false;
+      models.User.findByIdAndUpdate(me.id, { password: hash }, { new: true });
 
       return true;
     },

@@ -11,3 +11,20 @@ export const ME_QUERY = gql`
     }
   }
 `;
+
+export const UPDATE_USER_PASSWORD =  gql`
+    mutation UpdateUserPasswordMutation($oldPassword : String!, $newPassword : String!, $confirmPassword : String!) {
+        updateUserPassword(oldPassword: $oldPassword, newPassword : $newPassword) 
+    }
+`;
+
+export const UPDATE_USER =  gql`
+mutation UpdateUserMutation($name: String!, $email: EmailAddress!) {
+  updateUser( name: $name, email: $email ) {
+    id
+    name
+    email
+    role
+  }
+}
+`;
