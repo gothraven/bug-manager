@@ -62,12 +62,26 @@ function AccountSettings() {
           </Grid>
           <Grid container justify="flex-end" alignItems="center" spacing={1}>
             <Grid item>
-              <Button color="secondary" type="button" onClick={() => { setUsername(me.name); setEmail(me.email) }}>
+              <Button
+                color="secondary"
+                type="button"
+                onClick={() => {
+                  setUsername(me.name);
+                  setEmail(me.email);
+                }}
+              >
                 Undo
               </Button>
             </Grid>
             <Grid item>
-              <Button color="primary" type="submit" onClick={e => { e.preventDefault(); onUpdateUser(); }}>
+              <Button
+                color="primary"
+                type="submit"
+                onClick={e => {
+                  e.preventDefault();
+                  onUpdateUser();
+                }}
+              >
                 Save
               </Button>
             </Grid>
