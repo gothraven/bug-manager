@@ -9,7 +9,7 @@ import {
   IssuePageView,
   DashboardView,
   ProfilView,
-  SettingView,
+  SettingsView,
   NotFoundView
 } from "../views";
 import { useMe } from "../core/models/users/users.hooks";
@@ -87,7 +87,7 @@ function AuthenticatedRouter() {
       <RouteWithLayout
         exact
         path="/user/settings"
-        component={SettingView}
+        component={SettingsView}
         layout={MainLayout}
         name="Settings"
       />
