@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { gql } from "apollo-boost";
 
 export const ME_QUERY = gql`
@@ -19,12 +18,12 @@ export const UPDATE_USER_PASSWORD =  gql`
 `;
 
 export const UPDATE_USER =  gql`
-mutation UpdateUserMutation($name: String!, $email: EmailAddress!) {
-  updateUser( name: $name, email: $email ) {
-    id
-    name
-    email
-    role
-  }
-}
+    mutation UpdateUserMutation($name: String!, $email: EmailAddress!) {
+      updateUser(name: $name, email: $email) {
+        id
+        name
+        email
+        role
+      }
+    }
 `;
