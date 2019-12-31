@@ -11,7 +11,6 @@ import HelpIcon from "@material-ui/icons/HelpRounded";
 import SignOutIcon from "@material-ui/icons/PowerSettingsNew";
 import ClassIcon from "@material-ui/icons/Class";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
-import PersonIcon from "@material-ui/icons/Person";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { signOut } from "../../core/utils/Auth";
 import UserAvatar from "../../lib/UserAvatar";
@@ -62,11 +61,11 @@ function SideBar(props) {
       >
         <Grid item>
           <List>
-            <ListItem 
+            <ListItem
               key="Profil"
               classes={{ root: classes.listItem }}
               onClick={() => history.push("/user/profil")}
-              button 
+              button
             >
               <ListItemIcon classes={{ root: classes.listItemIcon }}>
                 <UserAvatar user={me} />
