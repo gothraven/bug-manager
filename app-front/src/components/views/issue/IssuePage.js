@@ -112,6 +112,8 @@ function IssueBody(props) {
             const comment = change;
             return (
               <IssueComment
+                createdAt={comment.createdAt}
+                updatedAt={comment.updatedAt}
                 onCommentUpdated={content => {
                   onUpdateComment({
                     variables: { id: comment.id, content },
@@ -164,8 +166,6 @@ function IssueBody(props) {
                 }}
                 key={comment.id} 
                 user={comment.creator}
-                createdAt={comment.createdAt}
-                updatedAt={comment.updatedAt}
                 content={comment.content}
               />
             );
