@@ -44,13 +44,13 @@ export default function () {
           </Grid>
           <Grid item container xs={11} direction="column">
             <Typography variant="h4">
-              Username: {<Typography variant="h6" display="inline">{me.name}</Typography>}
+              Username: {<Typography component="span" variant="h6" display="inline">{me.name}</Typography>}
             </Typography>
             <Typography variant="h4">
-              Email: {<Typography variant="h6" display="inline">{me.email}</Typography>}
+              Email: {<Typography component="span" variant="h6" display="inline">{me.email}</Typography>}
             </Typography>
             <Typography variant="h4">
-              Role: {<Typography variant="h6" display="inline">{me.role}</Typography>}
+              Role: {<Typography component="span" variant="h6" display="inline">{me.role}</Typography>}
             </Typography>
           </Grid>
         </Grid>
