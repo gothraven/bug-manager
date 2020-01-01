@@ -1,10 +1,8 @@
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
 import { combineResolvers } from 'graphql-resolvers';
 import { authorize } from './auth.resolver';
 import { USER, ADMIN } from '../../models/user.model';
 import { Paginate } from './pagination.resolver';
-import { env } from '../../../config/vars';
 
 const createToken = async (user, secret, expiresIn) => {
   const { id, email, username, role } = user;
@@ -53,18 +51,17 @@ export default {
 
     updateUserPassword: async (parent, { oldPassword, newPassword }, { models, me }) => {
       const user = await models.User.findById(me.id);
-      if (!user) throw new Error('No user found');
-
       const isValid = await user.passwordMatches(oldPassword);
-      if (!isValid) throw new Error('Invalid password');
 
-      const rounds = env === 'test' ? 1 : 10;
+      if (!isValid) {
+        throw new Error('Invalid password');
+      }
 
-      const hash = await bcrypt.hash(newPassword, rounds);
-
-      models.User.findByIdAndUpdate(me.id, { password: hash }, { new: true });
-
-      return true;
+      return !!(await models.User.findByIdAndUpdate(
+        me.id,
+        { password: newPassword },
+        { new: true }
+      ));
     },
 
     deleteUser: combineResolvers(authorize(ADMIN), async (parent, { id }, { models }) => {
