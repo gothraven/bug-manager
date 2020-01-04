@@ -15,11 +15,13 @@ import { usePagination } from "../../core/hooks";
 import Loading from "../../lib/Loading";
 
 function ProjectsView() {
+
   const ability = useContext(AbilityContext)
   const { data, loading: loadingProjects, fetchMore } = usePagination(
     PROJECTS_QUERY,
     "projects"
   );
+
   const [onCreateProject, { loading: isProjectCreatePending }] = useMutation(
     CREATE_PROJECT,
     {
