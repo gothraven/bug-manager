@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function () {
+function ProfileView() {
   const classes = useStyles();
   const { me } = useMe();
 
@@ -70,3 +70,5 @@ export default function () {
     </Grid>
   );
 }
+
+export default ProfileView;

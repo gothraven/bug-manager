@@ -39,7 +39,7 @@ export default function SignIn() {
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
-  const { from } = location.state || { from: { pathname: '/user/dashboard' } };
+  const { from } = location.state || { from: { pathname: "/user/dashboard" } };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

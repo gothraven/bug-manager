@@ -8,7 +8,7 @@ import {
   ProjectsView,
   IssuePageView,
   DashboardView,
-  ProfilView,
+  ProfileView,
   SettingsView,
   NotFoundView
 } from "../views";
@@ -32,16 +32,18 @@ function AuthenticatedRouter() {
   }, [me]);
 
   if (!isAuthenticated) {
-    if (location.pathname.startsWith('/user')) {
-      return (<Redirect
-        push
-        to={{
-          pathname: '/user/sign-in',
-          state: { from: location },
-        }}
-      />);
+    if (location.pathname.startsWith("/user")) {
+      return (
+        <Redirect
+          push
+          to={{
+            pathname: "/user/sign-in",
+            state: { from: location }
+          }}
+        />
+      );
     }
-    return <Redirect to='/not-found' />;
+    return <Redirect to="/not-found" />;
   }
 
   if (isAuthenticated && (loading || !ready)) {
@@ -79,10 +81,10 @@ function AuthenticatedRouter() {
       />
       <RouteWithLayout
         exact
-        path="/user/profil"
-        component={ProfilView}
+        path="/user/profile"
+        component={ProfileView}
         layout={MainLayout}
-        name="Profil"
+        name="Profile"
       />
       <RouteWithLayout
         exact

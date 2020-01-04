@@ -11,15 +11,15 @@ function RouteWithLayout(props) {
   return (
     <Route
       {...rest}
-      render={matchProps =>
+      render={matchProps => (
         <Layout>
-          {
-            ability.can("see", name)
-              ? <Component {...matchProps} />
-              : <NotFoundView />
-          }
+          {ability.can("see", name) ? (
+            <Component {...matchProps} />
+          ) : (
+            <NotFoundView />
+          )}
         </Layout>
-      }
+      )}
     />
   );
 }
@@ -27,7 +27,7 @@ function RouteWithLayout(props) {
 RouteWithLayout.propTypes = {
   component: PropTypes.any.isRequired,
   layout: PropTypes.any.isRequired,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired
 };
 
 export default RouteWithLayout;
