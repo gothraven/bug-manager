@@ -20,6 +20,7 @@ function ProjectsView() {
     PROJECTS_QUERY,
     "projects"
   );
+
   const [onCreateProject, { loading: isProjectCreatePending }] = useMutation(
     CREATE_PROJECT,
     {

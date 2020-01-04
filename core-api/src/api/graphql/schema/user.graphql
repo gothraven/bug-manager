@@ -31,6 +31,7 @@ type Query {
 type Mutation {
   signUp(name: String!, email: EmailAddress!, password: String!): Auth!
   signIn(email: EmailAddress!, password: String!): Auth!
-  updateUser(email: EmailAddress!): User!
+  updateUser(name: String!, email: EmailAddress!): User!
+  updateUserPassword(oldPassword : String!, newPassword : String!): Boolean!
   deleteUser(id: ID!): Boolean!
 }
