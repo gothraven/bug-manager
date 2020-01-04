@@ -9,11 +9,9 @@ import IssueComment from "./IssueComment";
 import IssueHistory from "./IssueHistory";
 import IssueTags from "./IssueTags";
 import IssueAssignees from "./IssueAssignees";
-import {
-  ISSUE_QUERY,
-  ISSUE_ADD_TAG,
-  ISSUE_REMOVE_TAG
-} from "../../core/models/issues/issues.graphql";
+import { useMe } from "../../core/models/users/users.hooks";
+import { ISSUE_QUERY, ISSUE_ADD_TAG, ISSUE_REMOVE_TAG } from "../../core/models/issues/issues.graphql";
+import { CREATE_COMMENT, DELETE_COMMENT, UPDATE_COMMENT } from "../../core/models/comments/comments.graphql";
 import Loading from "../../lib/Loading";
 
 function IssuePage() {
@@ -34,11 +32,16 @@ function IssuePage() {
       direction="column"
       justify="flex-start"
       alignItems="stretch"
+      spacing={2}
     >
-      <IssueHeader issue={issue} />
-      <Divider />
-      <Grid container spacing={3}>
-        <Grid item xs>
+      <Grid item>
+        <Typography variant="h1" component="h1" gutterBottom>
+          # {issue.title}
+        </Typography>
+        <Divider />
+      </Grid>
+      <Grid item container justify="space-evenly">
+        <Grid item xs={8} container direction="column" justify="flex-start" alignItems="stretch" spacing={3}>
           <IssueBody issue={issue} />
         </Grid>
         <Grid item xs={3}>
@@ -96,34 +99,80 @@ function IssuePage() {
   );
 }
 
-function IssueHeader(props) {
-  const {
-    issue: { title }
-  } = props;
-
-  return (
-    <Typography variant="h1" component="h1" gutterBottom>
-      # {title}
-    </Typography>
-  );
-}
-
 function IssueBody(props) {
   const { issue } = props;
   const { comments, changes } = issue;
+  const { me } = useMe();
+  const [onCreateComment] = useMutation(CREATE_COMMENT);
+  const [onDeleteComment] = useMutation(DELETE_COMMENT);
+  const [onUpdateComment] = useMutation(UPDATE_COMMENT);
 
   function issueBodyNodes() {
     return [
       ...comments
         .concat(changes)
-        .sort((a, b) => a.createdAt - b.createdAt)
+        .sort((a, b) => parseInt(a.createdAt, 10) - parseInt(b.createdAt, 10))
         .map(change => {
           if (change.type === undefined) {
             const comment = change;
             return (
               <IssueComment
+                createdAt={comment.createdAt}
+                updatedAt={comment.updatedAt}
+                creatorName={comment.creator.name}
+                onCommentUpdated={content => {
+                  onUpdateComment({
+                    variables: { id: comment.id, content },
+                    update: (proxy, result) => {
+                      const { updateComment } = result.data;
+                      const { issue: cachedIssue } = proxy.readQuery({
+                        query: ISSUE_QUERY, variables: { id: issue.id }
+                      });
+                      proxy.writeQuery({
+                        query: ISSUE_QUERY,
+                        data: {
+                          issue: {
+                            ...cachedIssue,
+                            comments: issue.comments.map(x => {
+                              if (x.id === updateComment.id)
+                                return updateComment;
+                              return x;
+                            })
+                          }
+                        }
+                      });
+                    }
+                  });
+                }}
+                onCommentDeleted={() => {
+                  onDeleteComment({
+                    variables: { id: comment.id },
+                    optimisticResponse: {
+                      __typename: "Mutation",
+                      deleteComment: true
+                    },
+                    update: (proxy, result) => {
+                      const { deleteComment } = result.data;
+                      if (deleteComment) {
+                        const { issue: cachedIssue } = proxy.readQuery({
+                          query: ISSUE_QUERY, variables: { id: issue.id }
+                        });
+                        proxy.writeQuery({
+                          query: ISSUE_QUERY,
+                          data: {
+                            issue: {
+                              ...cachedIssue,
+                              comments: issue.comments.filter(x => x.id !== comment.id)
+                            }
+                          }
+                        });
+                      }
+                    }
+                  })
+                }}
                 key={comment.id}
-                user={comment.creator}
+                user={me}
+                creator={comment.creator}
                 content={comment.content}
               />
             );
@@ -136,14 +185,28 @@ function IssueBody(props) {
   return (
     <>
       {issueBodyNodes()}
-      <IssueComment creation user={issue.creator} />
+      <IssueComment
+        user={me}
+        creator={me}
+        onCommentCreated={(content) => {
+          onCreateComment({
+            variables: { content, issueId: issue.id },
+            update: (proxy, result) => {
+              const { createComment } = result.data;
+              const { issue: cachedIssue } = proxy.readQuery({
+                query: ISSUE_QUERY, variables: { id: issue.id }
+              });
+              proxy.writeQuery({
+                query: ISSUE_QUERY,
+                data: { issue: { ...cachedIssue, comments: [...issue.comments, createComment] } }
+              });
+            }
+          })
+        }}
+      />
     </>
   );
 }
-
-IssueHeader.propTypes = {
-  issue: PropType.object.isRequired
-};
 
 IssueBody.propTypes = {
   issue: PropType.object.isRequired

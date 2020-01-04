@@ -105,6 +105,7 @@ function ProjectCard(props) {
               >
                 <EditIcon />
               </IconButton>,
+
               <SafeCheck
                 key={1}
                 title='Delete Project'
