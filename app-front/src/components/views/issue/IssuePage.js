@@ -17,11 +17,10 @@ import Loading from "../../lib/Loading";
 
 function IssuePage() {
   const { id } = useParams();
-  
-  const { data, loading } = useQuery(ISSUE_QUERY, { variables: { id } });  
+  const { data, loading } = useQuery(ISSUE_QUERY, { variables: { id } });
   const [onIssueAddTag] = useMutation(ISSUE_ADD_TAG);
   const [onIssueRemoveTag] = useMutation(ISSUE_REMOVE_TAG);
-  
+
   if (loading) {
     return <Loading />;
   }
@@ -34,11 +33,16 @@ function IssuePage() {
       direction="column"
       justify="flex-start"
       alignItems="stretch"
+      spacing={2}
     >
-      <IssueHeader issue={issue} />
-      <Divider />
-      <Grid container spacing={3}>
-        <Grid item xs>
+      <Grid item>
+        <Typography variant="h1" component="h1" gutterBottom>
+          # {issue.title}
+        </Typography>
+        <Divider />
+      </Grid>
+      <Grid item container justify="space-evenly">
+        <Grid item xs={8} container direction="column" justify="flex-start" alignItems="stretch" spacing={3}>
           <IssueBody issue={issue} />
         </Grid>
         <Grid item xs={3}>
@@ -82,18 +86,6 @@ function IssuePage() {
   );
 }
 
-function IssueHeader(props) {
-  const {
-    issue: { title }
-  } = props;
-
-  return (
-    <Typography variant="h1" component="h1" gutterBottom>
-      # {title}
-    </Typography>
-  );
-}
-
 function IssueBody(props) {
   const { issue } = props;
   const { comments, changes } = issue;
@@ -101,12 +93,12 @@ function IssueBody(props) {
   const [onCreateComment] = useMutation(CREATE_COMMENT);
   const [onDeleteComment] = useMutation(DELETE_COMMENT);
   const [onUpdateComment] = useMutation(UPDATE_COMMENT);
-  
+
   function issueBodyNodes() {
     return [
       ...comments
         .concat(changes)
-        .sort((a, b) => a.createdAt - b.createdAt)
+        .sort((a, b) => parseInt(a.createdAt, 10) - parseInt(b.createdAt, 10))
         .map(change => {
           if (change.type === undefined) {
             const comment = change;
@@ -165,7 +157,7 @@ function IssueBody(props) {
                     }
                   })
                 }}
-                key={comment.id} 
+                key={comment.id}
                 user={comment.creator}
                 content={comment.content}
               />
@@ -193,7 +185,7 @@ function IssueBody(props) {
               });
               proxy.writeQuery({
                 query: ISSUE_QUERY,
-                data: { issue: { ...cachedIssue, comments: [...issue.comments , createComment] } }
+                data: { issue: { ...cachedIssue, comments: [...issue.comments, createComment] } }
               });
             }
           })
@@ -203,78 +195,8 @@ function IssueBody(props) {
   );
 }
 
-IssueHeader.propTypes = {
-  issue: PropType.object.isRequired
-};
-
 IssueBody.propTypes = {
   issue: PropType.object.isRequired
 };
 
 export default IssuePage;
-
-
-/* 
-import { CREATE_COMMENT, DELETE_COMMENT, UPDATE_COMMENT } from "../../core/models/comments/comments.graphql";
-
-
-const [onIssueRemoveCommnet] = useMutation(DELETE_COMMENT); 
-const [onCreateComment] = useMutation(CREATE_COMMENT);
-const [onUpdateComment] = useMutation(UPDATE_COMMENT);
-
-{(comm) => {
-                  onCreateComment({
-                    variables: {content: comm.content,issueId: issue.id },
-                    update: (proxy, result) => {
-                      const { addComment } = result.data;
-                      const { issue: cachedIssue } = proxy.readQuery({
-                        query: ISSUE_QUERY, variables: { id: issue.id }
-                      });
-                      proxy.writeQuery({
-                        query: ISSUE_QUERY,
-                        data: {
-                          issue: {
-                            ...cachedIssue,
-                            comments: [ ...issue.comments,addComment ],
-                          }
-                        }
-                      });
-                    }
-                  })
-                }}
-={(comm) => {
-              onIssueRemoveComment({
-                variables: { id: issue.id, commentId: comm.id },
-                update: (proxy, result) => {
-                  const { removeComment } = result.data;
-                  const { issue: cachedIssue } = proxy.readQuery({
-                    query: ISSUE_QUERY, variables: { id: issue.id }
-                  });
-                  proxy.writeQuery({
-                    query: ISSUE_QUERY,
-                    data: { issue: { ...cachedIssue, tags: removeComment.comment, changes: removeComment.changes } }
-                  });
-                }
-              })
-            }}
-issue.comments.map(x => {
-  if x.id === updateComment.id
-    return updateComment
-  return x
-})
-={(comm) => {
-              onUpdateComment({
-                variables: { id: issue.id, commentId: comm.id , content: comm.id },
-                update: (proxy, result) => {
-                  const { updateComment } = result.data;
-                  const { issue: cachedIssue } = proxy.readQuery({
-                    query: ISSUE_QUERY, variables: { id: issue.id }
-                  });
-                  proxy.writeQuery({
-                    query: ISSUE_QUERY,
-                    data: { issue: { ...cachedIssue, comments: updateComment.comments, changes: updateComment.changes } }
-                  });
-                }
-              })
-            }}
-*/

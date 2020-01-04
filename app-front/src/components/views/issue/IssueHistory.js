@@ -21,25 +21,23 @@ function IssueHistory(props) {
   const { icon, text } = issueAdapter[type];
 
   return (
-    <Box m={2}>
-      <Grid container>
-        <Grid item xs={1} />
-        <Grid item xs>
-          <Box flexDirection="row">
-            <Chip
-              style={{ width: 30, height: 30, padding: 11, paddingLeft: 15 }}
-              icon={icon}
-              size="small"
-            />
-            <p style={{ display: "inline", marginLeft: 10 }}>
-              <strong> {creator.name} </strong>
-              <span>{text}</span>
-              <strong> {(user || tag || status || project).name} </strong>
-            </p>
-          </Box>
-        </Grid>
+    <Grid item container>
+      <Grid item xs={1} />
+      <Grid item xs>
+        <Box flexDirection="row">
+          <Chip
+            style={{ width: 30, height: 30, padding: 11, paddingLeft: 15 }}
+            icon={icon}
+            size="small"
+          />
+          <p style={{ display: "inline", marginLeft: 10 }}>
+            <strong> {creator.name} </strong>
+            <span>{text}</span>
+            <strong> {(user || tag || status || project).name} </strong>
+          </p>
+        </Box>
       </Grid>
-    </Box>
+    </Grid>
   );
 }
 
