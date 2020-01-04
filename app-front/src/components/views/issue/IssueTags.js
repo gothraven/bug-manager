@@ -6,10 +6,10 @@ import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
-import IconButton from '@material-ui/core/IconButton';
-import SettingsIcon from '@material-ui/icons/Settings';
-import CloseIcon from '@material-ui/icons/Close';
-import DoneIcon from '@material-ui/icons/Done';
+import IconButton from "@material-ui/core/IconButton";
+import SettingsIcon from "@material-ui/icons/Settings";
+import CloseIcon from "@material-ui/icons/Close";
+import DoneIcon from "@material-ui/icons/Done";
 import { TAGS_QUERY } from "../../core/models/tags/tags.graphql";
 import { usePagination } from "../../core/hooks";
 import TagChip from "../../lib/TagChip";
@@ -18,8 +18,6 @@ import AutoCompletePopper from "../../lib/AutoCompletePopper";
 
 import useStyles from "./IssueTags.scss";
 
-
-
 function IssueTags(props) {
   const classes = useStyles();
   const { onTagAdded, onTagRemoved } = props;
@@ -27,10 +25,15 @@ function IssueTags(props) {
   const [tags, setTags] = useState(props.tags);
   const [pendingTags, setPendingTags] = useState(props.tags);
   const { data, loading: loadingTags, fetchMore } = usePagination(
-    TAGS_QUERY, "tags", { notifyOnNetworkStatusChange: true });
+    TAGS_QUERY,
+    "tags",
+    { notifyOnNetworkStatusChange: true }
+  );
 
   function handleRemovedTags() {
-    tags.filter(tag => !pendingTags.includes(tag)).map(tag => onTagRemoved(tag));
+    tags
+      .filter(tag => !pendingTags.includes(tag))
+      .map(tag => onTagRemoved(tag));
   }
 
   function handleAddedTags() {
@@ -73,7 +76,11 @@ function IssueTags(props) {
           </Typography>
           <Can I="use" this="AssignTags">
             {() => (
-              <IconButton component="span" style={{ padding: 0 }} onClick={handleClick}>
+              <IconButton
+                component="span"
+                style={{ padding: 0 }}
+                onClick={handleClick}
+              >
                 <SettingsIcon />
               </IconButton>
             )}
@@ -85,11 +92,9 @@ function IssueTags(props) {
             <TagChip tag={tag} style={{ marginTop: 5 }} />
           </Box>
         ))}
-        {tags.length === 0 &&
-          <Typography style={{ marginTop: 10 }}>
-            None yet
-          </Typography>
-        }
+        {tags.length === 0 && (
+          <Typography style={{ marginTop: 10 }}>None yet</Typography>
+        )}
         <AutoCompletePopper
           open={open}
           anchorEl={anchorEl}
@@ -98,7 +103,9 @@ function IssueTags(props) {
           onClose={handleClose}
           multiple
           pendingValues={pendingTags}
-          allValues={loadingTags ? [] : _.uniqBy([...tags, ...data.tags.edges], 'id')}
+          allValues={
+            loadingTags ? [] : _.uniqBy([...tags, ...data.tags.edges], "id")
+          }
           selectedValues={tags}
           onChange={(event, newValue) => setPendingTags(newValue)}
           hasMore={hasMore}
@@ -108,9 +115,12 @@ function IssueTags(props) {
             <>
               <DoneIcon
                 className={classes.iconSelected}
-                style={{ visibility: selected ? 'visible' : 'hidden' }}
+                style={{ visibility: selected ? "visible" : "hidden" }}
               />
-              <span className={classes.color} style={{ backgroundColor: option.color }} />
+              <span
+                className={classes.color}
+                style={{ backgroundColor: option.color }}
+              />
               <div className={classes.text}>
                 {option.name}
                 <br />
@@ -118,7 +128,7 @@ function IssueTags(props) {
               </div>
               <CloseIcon
                 className={classes.close}
-                style={{ visibility: selected ? 'visible' : 'hidden' }}
+                style={{ visibility: selected ? "visible" : "hidden" }}
               />
             </>
           )}
@@ -131,7 +141,7 @@ function IssueTags(props) {
 IssueTags.propTypes = {
   tags: propType.array.isRequired,
   onTagAdded: propType.func.isRequired,
-  onTagRemoved: propType.func.isRequired,
+  onTagRemoved: propType.func.isRequired
 };
 
 export default IssueTags;

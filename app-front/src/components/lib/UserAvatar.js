@@ -6,7 +6,7 @@ import md5 from "md5";
 import { hexToRgbA } from "../core/utils/Functions";
 
 function UserAvatar(props) {
-  const { user } = props;
+  const { user, className } = props;
   const hash = md5(user.id + user.name);
   const hashcolor = `#${hash.slice(0, 6)}`;
   const options = {
@@ -17,10 +17,20 @@ function UserAvatar(props) {
     format: "svg"
   };
   const data = new IdenticonJs(hash, options).toString();
-  return <Avatar src={`data:image/svg+xml;base64,${data}`} />;
+  return (
+    <Avatar
+      className={className}
+      src={`data:image/svg+xml;base64,${data}`}
+    />
+  );
 }
 
+UserAvatar.defaultProps = {
+  className: undefined,
+};
+
 UserAvatar.propTypes = {
+  className: PropTypes.string,
   user: PropTypes.object.isRequired
 };
 

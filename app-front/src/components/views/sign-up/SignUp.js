@@ -50,7 +50,7 @@ export default function SignUp() {
     update: (proxy, { data }) => {
       const { token, user } = data.signUp;
       signIn(user.id, token);
-      ability.update(defineRulesFor(user.role))
+      ability.update(defineRulesFor(user.role));
       proxy.writeQuery({
         query: ME_QUERY,
         data: { me: user }

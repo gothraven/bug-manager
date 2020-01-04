@@ -12,7 +12,6 @@ import IssueAssignees from "./IssueAssignees";
 import { useMe } from "../../core/models/users/users.hooks";
 import { ISSUE_QUERY, ISSUE_ADD_TAG, ISSUE_REMOVE_TAG } from "../../core/models/issues/issues.graphql";
 import { CREATE_COMMENT, DELETE_COMMENT, UPDATE_COMMENT } from "../../core/models/comments/comments.graphql";
-
 import Loading from "../../lib/Loading";
 
 function IssuePage() {
@@ -49,35 +48,49 @@ function IssuePage() {
           <IssueAssignees assignees={issue.assignedUsers} />
           <IssueTags
             tags={issue.tags}
-            onTagAdded={(tag) => {
+            onTagAdded={tag => {
               onIssueAddTag({
                 variables: { id: issue.id, tagId: tag.id },
                 update: (proxy, result) => {
                   const { addTag } = result.data;
                   const { issue: cachedIssue } = proxy.readQuery({
-                    query: ISSUE_QUERY, variables: { id: issue.id }
+                    query: ISSUE_QUERY,
+                    variables: { id: issue.id }
                   });
                   proxy.writeQuery({
                     query: ISSUE_QUERY,
-                    data: { issue: { ...cachedIssue, tags: addTag.tags, changes: addTag.changes } }
+                    data: {
+                      issue: {
+                        ...cachedIssue,
+                        tags: addTag.tags,
+                        changes: addTag.changes
+                      }
+                    }
                   });
                 }
-              })
+              });
             }}
-            onTagRemoved={(tag) => {
+            onTagRemoved={tag => {
               onIssueRemoveTag({
                 variables: { id: issue.id, tagId: tag.id },
                 update: (proxy, result) => {
                   const { removeTag } = result.data;
                   const { issue: cachedIssue } = proxy.readQuery({
-                    query: ISSUE_QUERY, variables: { id: issue.id }
+                    query: ISSUE_QUERY,
+                    variables: { id: issue.id }
                   });
                   proxy.writeQuery({
                     query: ISSUE_QUERY,
-                    data: { issue: { ...cachedIssue, tags: removeTag.tags, changes: removeTag.changes } }
+                    data: {
+                      issue: {
+                        ...cachedIssue,
+                        tags: removeTag.tags,
+                        changes: removeTag.changes
+                      }
+                    }
                   });
                 }
-              })
+              });
             }}
           />
         </Grid>

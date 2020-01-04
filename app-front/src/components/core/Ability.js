@@ -1,22 +1,22 @@
-import { createContext } from 'react'
-import { Ability, AbilityBuilder } from '@casl/ability'
-import { createContextualCan } from '@casl/react'
-import { ADMIN, DEVELOPER } from './constants'
+import { createContext } from "react";
+import { Ability, AbilityBuilder } from "@casl/ability";
+import { createContextualCan } from "@casl/react";
+import { ADMIN, DEVELOPER } from "./constants";
 
-export const AbilityContext = createContext()
-export const Can = createContextualCan(AbilityContext.Consumer)
+export const AbilityContext = createContext();
+export const Can = createContextualCan(AbilityContext.Consumer);
 
 function subjectName(item) {
   if (!item || typeof item === "string") {
-    return item
+    return item;
   }
-  return item.__type
+  return item.__type;
 }
 
 export const ability = new Ability([], { subjectName });
 
 export function defineRulesFor(role) {
-  const { can, rules } = AbilityBuilder.extract()
+  const { can, rules } = AbilityBuilder.extract();
   if (role === ADMIN) {
     can("create", "Tag");
     can("edit", "Tag");
@@ -31,5 +31,6 @@ export function defineRulesFor(role) {
   }
   can("see", "Dashboard");
   can("see", "Issue");
+  can("see", "Profile");
   return rules
 }

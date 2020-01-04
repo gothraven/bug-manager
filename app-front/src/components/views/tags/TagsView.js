@@ -12,7 +12,7 @@ import { Can, AbilityContext } from "../../core/Ability";
 import { TAGS_QUERY, CREATE_TAG } from "../../core/models/tags/tags.graphql";
 
 function TagsView() {
-  const ability = useContext(AbilityContext)
+  const ability = useContext(AbilityContext);
   const { data, loading: loadingTags, fetchMore } = usePagination(
     TAGS_QUERY,
     "tags"
@@ -56,14 +56,21 @@ function TagsView() {
             return null;
           }
           return (
-            <TagPanel disabled={!ability.can("edit", 'Tag')} key={node.id} tag={node} />
+            <TagPanel
+              disabled={!ability.can("edit", "Tag")}
+              key={node.id}
+              tag={node}
+            />
           );
         })}
       </Grid>
       {hasNextPage && <Button onClick={fetchMore}>load more</Button>}
       <Can I="create" a="Tag">
         {() => (
-          <Grid item style={{ display: "grid", justifyContent: "center", padding: 30 }}>
+          <Grid
+            item
+            style={{ display: "grid", justifyContent: "center", padding: 30 }}
+          >
             <Fab
               color="primary"
               aria-label="add"

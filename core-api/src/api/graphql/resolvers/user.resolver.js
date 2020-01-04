@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { combineResolvers } from 'graphql-resolvers';
+import { omitBy, isNil } from 'lodash';
 import { authorize } from './auth.resolver';
 import { USER, ADMIN } from '../../models/user.model';
 import { Paginate } from './pagination.resolver';
@@ -46,8 +47,28 @@ export default {
       return { user, token: createToken(user, secret, expiresIn) };
     },
 
-    updateUser: combineResolvers(authorize(USER), async (parent, { email }, { models, me }) =>
-      models.User.findByIdAndUpdate(me.id, { email }, { new: true })),
+    updateUser: combineResolvers(
+      authorize(USER),
+      async (parent, { name, email }, { models, me }) => {
+        const options = omitBy({ name, email }, isNil);
+        return models.User.findByIdAndUpdate(me.id, options, { new: true });
+      }
+    ),
+
+    updateUserPassword: async (parent, { oldPassword, newPassword }, { models, me }) => {
+      const user = await models.User.findById(me.id);
+      const isValid = await user.passwordMatches(oldPassword);
+
+      if (!isValid) {
+        throw new Error('Invalid password');
+      }
+
+      return !!(await models.User.findByIdAndUpdate(
+        me.id,
+        { password: newPassword },
+        { new: true }
+      ));
+    },
 
     deleteUser: combineResolvers(authorize(ADMIN), async (parent, { id }, { models }) => {
       const user = await models.User.findById(id);

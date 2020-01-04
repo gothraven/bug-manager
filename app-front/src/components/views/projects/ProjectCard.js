@@ -15,6 +15,7 @@ import {
   PROJECTS_QUERY,
   DELETE_PROJECT
 } from "../../core/models/projects/projects.graphql";
+import SafeCheck from "../../lib/SafeCheck";
 
 import useStyles from "./ProjectCard.scss";
 
@@ -104,14 +105,17 @@ function ProjectCard(props) {
               >
                 <EditIcon />
               </IconButton>,
-              <IconButton
+
+              <SafeCheck
                 key={1}
-                aria-label="delete"
-                disabled={isPending}
-                onClick={onDeleteProject}
+                title='Delete Project'
+                content='Are you sure you want to delete this project ?'
+                action={onDeleteProject}
               >
-                <CloseIcon />
-              </IconButton>
+                <IconButton disabled={isPending}>
+                  <CloseIcon />
+                </IconButton>
+              </SafeCheck>
             ]
         }
       />

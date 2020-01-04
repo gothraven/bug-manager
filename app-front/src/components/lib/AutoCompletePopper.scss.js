@@ -3,55 +3,55 @@ import { fade } from "@material-ui/core/styles";
 
 export default makeStyles(theme => ({
   popper: {
-    border: '1px solid rgba(27,31,35,.15)',
-    boxShadow: '0 3px 12px rgba(27,31,35,.15)',
+    border: "1px solid rgba(27,31,35,.15)",
+    boxShadow: "0 3px 12px rgba(27,31,35,.15)",
     borderRadius: 3,
     width: 300,
     zIndex: 1,
     fontSize: 13,
-    color: '#586069',
-    backgroundColor: '#f6f8fa',
+    color: "#586069",
+    backgroundColor: "#f6f8fa"
   },
   header: {
-    borderBottom: '1px solid #e1e4e8',
-    padding: '8px 10px',
-    fontWeight: 600,
+    borderBottom: "1px solid #e1e4e8",
+    padding: "8px 10px",
+    fontWeight: 600
   },
   inputBase: {
     padding: 10,
-    width: '100%',
-    borderBottom: '1px solid #dfe2e5',
-    '& input': {
+    width: "100%",
+    borderBottom: "1px solid #dfe2e5",
+    "& input": {
       borderRadius: 4,
       backgroundColor: theme.palette.common.white,
       padding: 8,
-      transition: theme.transitions.create(['border-color', 'box-shadow']),
-      border: '1px solid #ced4da',
+      transition: theme.transitions.create(["border-color", "box-shadow"]),
+      border: "1px solid #ced4da",
       fontSize: 14,
-      '&:focus': {
+      "&:focus": {
         boxShadow: `${fade(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
-        borderColor: theme.palette.primary.main,
-      },
-    },
+        borderColor: theme.palette.primary.main
+      }
+    }
   },
   paper: {
-    boxShadow: 'none',
+    boxShadow: "none",
     margin: 0,
-    color: '#586069',
-    fontSize: 13,
+    color: "#586069",
+    fontSize: 13
   },
   option: {
-    minHeight: 'auto',
-    alignItems: 'flex-start',
+    minHeight: "auto",
+    alignItems: "flex-start",
     padding: 8,
     '&[aria-selected="true"]': {
-      backgroundColor: 'transparent',
+      backgroundColor: "transparent"
     },
     '&[data-focus="true"]': {
-      backgroundColor: theme.palette.action.hover,
-    },
+      backgroundColor: theme.palette.action.hover
+    }
   },
   popperDisablePortal: {
-    position: 'relative',
-  },
+    position: "relative"
+  }
 }));

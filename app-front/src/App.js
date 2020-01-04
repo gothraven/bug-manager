@@ -3,7 +3,7 @@ import { Router } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { ThemeProvider } from "@material-ui/styles";
-import { AbilityContext, ability } from './components/core/Ability';
+import { AbilityContext, ability } from "./components/core/Ability";
 import { history } from "./components/core/History";
 import ErrorBoundary from "./components/lib/ErrorBoundary";
 import MainRouter from "./components/routes/MainRouter";

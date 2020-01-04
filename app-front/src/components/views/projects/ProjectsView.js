@@ -15,11 +15,12 @@ import { usePagination } from "../../core/hooks";
 import Loading from "../../lib/Loading";
 
 function ProjectsView() {
-  const ability = useContext(AbilityContext)
+  const ability = useContext(AbilityContext);
   const { data, loading: loadingProjects, fetchMore } = usePagination(
     PROJECTS_QUERY,
     "projects"
   );
+
   const [onCreateProject, { loading: isProjectCreatePending }] = useMutation(
     CREATE_PROJECT,
     {
@@ -64,7 +65,10 @@ function ProjectsView() {
             }
             return (
               <Grid key={node.id} item xs={4}>
-                <ProjectCard disabled={!ability.can("edit", "Project")} project={node} />
+                <ProjectCard
+                  disabled={!ability.can("edit", "Project")}
+                  project={node}
+                />
               </Grid>
             );
           })}

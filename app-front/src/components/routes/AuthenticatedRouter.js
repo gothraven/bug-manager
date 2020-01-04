@@ -8,6 +8,8 @@ import {
   ProjectsView,
   IssuePageView,
   DashboardView,
+  ProfileView,
+  SettingsView,
   NotFoundView
 } from "../views";
 import { useMe } from "../core/models/users/users.hooks";
@@ -30,16 +32,18 @@ function AuthenticatedRouter() {
   }, [me]);
 
   if (!isAuthenticated) {
-    if (location.pathname.startsWith('/user')) {
-      return (<Redirect
-        push
-        to={{
-          pathname: '/user/sign-in',
-          state: { from: location },
-        }}
-      />);
+    if (location.pathname.startsWith("/user")) {
+      return (
+        <Redirect
+          push
+          to={{
+            pathname: "/user/sign-in",
+            state: { from: location }
+          }}
+        />
+      );
     }
-    return <Redirect to='/not-found' />;
+    return <Redirect to="/not-found" />;
   }
 
   if (isAuthenticated && (loading || !ready)) {
@@ -74,6 +78,20 @@ function AuthenticatedRouter() {
         component={TagsView}
         layout={MainLayout}
         name="Tags"
+      />
+      <RouteWithLayout
+        exact
+        path="/user/profile"
+        component={ProfileView}
+        layout={MainLayout}
+        name="Profile"
+      />
+      <RouteWithLayout
+        exact
+        path="/user/settings"
+        component={SettingsView}
+        layout={MainLayout}
+        name="Settings"
       />
       <RouteWithLayout
         exact

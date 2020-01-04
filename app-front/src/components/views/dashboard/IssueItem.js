@@ -39,12 +39,12 @@ function IssueItem(props) {
           Created ${moment(createdAt).fromNow()} by ${creator.name}
            - last Updated ${moment(updatedAt).fromNow()}
           ${
-          assignedUsers.length
-            ? `- Assigned to ${assignedUsers.map(user => ` ${user.name}`)}`
-            : ""
+            assignedUsers.length
+              ? `- Assigned to ${assignedUsers.map(user => ` ${user.name}`)}`
+              : ""
           }
           ${
-          (project || {}).name ? `- this issue opened on ${project.name}` : ""
+            (project || {}).name ? `- this issue opened on ${project.name}` : ""
           }`}
       />
       <Box>
