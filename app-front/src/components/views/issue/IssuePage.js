@@ -171,7 +171,8 @@ function IssueBody(props) {
                   })
                 }}
                 key={comment.id}
-                user={comment.creator}
+                user={me}
+                creator={comment.creator}
                 content={comment.content}
               />
             );
@@ -186,6 +187,7 @@ function IssueBody(props) {
       {issueBodyNodes()}
       <IssueComment
         user={me}
+        creator={me}
         onCommentCreated={(content) => {
           onCreateComment({
             variables: { content, issueId: issue.id },

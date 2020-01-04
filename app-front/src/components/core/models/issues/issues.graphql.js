@@ -95,6 +95,7 @@ export const ISSUE_QUERY = gql`
         creator {
           id
           name
+          role
         }
       }
     }

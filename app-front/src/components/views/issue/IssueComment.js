@@ -1,21 +1,23 @@
 import React, { useState } from "react";
+import PropType from "prop-types";
+import moment from 'moment'
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import PropType from "prop-types";
+import Chip from "@material-ui/core/Chip";
 import DeleteIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/EditOutlined";
-import moment from 'moment'
 import UserAvatar from "../../lib/UserAvatar";
+import { Can } from "../../core/Ability";
 
 import useStyles from "./IssueComment.scss";
 
 function IssueComment(props) {
   const classes = useStyles();
-  const { content, user } = props;
+  const { content, creator, user } = props;
   const { createdAt, updatedAt, onCommentCreated, onCommentDeleted, onCommentUpdated } = props;
   const [value, setValue] = useState(content !== null ? content : "");
   const [edit, setEdit] = useState(false);
@@ -31,19 +33,28 @@ function IssueComment(props) {
             <Typography variant="caption">{`, Updated ${moment(updatedAt).fromNow()}`}</Typography>
           }
         </Grid>
-        <Grid item xs={3} container justify="flex-end">
-          <IconButton
-            size="small"
-            onClick={onCommentDeleted}
-          >
-            <DeleteIcon />
-          </IconButton>
-          <IconButton
-            size="small"
-            onClick={() => setEdit(!edit)}
-          >
-            <EditIcon />
-          </IconButton>
+        <Grid item xs={3} container justify="flex-end" alignItems="center" spacing={1}>
+          <Grid item>
+            <Chip size="small" label={creator.role} variant="outlined" />
+          </Grid>
+          <Grid item>
+            <Can do="delete" on={user.id === creator.id ? "MyComment" : "Comment"}>
+              <IconButton
+                size="small"
+                onClick={onCommentDeleted}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Can>
+            <Can do="edit" on={user.id === creator.id ? "MyComment" : "Comment"}>
+              <IconButton
+                size="small"
+                onClick={() => setEdit(!edit)}
+              >
+                <EditIcon />
+              </IconButton>
+            </Can>
+          </Grid>
         </Grid>
       </Grid>
     );
@@ -68,10 +79,10 @@ function IssueComment(props) {
     <Grid item container spacing={2}>
       <Grid item xs={1} container direction="column" alignItems="center" spacing={1}>
         <Grid item>
-          <UserAvatar user={user} />
+          <UserAvatar user={creator} />
         </Grid>
         <Grid item>
-          <Typography textAlign='center' variant="caption" gutterBottom>{user.name}</Typography>
+          <Typography textAlign='center' variant="caption" gutterBottom>{creator.name}</Typography>
         </Grid>
       </Grid>
       <Grid item xs={11} container direction="column" spacing={1}>
@@ -142,6 +153,7 @@ IssueComment.defaultProps = {
 
 IssueComment.propTypes = {
   user: PropType.object.isRequired,
+  creator: PropType.object.isRequired,
   createdAt: PropType.string,
   updatedAt: PropType.string,
   content: PropType.string,
