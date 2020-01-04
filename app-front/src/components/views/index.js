@@ -6,3 +6,5 @@ export { default as ProjectsView } from "./projects/ProjectsView";
 export { default as NotFoundView } from "./not-found/NotFoundView";
 export { default as DashboardView } from "./dashboard/DashboardView";
 export { default as IssuePageView } from "./issue/IssuePage";
+export { default as SettingsView } from "./settings/SettingsView";
+export { default as ProfilView } from "./profil/ProfilView";
