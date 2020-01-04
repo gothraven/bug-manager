@@ -13,7 +13,6 @@ import {
 import { Can, AbilityContext } from "../../core/Ability";
 import { usePagination } from "../../core/hooks";
 import Loading from "../../lib/Loading";
-import SafeCheck from "../../lib/SafeCheck";
 
 function ProjectsView() {
 
@@ -56,17 +55,6 @@ function ProjectsView() {
       justify="flex-start"
       alignItems="stretch"
     >
-
-      <SafeCheck
-        title='WARNING'
-        content='Are you sure to test this action ?'
-        action={() => { }}
-      >
-        <Button variant="outlined" color="primary">Test Safe Delete</Button>
-      </SafeCheck>
-
-
-
       <Typography variant="h1" component="h1" gutterBottom>
         All Projects
       </Typography>

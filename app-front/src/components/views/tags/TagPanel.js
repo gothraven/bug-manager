@@ -12,6 +12,8 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
+import TagChip from "../../lib/TagChip";
+import SafeCheck from "../../lib/SafeCheck";
 import {
   DELETE_TAG,
   TAGS_QUERY,
@@ -19,7 +21,6 @@ import {
 } from "../../core/models/tags/tags.graphql";
 
 import useStyles from "./TagPanel.scss";
-import TagChip from "../../lib/TagChip";
 
 function TagPanel(props) {
   const classes = useStyles();
@@ -148,14 +149,16 @@ function TagPanel(props) {
       </ExpansionPanelDetails>
       <Divider />
       <ExpansionPanelActions>
-        <Button
-          color="secondary"
-          size="small"
-          onClick={onDeleteTag}
-          disabled={isPending}
+        <SafeCheck
+          key={1}
+          title='Delete Tag'
+          content='Are you sure you want to delete this Tag ?'
+          action={onDeleteTag}
         >
-          Delete
-        </Button>
+          <Button color="secondary" size="small" disabled={isPending}>
+            Delete
+          </Button>
+        </SafeCheck>
         <Button
           size="small"
           color="primary"
