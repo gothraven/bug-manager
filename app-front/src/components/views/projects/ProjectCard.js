@@ -1,4 +1,4 @@
-  import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useMutation } from "@apollo/react-hooks";
 import Card from "@material-ui/core/Card";
@@ -95,24 +95,24 @@ function ProjectCard(props) {
           disabled
             ? []
             : [
-                <IconButton
-                  key={0}
-                  color={edition ? "primary" : "default"}
-                  aria-label="edit"
-                  disabled={isPending}
-                  onClick={() => setEdition(!edition)}
-                >
-                  <EditIcon />
-                </IconButton>,
-                <IconButton
-                  key={1}
-                  aria-label="delete"
-                  disabled={isPending}
-                  onClick={onDeleteProject}
-                >
-                  <CloseIcon />
-                </IconButton>
-              ]
+              <IconButton
+                key={0}
+                color={edition ? "primary" : "default"}
+                aria-label="edit"
+                disabled={isPending}
+                onClick={() => setEdition(!edition)}
+              >
+                <EditIcon />
+              </IconButton>,
+              <IconButton
+                key={1}
+                aria-label="delete"
+                disabled={isPending}
+                onClick={onDeleteProject}
+              >
+                <CloseIcon />
+              </IconButton>
+            ]
         }
       />
       <CardContent>
@@ -128,10 +128,10 @@ function ProjectCard(props) {
             onChange={event => setName(event.target.value)}
           />
         ) : (
-          <Typography variant="h3" color="textPrimary" component="h3">
-            {name}
-          </Typography>
-        )}
+            <Typography variant="h3" color="textPrimary" component="h3">
+              {name}
+            </Typography>
+          )}
         {edition ? (
           <TextField
             label="Description"
@@ -144,10 +144,10 @@ function ProjectCard(props) {
             onChange={event => setDescription(event.target.value)}
           />
         ) : (
-          <Typography variant="body1" color="textSecondary" component="p">
-            {description}
-          </Typography>
-        )}
+            <Typography variant="body1" color="textSecondary" component="p">
+              {description}
+            </Typography>
+          )}
         {edition && (
           <Button
             variant="contained"

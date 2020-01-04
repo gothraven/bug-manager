@@ -172,7 +172,6 @@ function IssueBody(props) {
     <>
       {issueBodyNodes()}
       <IssueComment
-        creation
         user={me}
         issueId={issue.id}
         onCommentCreated={(content) => {
