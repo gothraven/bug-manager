@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { Typography } from "@material-ui/core";
 
 
 
@@ -19,13 +20,19 @@ function SafeCheck(props) {
       {React.cloneElement(children, { onClick: () => setOpen(true) })}
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>
-          {title}
+          <Typography variant="h3">
+            {title}
+          </Typography>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>{content}</DialogContentText>
+          <DialogContentText>
+            <Typography variant="h5">
+              {content}
+            </Typography>
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose} color="secondary" variant='contained'>
+          <Button onClick={onClose} color="secondary">
             Cancel
           </Button>
           <Button

@@ -14,6 +14,7 @@ import UserAvatar from "../../lib/UserAvatar";
 import { Can } from "../../core/Ability";
 
 import useStyles from "./IssueComment.scss";
+import SafeCheck from "../../lib/SafeCheck";
 
 function IssueComment(props) {
   const classes = useStyles();
@@ -39,12 +40,15 @@ function IssueComment(props) {
           </Grid>
           <Grid item>
             <Can do="delete" on={user.id === creator.id ? "MyComment" : "Comment"}>
-              <IconButton
-                size="small"
-                onClick={onCommentDeleted}
+              <SafeCheck
+                title='Delete Comment'
+                content='Are you sure you want to delete this comment ?'
+                action={onCommentDeleted}
               >
-                <DeleteIcon />
-              </IconButton>
+                <IconButton size="small">
+                  <DeleteIcon />
+                </IconButton>
+              </SafeCheck>
             </Can>
             <Can do="edit" on={user.id === creator.id ? "MyComment" : "Comment"}>
               <IconButton
