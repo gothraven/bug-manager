@@ -7,13 +7,11 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-import Chip from '@material-ui/core/Chip';
 import Button from "@material-ui/core/Button";
 import PropType from "prop-types";
 import Menu from '@material-ui/core/Menu';
-import DoneIcon from '@material-ui/icons/Done';
 import MenuItem from '@material-ui/core/MenuItem';
-import Avatar from '@material-ui/core/Avatar';
+import moment from 'moment'
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import UserAvatar from "../../lib/UserAvatar";
 
@@ -83,7 +81,6 @@ function IssueComment(props) {
           <MenuItem  onClick={handleDeltedClose}>
             Delete
           </MenuItem>
-        
       </Menu>
     </div>
     );
@@ -91,25 +88,17 @@ function IssueComment(props) {
 
   function showHeader() {
     return (
-      <Grid item container justify="space-between" spacing={2}>
-        <Grid item xs={8}>
-            <Grid container justify="center" alignItems="center">
-            <Chip
-              label="Nadir"
-                avatar={<Avatar>BM</Avatar>}
-                color="primary"
-                variant="outlined"
-              />
-             <Chip
-                label="Commented 3 Days ago"
-                color="primary"
-                deleteIcon={<DoneIcon />}
-                variant="outlined"
-            />
-            <Chip label="Last Updated 2 Hours ago" /> 
-          </Grid>
+      <Grid item container justify="space-between" spacing={3}>
+        <Grid item xs={3}>
+           <Typography textAlign='center' variant="caption" gutterBottom>{`Created by ${props.creatorName}, `}</Typography>
         </Grid>
-        <Grid item xs={4} container justify="flex-end">
+        <Grid item xs={3}>
+          <Typography textAlign='center' variant="caption" gutterBottom>{` Last Updated ${moment(props.updatedAt).fromNow()}, `}</Typography>
+        </Grid>
+        <Grid item xs={3} >    
+          <Typography textAlign='center' variant="caption" gutterBottom>{` Created ${moment(props.createdAt).fromNow()}, `}</Typography>
+        </Grid>
+        <Grid item xs={3} container justify="flex-end">
           {showListOfAction()}
         </Grid>
       </Grid>
@@ -205,6 +194,7 @@ IssueComment.propTypes = {
   onCommentDeleted: PropType.func.isRequired,
   createdAt: PropType.object.isRequired,
   updatedAt: PropType.object.isRequired,
+  creatorName : PropType.string.isRequired,
  };
 
 export default IssueComment;

@@ -114,6 +114,7 @@ function IssueBody(props) {
               <IssueComment
                 createdAt={comment.createdAt}
                 updatedAt={comment.updatedAt}
+                creatorName={comment.creator.name}
                 onCommentUpdated={content => {
                   onUpdateComment({
                     variables: { id: comment.id, content },
