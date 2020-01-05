@@ -5,13 +5,16 @@ import PropType from "prop-types";
 import Chip from "@material-ui/core/Chip";
 import EditIcon from "@material-ui/icons/Edit";
 import TurnedInIcon from "@material-ui/icons/TurnedIn";
+import ClassIcon from "@material-ui/icons/Class";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import {
   ASSIGN_USER,
   UNASSIGN_USER,
   ADD_TAG,
   REMOVE_TAG,
-  CHANGE_STATUS
+  CHANGE_STATUS,
+  ATTACH_TO_PROJECT,
+  DETATCH_FROM_PROJECT
 } from "../../core/constants";
 
 function IssueHistory(props) {
@@ -21,25 +24,23 @@ function IssueHistory(props) {
   const { icon, text } = issueAdapter[type];
 
   return (
-    <Box m={2}>
-      <Grid container>
-        <Grid item xs={1} />
-        <Grid item xs>
-          <Box flexDirection="row">
-            <Chip
-              style={{ width: 30, height: 30, padding: 11, paddingLeft: 15 }}
-              icon={icon}
-              size="small"
-            />
-            <p style={{ display: "inline", marginLeft: 10 }}>
-              <strong> {creator.name} </strong>
-              <span>{text}</span>
-              <strong> {(user || tag || status || project).name} </strong>
-            </p>
-          </Box>
-        </Grid>
+    <Grid item container>
+      <Grid item xs={1} />
+      <Grid item xs>
+        <Box flexDirection="row">
+          <Chip
+            style={{ width: 30, height: 30, padding: 11, paddingLeft: 15 }}
+            icon={icon}
+            size="small"
+          />
+          <p style={{ display: "inline", marginLeft: 10 }}>
+            <strong> {creator.name} </strong>
+            <span>{text}</span>
+            <strong> {(user || tag || status || project).name} </strong>
+          </p>
+        </Box>
       </Grid>
-    </Box>
+    </Grid>
   );
 }
 
@@ -54,6 +55,8 @@ const issueAdapter = {
   },
   [ADD_TAG]: { icon: <TurnedInIcon />, text: "a ajouté le tag " },
   [REMOVE_TAG]: { icon: <TurnedInIcon />, text: "a supprimé le TAG " },
+  [ATTACH_TO_PROJECT]: { icon: <ClassIcon />, text: "a attaché l'issue au project " },
+  [DETATCH_FROM_PROJECT]: { icon: <ClassIcon />, text: "a dettaché l'issue du project " },
   [CHANGE_STATUS]: { icon: <EditIcon />, text: "a changé le STATUS en " }
 };
 

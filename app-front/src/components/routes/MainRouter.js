@@ -3,7 +3,12 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { APP_USER_ID } from "../core/constants";
 import { history } from "../core/History";
 import AuthetnticatedRouter from "./AuthenticatedRouter";
-import { SignInView, SignUpView, NotFoundView } from "../views";
+import {
+  SignInView,
+  SignUpView,
+  NotFoundView,
+  LandingPageView
+} from "../views";
 
 if (window !== "undefined") {
   window._history = history;
@@ -26,6 +31,7 @@ function MainRouter() {
           return <Redirect to="/user/sign-in" />;
         }}
       />
+      <Route exact path="/landing-page" component={LandingPageView} />
       <Route exact path="/user/sign-in" component={SignInView} />
       <Route exact path="/user/sign-up" component={SignUpView} />
       <Route exact path="/user/forget-password" component={NotFoundView} />
