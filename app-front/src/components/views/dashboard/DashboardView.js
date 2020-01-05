@@ -8,28 +8,26 @@ import List from "@material-ui/core/List";
 import ErrorIcon from "@material-ui/icons/Error";
 import SearchIcon from "@material-ui/icons/Search";
 import AllInclusiveRoundedIcon from "@material-ui/icons/AllInclusiveRounded";
-
 import { Input, InputAdornment, Tab, Tabs } from "@material-ui/core";
 import Loading from "../../lib/Loading";
 import IssueItem from "./IssueItem";
-
-import { ISSUES_QUERY } from "../../core/models/issues/issues.graphql";
+import { ISSUES_QUERY, ISSUES_STATISTICS_QUERY } from "../../core/models/issues/issues.graphql";
 
 
 function prepareFilters(input = '', tab = 0) {
-  const filter = {};
-
-  if (tab) filter.is = { open: tab === 1 };
-  if (input && input.length > 0) filter.contains = { title: input };
+  const filter = {
+    open: tab === 0 ? undefined : tab === 1,
+    title: input.length > 0 ? input : undefined
+  };
   return filter;
 }
 
 function DashboardView() {
-  const { data, loading, fetchMore } = useQuery(ISSUES_QUERY);
-
+  const { data, loading: issuesLoading, fetchMore } = useQuery(ISSUES_QUERY);
+  const { data: statisticsData, loading: statisticsLoading } = useQuery(ISSUES_STATISTICS_QUERY);
   const [searchInput, setSearchInput] = useState("");
-
   const [activeTab, setActiveTab] = useState(0);
+  const loading = issuesLoading || statisticsLoading;
 
   const onTabChanged = value => {
     setActiveTab(value);
@@ -40,24 +38,14 @@ function DashboardView() {
   };
 
   useEffect(() => {
-    console.log(searchInput, activeTab)
     fetchMore({
       variables: {
         filters: prepareFilters(searchInput, activeTab)
       },
       updateQuery: (previousResult, { fetchMoreResult }) => {
-        const newEdges = fetchMoreResult.issues.edges;
-        const { pageInfo } = fetchMoreResult.issues;
-
-        return newEdges.length
-          ? {
-            issues: {
-              __typename: previousResult.issues.__typename,
-              edges: [...newEdges],
-              pageInfo
-            }
-          }
-          : {};
+        return {
+          issues: fetchMoreResult.issues
+        };
       }
     });
   }, [fetchMore, searchInput, activeTab]);
@@ -94,6 +82,7 @@ function DashboardView() {
   if (loading) return <Loading />;
 
   const { hasNextPage } = data.issues.pageInfo;
+  const { openCount, closedCount } = statisticsData.issuesStatistics;
 
   return (
     <Grid
@@ -121,7 +110,7 @@ function DashboardView() {
                   <>
                     <AllInclusiveRoundedIcon />
                     <Typography style={{ marginLeft: 10 }}>
-                      <strong>15</strong> All
+                      <strong>{openCount + closedCount}</strong> All
                     </Typography>
                   </>
                 }
@@ -132,7 +121,7 @@ function DashboardView() {
                   <>
                     <ErrorIcon style={{ color: "green" }} />
                     <Typography style={{ marginLeft: 10 }}>
-                      <strong>15</strong> Opened Issues
+                      <strong>{openCount}</strong> Opened Issues
                     </Typography>
                   </>
                 }
@@ -143,7 +132,7 @@ function DashboardView() {
                   <>
                     <ErrorIcon style={{ color: "red" }} />
                     <Typography style={{ marginLeft: 10 }}>
-                      <strong>0</strong> Closed Issues
+                      <strong>{closedCount}</strong> Closed Issues
                     </Typography>
                   </>
                 }

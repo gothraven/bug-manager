@@ -38,6 +38,16 @@ export const ISSUES_QUERY = gql`
   }
 `;
 
+export const ISSUES_STATISTICS_QUERY = gql`
+  query IssuesStatistics {
+    issuesStatistics {
+      openCount
+      closedCount
+    }
+  }
+`;
+
+
 export const ISSUE_QUERY = gql`
   query IssuePageQuery($id: ID!) {
     issue(id: $id) {
