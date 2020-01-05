@@ -1,5 +1,6 @@
 {
   "rules": {
+    "quotes": ["error", "single"],
     "object-curly-newline": "off",
     "comma-dangle": "off",
     "no-console": "error",

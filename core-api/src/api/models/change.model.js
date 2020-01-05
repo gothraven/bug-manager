@@ -8,7 +8,7 @@ export const CHANGE_STATUS = 'CHANGE_STATUS';
 export const ATTACH_TO_PROJECT = 'ATTACH_TO_PROJECT';
 export const DETATCH_FROM_PROJECT = 'DETATCH_FROM_PROJECT';
 export const CLOSE_ISSUE = 'CLOSE_ISSUE';
-export const REOPEN_ISSUE = 'REOPE_NISSUE';
+export const REOPEN_ISSUE = 'REOPEN_ISSUE';
 
 const types = [
   ASSIGN_USER,

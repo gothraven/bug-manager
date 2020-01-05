@@ -32,7 +32,11 @@ export default {
       authorize(USER),
       async (parent, { title, content }, { models, me }) => {
         const issue = await models.Issue.create({ title, creatorId: me.id });
-        await models.Comment.create({ creatorId: me.id, issueId: issue.id, content });
+        await models.Comment.create({
+          creatorId: me.id,
+          issueId: issue.id,
+          content
+        });
         return issue;
       }
     ),
@@ -41,7 +45,9 @@ export default {
       own('Issue'),
       async (parent, { id, title }, { models }) => {
         const options = omitBy({ title }, isNil);
-        const issue = models.Issue.findByIdAndUpdate(id, options, { new: true });
+        const issue = models.Issue.findByIdAndUpdate(id, options, {
+          new: true
+        });
         return issue || new Error('Something went wrong');
       }
     ),
