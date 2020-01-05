@@ -1,9 +1,12 @@
-// const connect = require("./src/config/mongoose");
-
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/demo', { useNewUrlParser: true });
-const models = require('./src/api/models');
+const connect = require('./src/config/mongoose');
+
+connect();
+
+const models = require('./src/api/models').default;
+
+const db = mongoose.connection;
 
 const users = [
   {
@@ -296,7 +299,7 @@ const issues = [
   }
 ];
 
-mongoose.once('open', () => {
+db.once('open', () => {
   users.forEach((user) => {
     new models.User(user).save((err) => {
       if (err) throw err;
