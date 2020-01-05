@@ -1,8 +1,8 @@
 import { gql } from "apollo-boost";
 
 export const ISSUES_QUERY = gql`
-  query Issues($cursor: String) {
-    issues(first: 10, after: $cursor) {
+  query Issues($cursor: String, $filters: String) {
+    issues(first: 10, after: $cursor, filters: $filters) {
       edges {
         id
         createdAt

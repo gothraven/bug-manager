@@ -15,7 +15,11 @@ const client = new ApolloClient({
   onError: ({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
       graphQLErrors.forEach(({ message, locations, path }) => {
-        if (["Sign in again."].map((msg) => message.includes(msg)).find(x => x === true)) {
+        if (
+          ["Sign in again."]
+            .map(msg => message.includes(msg))
+            .find(x => x === true)
+        ) {
           signOut();
           window._history.push("/user/sign-in");
         } else {

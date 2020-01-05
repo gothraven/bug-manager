@@ -3,11 +3,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { APP_USER_ID } from "../core/constants";
 import { history } from "../core/History";
 import AuthetnticatedRouter from "./AuthenticatedRouter";
-import {
-  SignInView,
-  SignUpView,
-  NotFoundView,
-} from "../views";
+import { SignInView, SignUpView, NotFoundView } from "../views";
 
 if (window !== "undefined") {
   window._history = history;

@@ -23,7 +23,7 @@ type IssueCursor {
 
 type Query {
   issue(id: ID!): Issue!
-  issues(after: String, first: PositiveInt): IssueCursor
+  issues(after: String, first: PositiveInt, filters: String): IssueCursor
 }
 
 type Mutation {

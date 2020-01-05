@@ -3,9 +3,11 @@ import propTypes from "prop-types";
 import { useTheme } from "@material-ui/styles";
 import Chip from "@material-ui/core/Chip";
 
-
 function TagChip(props) {
-  const { tag: { name, color }, style } = props;
+  const {
+    tag: { name, color },
+    style
+  } = props;
   const theme = useTheme();
 
   return (
@@ -16,7 +18,7 @@ function TagChip(props) {
         borderColor: color,
         backgroundColor: color,
         color: theme.palette.getContrastText(color),
-        ...style,
+        ...style
       }}
       variant="outlined"
     />
@@ -24,8 +26,7 @@ function TagChip(props) {
 }
 
 TagChip.propTypes = {
-  tag: propTypes.object.isRequired,
+  tag: propTypes.object.isRequired
 };
 
 export default TagChip;
-

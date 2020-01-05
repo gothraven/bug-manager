@@ -23,9 +23,8 @@ const recordChange = (type, objectId) => async (root, args, { models, me }) => {
 
 export default {
   Query: {
-    issue: combineResolvers(authorize(USER), async (parent, { id }, { models }) =>
-      models.Issue.findById(id)),
-    issues: combineResolvers(authorize(USER), Paginate('Issue'))
+    issue: combineResolvers(authorize(USER), async (parent, { id }, { models }) => models.Issue.findById(id)),
+    issues: combineResolvers(authorize(USER), Paginate('Issue')),
   },
   Mutation: {
     createIssue: combineResolvers(

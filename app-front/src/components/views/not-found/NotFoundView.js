@@ -41,11 +41,9 @@ const NotFoundView = () => {
             src="/images/page_not_found.svg"
           />
         </div>
-        <Button onClick={() => history.push("/")}>
-          Go back to safety
-        </Button>
+        <Button onClick={() => history.push("/")}>Go back to safety</Button>
       </Grid>
-    </Grid >
+    </Grid>
   );
 };
 
