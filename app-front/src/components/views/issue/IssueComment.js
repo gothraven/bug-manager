@@ -11,10 +11,10 @@ import Chip from "@material-ui/core/Chip";
 import DeleteIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/EditOutlined";
 import UserAvatar from "../../lib/UserAvatar";
+import SafeCheck from "../../lib/SafeCheck";
 import { Can } from "../../core/Ability";
 
 import useStyles from "./IssueComment.scss";
-import SafeCheck from "../../lib/SafeCheck";
 
 function IssueComment(props) {
   const classes = useStyles();

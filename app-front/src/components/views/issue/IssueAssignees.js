@@ -11,12 +11,13 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import CloseIcon from "@material-ui/icons/Close";
 import DoneIcon from "@material-ui/icons/Done";
 import Chip from "@material-ui/core/Chip";
+import AutoCompletePopper from "../../lib/AutoCompletePopper";
+import UserAvatar from "../../lib/UserAvatar";
+import { Can } from "../../core/Ability";
 import { usePagination } from "../../core/hooks";
 import { USERS_QUERY } from "../../core/models/users/users.graphql";
-import AutoCompletePopper from "../../lib/AutoCompletePopper";
-import { Can } from "../../core/Ability";
 
-import useStyles from "./IssueTags.scss";
+import useStyles from "./IssueAssignees.scss";
 
 function IssueAssignees(props) {
   const classes = useStyles();
@@ -69,34 +70,45 @@ function IssueAssignees(props) {
   return (
     <Box m={2}>
       <Paper style={{ padding: 10 }}>
-        <Grid container justify="space-between" alignContent="center">
-          <Typography
-            variant="h3"
-            style={{ textTransform: "uppercase", color: "#2E231C" }}
-          >
-            Assign
+        <Grid container direction="column" spacing={1}>
+          <Grid item container justify="space-between" alignContent="center">
+            <Typography
+              variant="h3"
+              style={{ textTransform: "uppercase", color: "#2E231C" }}
+            >
+              Assign
           </Typography>
-          <Can I="use" this="AssignTags">
-            {() => (
-              <IconButton
-                component="span"
-                style={{ padding: 0 }}
-                onClick={handleClick}
-              >
-                <SettingsIcon />
-              </IconButton>
+            <Can I="use" this="AssignTags">
+              {() => (
+                <IconButton
+                  component="span"
+                  style={{ padding: 0 }}
+                  onClick={handleClick}
+                >
+                  <SettingsIcon />
+                </IconButton>
+              )}
+            </Can>
+          </Grid>
+          <Divider />
+          <Grid item container spacing={1}>
+            {assignees.map((user, index) => (
+              <Grid item key={user.id || index} container alignItems="center" spacing={1}>
+                <Grid item>
+                  <UserAvatar user={user} className={classes.userIcon} />
+                </Grid>
+                <Grid item>
+                  {user.name}
+                </Grid>
+              </Grid>
+            ))}
+            {assignees.length === 0 && (
+              <Grid item>
+                <Typography style={{ marginTop: 10 }}>No one assigned</Typography>
+              </Grid>
             )}
-          </Can>
+          </Grid>
         </Grid>
-        <Divider />
-        {assignees.map((user, index) => (
-          <Box key={user.id || index}>
-            <Chip label={user.name} />
-          </Box>
-        ))}
-        {assignees.length === 0 && (
-          <Typography style={{ marginTop: 10 }}>None yet</Typography>
-        )}
         <AutoCompletePopper
           open={open}
           anchorEl={anchorEl}
@@ -114,27 +126,28 @@ function IssueAssignees(props) {
           onChange={(event, newValue) => setPendingAssignees(newValue)}
           hasMore={hasMore}
           fetchMore={fetchMore}
-          noOptionsText="No labels"
+          noOptionsText="No options"
           renderOption={(option, { selected }) => (
-            <>
-              <DoneIcon
-                className={classes.iconSelected}
-                style={{ visibility: selected ? "visible" : "hidden" }}
-              />
-              <span
-                className={classes.color}
-                style={{ backgroundColor: option.color }}
-              />
-              <div className={classes.text}>
+            <Grid container alignItems="center" spacing={1}>
+              <Grid item xs={1}>
+                <DoneIcon
+                  className={classes.iconSelected}
+                  style={{ visibility: selected ? "visible" : "hidden" }}
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <UserAvatar user={option} className={classes.userIcon} />
+              </Grid>
+              <Grid item xs={8}>
                 {option.name}
-                <br />
-                {option.description}
-              </div>
-              <CloseIcon
-                className={classes.close}
-                style={{ visibility: selected ? "visible" : "hidden" }}
-              />
-            </>
+              </Grid>
+              <Grid item xs={1}>
+                <CloseIcon
+                  className={classes.close}
+                  style={{ visibility: selected ? "visible" : "hidden" }}
+                />
+              </Grid>
+            </Grid>
           )}
         />
       </Paper>
