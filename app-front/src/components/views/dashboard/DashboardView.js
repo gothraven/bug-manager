@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useQuery } from "@apollo/react-hooks";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -17,13 +17,10 @@ import { ISSUES_QUERY } from "../../core/models/issues/issues.graphql";
 
 
 function prepareFilters(input = '', tab = 0) {
-
   const filter = {};
-  
-  if(tab) filter.is = { open: tab === 1 /* { $eq: !!open } */};
-  
-  if(input && input.length > 0) filter.title = { $like: input };
 
+  if (tab) filter.is = { open: tab === 1 };
+  if (input && input.length > 0) filter.contains = { title: input };
   return filter;
 }
 
@@ -34,24 +31,16 @@ function DashboardView() {
 
   const [activeTab, setActiveTab] = useState(0);
 
-  // const [filters, setFilters] = useState({});
-
   const onTabChanged = value => {
     setActiveTab(value);
-    applyFilters();
   };
 
   const onInputChanged = value => {
     setSearchInput(value);
-    applyFilters();
   };
 
-  const applyFilters = () => {
-    // setFilters(f);
-    refreshData();
-  };
-
-  const refreshData = useCallback(() => {
+  useEffect(() => {
+    console.log(searchInput, activeTab)
     fetchMore({
       variables: {
         filters: prepareFilters(searchInput, activeTab)
@@ -62,12 +51,12 @@ function DashboardView() {
 
         return newEdges.length
           ? {
-              issues: {
-                __typename: previousResult.issues.__typename,
-                edges: [...newEdges],
-                pageInfo
-              }
+            issues: {
+              __typename: previousResult.issues.__typename,
+              edges: [...newEdges],
+              pageInfo
             }
+          }
           : {};
       }
     });
@@ -91,12 +80,12 @@ function DashboardView() {
 
         return newEdges.length
           ? {
-              issues: {
-                __typename: previousResult.issues.__typename,
-                edges: [...previousResult.issues.edges, ...newEdges],
-                pageInfo
-              }
+            issues: {
+              __typename: previousResult.issues.__typename,
+              edges: [...previousResult.issues.edges, ...newEdges],
+              pageInfo
             }
+          }
           : previousResult;
       }
     });
@@ -116,7 +105,6 @@ function DashboardView() {
       <Typography variant="h1" component="h1" gutterBottom>
         All Issues
       </Typography>
-
       <Grid item xs={12}>
         <List style={{ backgroundColor: "white" }}>
           <ListItem divider>
