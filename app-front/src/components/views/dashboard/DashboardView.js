@@ -26,6 +26,7 @@ function DashboardView() {
   const { data, loading: issuesLoading, fetchMore } = useQuery(ISSUES_QUERY);
   const { data: statisticsData, loading: statisticsLoading } = useQuery(ISSUES_STATISTICS_QUERY);
   const [searchInput, setSearchInput] = useState("");
+  const [validatedSearchInput, setValidatedSearchInput] = useState("");
   const [activeTab, setActiveTab] = useState(0);
   const loading = issuesLoading || statisticsLoading;
 
@@ -40,7 +41,7 @@ function DashboardView() {
   useEffect(() => {
     fetchMore({
       variables: {
-        filters: prepareFilters(searchInput, activeTab)
+        filters: prepareFilters(validatedSearchInput, activeTab)
       },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         return {
@@ -48,7 +49,7 @@ function DashboardView() {
         };
       }
     });
-  }, [fetchMore, searchInput, activeTab]);
+  }, [fetchMore, validatedSearchInput, activeTab]);
 
   const loadMore = useCallback(() => {
     const { endCursor, hasNextPage } = data.tags.pageInfo;
@@ -60,7 +61,7 @@ function DashboardView() {
     fetchMore({
       variables: {
         cursor: endCursor,
-        filters: prepareFilters(searchInput, activeTab)
+        filters: prepareFilters(validatedSearchInput, activeTab)
       },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         const newEdges = fetchMoreResult.issues.edges;
@@ -77,7 +78,7 @@ function DashboardView() {
           : previousResult;
       }
     });
-  }, [data, loading, fetchMore, searchInput, activeTab]);
+  }, [data, loading, fetchMore, validatedSearchInput, activeTab]);
 
   if (loading) return <Loading />;
 
@@ -138,10 +139,15 @@ function DashboardView() {
                 }
               />
             </Tabs>
-
             <Input
               onChange={event => onInputChanged(event.target.value)}
               value={searchInput}
+              onKeyUp={(e) => {
+                if (e.keyCode === 13) {
+                  e.preventDefault();
+                  setValidatedSearchInput(searchInput);
+                }
+              }}
               endAdornment={
                 <InputAdornment>
                   <SearchIcon />
