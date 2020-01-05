@@ -313,7 +313,7 @@ export const ISSUE_UNASSIGN_USER = gql`
 
 export const ISSUE_REOPEN = gql`
   mutation IssueReOpenMutation($id: ID!) {
-    closeIssue(id: $id) {
+    reopenIssue(id: $id) {
       id
       updatedAt
       open

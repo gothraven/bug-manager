@@ -4,6 +4,7 @@ import Box from "@material-ui/core/Box";
 import PropType from "prop-types";
 import Chip from "@material-ui/core/Chip";
 import EditIcon from "@material-ui/icons/Edit";
+import ErrorIcon from "@material-ui/icons/Error";
 import TurnedInIcon from "@material-ui/icons/TurnedIn";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import {
@@ -11,7 +12,9 @@ import {
   UNASSIGN_USER,
   ADD_TAG,
   REMOVE_TAG,
-  CHANGE_STATUS
+  CHANGE_STATUS,
+  REOPEN_ISSUE,
+  CLOSE_ISSUE
 } from "../../core/constants";
 
 function IssueHistory(props) {
@@ -33,7 +36,9 @@ function IssueHistory(props) {
           <p style={{ display: "inline", marginLeft: 10 }}>
             <strong> {creator.name} </strong>
             <span>{text}</span>
-            <strong> {(user || tag || status || project).name} </strong>
+            <strong>
+              {(user || tag || status || project || { name: "" }).name}
+            </strong>
           </p>
         </Box>
       </Grid>
@@ -52,7 +57,15 @@ const issueAdapter = {
   },
   [ADD_TAG]: { icon: <TurnedInIcon />, text: "a ajouté le tag " },
   [REMOVE_TAG]: { icon: <TurnedInIcon />, text: "a supprimé le TAG " },
-  [CHANGE_STATUS]: { icon: <EditIcon />, text: "a changé le STATUS en " }
+  [CHANGE_STATUS]: { icon: <EditIcon />, text: "a changé le STATUS en " },
+  [CLOSE_ISSUE]: {
+    icon: <ErrorIcon style={{ color: "red" }} />,
+    text: "a fermé l'issue"
+  },
+  [REOPEN_ISSUE]: {
+    icon: <ErrorIcon style={{ color: "green" }} />,
+    text: "a reouvert l'issue"
+  }
 };
 
 IssueHistory.propTypes = {

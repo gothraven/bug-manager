@@ -5,7 +5,6 @@ import PropType from "prop-types";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import SaveIcon from "@material-ui/icons/Save";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/EditOutlined";
@@ -176,14 +175,26 @@ function IssueHeader(props) {
   const [editTitle, setEditTitle] = useState(false);
   const [titleIssue, setTitleIssue] = useState(issue.title);
   const [onIssueUpdateTitle] = useMutation(ISSUE_UPDATE);
-  const [onIssueClose] = useMutation(ISSUE_CLOSE);
-  const [onIssueReOpen] = useMutation(ISSUE_REOPEN);
+  const [onIssueClose, { loading: isIssueClosePending }] = useMutation(
+    ISSUE_CLOSE
+  );
+  const [onIssueReOpen, { loading: isIssueReopenPending }] = useMutation(
+    ISSUE_REOPEN
+  );
+
+  const isPending = isIssueClosePending || isIssueReopenPending;
 
   return (
     <Grid item xs={12}>
       {editTitle ? (
-        <Grid>
-          <Grid item xs={8}>
+        <Grid
+          item
+          container
+          justify="space-between"
+          alignItems="center"
+          spacing={1}
+        >
+          <Grid item xs>
             <TextField
               fullWidth
               multiline
@@ -194,11 +205,11 @@ function IssueHeader(props) {
               onChange={e => setTitleIssue(e.target.value)}
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={3} container alignItems="center" spacing={1}>
             <Button
               variant="contained"
-              size="small"
-              startIcon={<SaveIcon />}
+              color="primary"
+              size="large"
               onClick={() => {
                 onIssueUpdateTitle({
                   variables: { id: issue.id, title: titleIssue },
@@ -228,13 +239,26 @@ function IssueHeader(props) {
           </Grid>
         </Grid>
       ) : (
-        <Grid item xs={12}>
-          <Grid item xs={6}>
+        <Grid
+          item
+          container
+          justify="space-between"
+          alignItems="center"
+          spacing={1}
+        >
+          <Grid item xs>
             <Typography variant="h1" component="h1" gutterBottom>
               # {issue.title}
             </Typography>
           </Grid>
-          <Grid item xs={2}>
+          <Grid
+            item
+            xs={3}
+            container
+            justify="flex-end"
+            alignItems="center"
+            spacing={1}
+          >
             <IconButton size="small" onClick={() => setEditTitle(!editTitle)}>
               <EditIcon />
             </IconButton>
@@ -242,6 +266,7 @@ function IssueHeader(props) {
               <Button
                 variant="outlined"
                 size="small"
+                disabled={isPending}
                 color="primary"
                 onClick={() => {
                   onIssueClose({
@@ -257,6 +282,7 @@ function IssueHeader(props) {
                         data: {
                           issue: {
                             ...cachedIssue,
+                            open: closeIssue.open,
                             changes: closeIssue.changes
                           }
                         }
@@ -272,6 +298,7 @@ function IssueHeader(props) {
                 variant="outlined"
                 size="small"
                 color="primary"
+                disabled={isPending}
                 onClick={() => {
                   onIssueReOpen({
                     variables: { id: issue.id },
@@ -286,6 +313,7 @@ function IssueHeader(props) {
                         data: {
                           issue: {
                             ...cachedIssue,
+                            open: reopenIssue.open,
                             changes: reopenIssue.changes
                           }
                         }
