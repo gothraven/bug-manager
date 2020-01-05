@@ -49,6 +49,7 @@ export const ISSUE_QUERY = gql`
         id
         name
       }
+      open
       assignedUsers {
         id
         name
@@ -183,6 +184,7 @@ export const ISSUE_REMOVE_TAG = gql`
     }
   }
 `;
+
 export const ISSUE_ASSIGNE_USER = gql`
   mutation IssueAssignUserMutation($id: ID!, $userId: ID!) {
     assignUser(id: $id, userId: $userId) {
@@ -224,6 +226,50 @@ export const ISSUE_ASSIGNE_USER = gql`
   }
 `;
 
+export const ISSUE_UPDATE = gql`
+  mutation IssueUpdateMutation($id: ID!, $title: String) {
+    updateIssue(id: $id, title: $title) {
+      id
+      title
+      updatedAt
+    }
+  }
+`;
+
+export const ISSUE_CLOSE = gql`
+  mutation IssueCloseMutation($id: ID!) {
+    closeIssue(id: $id) {
+      id
+      updatedAt
+      open
+      changes {
+        id
+        createdAt
+        updatedAt
+        creator {
+          id
+          name
+        }
+        type
+        data {
+          user {
+            name
+          }
+          tag {
+            name
+          }
+          project {
+            name
+          }
+          status {
+            name
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const ISSUE_UNASSIGN_USER = gql`
   mutation IssueUnassignUserMutation($id: ID!, $userId: ID!) {
     unassignUser(id: $id, userId: $userId) {
@@ -237,6 +283,40 @@ export const ISSUE_UNASSIGN_USER = gql`
         description
         color
       }
+      changes {
+        id
+        createdAt
+        updatedAt
+        creator {
+          id
+          name
+        }
+        type
+        data {
+          user {
+            name
+          }
+          tag {
+            name
+          }
+          project {
+            name
+          }
+          status {
+            name
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const ISSUE_REOPEN = gql`
+  mutation IssueReOpenMutation($id: ID!) {
+    closeIssue(id: $id) {
+      id
+      updatedAt
+      open
       changes {
         id
         createdAt

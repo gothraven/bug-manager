@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { useParams } from "react-router-dom";
 import PropType from "prop-types";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import SaveIcon from "@material-ui/icons/Save";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import EditIcon from "@material-ui/icons/EditOutlined";
 import Grid from "@material-ui/core/Grid";
 import IssueComment from "./IssueComment";
 import IssueHistory from "./IssueHistory";
@@ -21,7 +26,10 @@ import {
   ISSUE_ADD_TAG,
   ISSUE_REMOVE_TAG,
   ISSUE_ASSIGNE_USER,
-  ISSUE_UNASSIGN_USER
+  ISSUE_UNASSIGN_USER,
+  ISSUE_UPDATE,
+  ISSUE_CLOSE,
+  ISSUE_REOPEN
 } from "../../core/models/issues/issues.graphql";
 
 function IssuePage() {
@@ -47,9 +55,7 @@ function IssuePage() {
       spacing={2}
     >
       <Grid item>
-        <Typography variant="h1" component="h1" gutterBottom>
-          # {issue.title}
-        </Typography>
+        <IssueHeader issue={issue} />
         <Divider />
       </Grid>
       <Grid item container justify="space-evenly">
@@ -161,6 +167,139 @@ function IssuePage() {
           />
         </Grid>
       </Grid>
+    </Grid>
+  );
+}
+
+function IssueHeader(props) {
+  const { issue } = props;
+  const [editTitle, setEditTitle] = useState(false);
+  const [titleIssue, setTitleIssue] = useState(issue.title);
+  const [onIssueUpdateTitle] = useMutation(ISSUE_UPDATE);
+  const [onIssueClose] = useMutation(ISSUE_CLOSE);
+  const [onIssueReOpen] = useMutation(ISSUE_REOPEN);
+
+  return (
+    <Grid item xs={12}>
+      {editTitle ? (
+        <Grid>
+          <Grid item xs={8}>
+            <TextField
+              fullWidth
+              multiline
+              variant="outlined"
+              rowsMax="15"
+              rows="1"
+              value={titleIssue}
+              onChange={e => setTitleIssue(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <Button
+              variant="contained"
+              size="small"
+              startIcon={<SaveIcon />}
+              onClick={() => {
+                onIssueUpdateTitle({
+                  variables: { id: issue.id, title: titleIssue },
+                  update: (proxy, result) => {
+                    const { updateIssue } = result.data;
+                    const { issue: cachedIssue } = proxy.readQuery({
+                      query: ISSUE_QUERY,
+                      variables: { id: issue.id }
+                    });
+                    proxy.writeQuery({
+                      query: ISSUE_QUERY,
+                      data: {
+                        issue: {
+                          ...cachedIssue,
+                          titleIssue: updateIssue.title,
+                          changes: updateIssue.changes
+                        }
+                      }
+                    });
+                  }
+                });
+                setEditTitle(!editTitle);
+              }}
+            >
+              Save
+            </Button>
+          </Grid>
+        </Grid>
+      ) : (
+        <Grid item xs={12}>
+          <Grid item xs={6}>
+            <Typography variant="h1" component="h1" gutterBottom>
+              # {issue.title}
+            </Typography>
+          </Grid>
+          <Grid item xs={2}>
+            <IconButton size="small" onClick={() => setEditTitle(!editTitle)}>
+              <EditIcon />
+            </IconButton>
+            {issue.open ? (
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
+                onClick={() => {
+                  onIssueClose({
+                    variables: { id: issue.id },
+                    update: (proxy, result) => {
+                      const { closeIssue } = result.data;
+                      const { issue: cachedIssue } = proxy.readQuery({
+                        query: ISSUE_QUERY,
+                        variables: { id: issue.id }
+                      });
+                      proxy.writeQuery({
+                        query: ISSUE_QUERY,
+                        data: {
+                          issue: {
+                            ...cachedIssue,
+                            changes: closeIssue.changes
+                          }
+                        }
+                      });
+                    }
+                  });
+                }}
+              >
+                Close Issue
+              </Button>
+            ) : (
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
+                onClick={() => {
+                  onIssueReOpen({
+                    variables: { id: issue.id },
+                    update: (proxy, result) => {
+                      const { reopenIssue } = result.data;
+                      const { issue: cachedIssue } = proxy.readQuery({
+                        query: ISSUE_QUERY,
+                        variables: { id: issue.id }
+                      });
+                      proxy.writeQuery({
+                        query: ISSUE_QUERY,
+                        data: {
+                          issue: {
+                            ...cachedIssue,
+                            changes: reopenIssue.changes
+                          }
+                        }
+                      });
+                    }
+                  });
+                }}
+              >
+                Reopen Issue
+              </Button>
+            )}
+          </Grid>
+        </Grid>
+      )}
     </Grid>
   );
 }
@@ -285,6 +424,9 @@ function IssueBody(props) {
 }
 
 IssueBody.propTypes = {
+  issue: PropType.object.isRequired
+};
+IssueHeader.propTypes = {
   issue: PropType.object.isRequired
 };
 
