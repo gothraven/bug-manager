@@ -74,16 +74,20 @@ function IssueProject(props) {
                 {project ? project.name : "No project"}
               </Typography>
             </Grid>
-            <Grid item>
-              <CloseIcon
-                className={classes.close}
-                style={{ visibility: project ? "visible" : "hidden" }}
-                onClick={() => {
-                  onDetachFromProject(project);
-                  setProject(null);
-                }}
-              />
-            </Grid>
+            <Can I="use" this="AttachProject">
+              {() => (
+                <Grid item>
+                  <CloseIcon
+                    className={classes.close}
+                    style={{ visibility: project ? "visible" : "hidden" }}
+                    onClick={() => {
+                      onDetachFromProject(project);
+                      setProject(null);
+                    }}
+                  />
+                </Grid>
+              )}
+            </Can>
           </Grid>
         </Grid>
         <Can I="use" this="AttachProject">
