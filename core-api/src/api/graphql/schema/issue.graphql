@@ -21,9 +21,22 @@ type IssueCursor {
   pageInfo: PageInfo!
 }
 
+input IssueFilter {
+  contains: IssueFilterContains
+  is: IssueFilterIs
+}
+
+input IssueFilterContains {
+  title: String
+}
+
+input IssueFilterIs {
+  open: Boolean
+}
+
 type Query {
   issue(id: ID!): Issue!
-  issues(after: String, first: PositiveInt, filters: String): IssueCursor
+  issues(after: String, first: PositiveInt, filters: IssueFilter): IssueCursor
 }
 
 type Mutation {

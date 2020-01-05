@@ -4,16 +4,15 @@ export const fromCursorHash = string => Buffer.from(string, 'base64').toString('
 
 export const Paginate = model => async (parent, { after, first = 100, filters = null}, { models }) => {
 
-  filters = JSON.parse(filters);
+  console.log("==========", filters, "============");
 
   const cursorOptions = after
     ? {
       createdAt: {
         $lt: fromCursorHash(after)
       },
-      ...filters
     }
-    : filters;
+    : {};
     
   const data = await models[model].find(cursorOptions, null, {
     sort: { createdAt: -1 },

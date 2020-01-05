@@ -15,6 +15,18 @@ import IssueItem from "./IssueItem";
 
 import { ISSUES_QUERY } from "../../core/models/issues/issues.graphql";
 
+
+function prepareFilters(input = '', tab = 0) {
+
+  const filter = {};
+  
+  if(tab) filter.is = { open: tab === 1 /* { $eq: !!open } */};
+  
+  if(input && input.length > 0) filter.title = { $like: input };
+
+  return filter;
+}
+
 function DashboardView() {
   const { data, loading, fetchMore } = useQuery(ISSUES_QUERY);
 
@@ -22,7 +34,7 @@ function DashboardView() {
 
   const [activeTab, setActiveTab] = useState(0);
 
-  const [filters, setFilters] = useState({});
+  // const [filters, setFilters] = useState({});
 
   const onTabChanged = value => {
     setActiveTab(value);
@@ -35,22 +47,14 @@ function DashboardView() {
   };
 
   const applyFilters = () => {
-    let f = {};
-
-    if (activeTab === 0) f.open = null;
-    else f.open = { $eq: activeTab === 2 };
-
-    if (searchInput && searchInput.length > 0)
-      f.title = { text: { search: searchInput } };
-
-    setFilters(f);
+    // setFilters(f);
     refreshData();
   };
 
   const refreshData = useCallback(() => {
     fetchMore({
       variables: {
-        filters: JSON.stringify(filters)
+        filters: prepareFilters(searchInput, activeTab)
       },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         const newEdges = fetchMoreResult.issues.edges;
@@ -67,7 +71,7 @@ function DashboardView() {
           : {};
       }
     });
-  }, [fetchMore, filters]);
+  }, [fetchMore, searchInput, activeTab]);
 
   const loadMore = useCallback(() => {
     const { endCursor, hasNextPage } = data.tags.pageInfo;
@@ -79,7 +83,7 @@ function DashboardView() {
     fetchMore({
       variables: {
         cursor: endCursor,
-        filters: JSON.stringify(filters)
+        filters: prepareFilters(searchInput, activeTab)
       },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         const newEdges = fetchMoreResult.issues.edges;
@@ -96,7 +100,7 @@ function DashboardView() {
           : previousResult;
       }
     });
-  }, [data, loading, fetchMore, filters]);
+  }, [data, loading, fetchMore, searchInput, activeTab]);
 
   if (loading) return <Loading />;
 
