@@ -23,8 +23,13 @@ const recordChange = (type, objectId) => async (root, args, { models, me }) => {
 
 export default {
   Query: {
-    issue: combineResolvers(authorize(USER), async (parent, { id }, { models }) => models.Issue.findById(id)),
+    issue: combineResolvers(authorize(USER), async (parent, { id }, { models }) =>
+      models.Issue.findById(id)),
     issues: combineResolvers(authorize(USER), Paginate('Issue')),
+    issuesStatistics: combineResolvers(authorize(USER), async (parent, args, { models }) => ({
+      openCount: (await models.Issue.find({ open: true })).length,
+      closedCount: (await models.Issue.find({ open: false })).length
+    }))
   },
   Mutation: {
     createIssue: combineResolvers(
