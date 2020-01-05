@@ -1,14 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-export const ASSIGN_USER = 'ASSIGN_USER';
-export const UNASSIGN_USER = 'UNASSIGN_USER';
-export const ADD_TAG = 'ADD_TAG';
-export const REMOVE_TAG = 'REMOVE_TAG';
-export const CHANGE_STATUS = 'CHANGE_STATUS';
-export const ATTACH_TO_PROJECT = 'ATTACH_TO_PROJECT';
-export const DETATCH_FROM_PROJECT = 'DETATCH_FROM_PROJECT';
-export const CLOSE_ISSUE = 'CLOSE_ISSUE';
-export const REOPEN_ISSUE = 'REOPEN_ISSUE';
+export const ASSIGN_USER = "ASSIGN_USER";
+export const UNASSIGN_USER = "UNASSIGN_USER";
+export const ADD_TAG = "ADD_TAG";
+export const REMOVE_TAG = "REMOVE_TAG";
+export const CHANGE_STATUS = "CHANGE_STATUS";
+export const ATTACH_TO_PROJECT = "ATTACH_TO_PROJECT";
+export const DETATCH_FROM_PROJECT = "DETATCH_FROM_PROJECT";
+export const CLOSE_ISSUE = "CLOSE_ISSUE";
+export const REOPEN_ISSUE = "REOPEN_ISSUE";
 
 const types = [
   ASSIGN_USER,
@@ -26,12 +26,12 @@ const changeSchema = new mongoose.Schema(
   {
     creatorId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true
     },
     issueId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Issue',
+      ref: "Issue",
       required: true
     },
     type: {
@@ -42,7 +42,8 @@ const changeSchema = new mongoose.Schema(
     data: Object
   },
   {
-    timestamps: true
+    timestamps: true,
+    minimize: false
   }
 );
 
@@ -52,9 +53,9 @@ changeSchema.method({
    */
   transform() {
     const transformed = {};
-    const fields = ['id', 'userId', 'issueId', 'type', 'data'];
+    const fields = ["id", "userId", "issueId", "type", "data"];
 
-    fields.forEach((field) => {
+    fields.forEach(field => {
       transformed[field] = this[field];
     });
 
@@ -62,4 +63,4 @@ changeSchema.method({
   }
 });
 
-export default mongoose.model('Change', changeSchema);
+export default mongoose.model("Change", changeSchema);
