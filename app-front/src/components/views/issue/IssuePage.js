@@ -20,8 +20,8 @@ import {
   ISSUE_QUERY,
   ISSUE_ADD_TAG,
   ISSUE_REMOVE_TAG,
-  ISSUE_REMOVE_ASSIGNE,
-  ISSUE_ADD_ASSIGNE
+  ISSUE_ASSIGNE_USER,
+  ISSUE_UNASSIGN_USER
 } from "../../core/models/issues/issues.graphql";
 
 function IssuePage() {
@@ -29,8 +29,8 @@ function IssuePage() {
   const { data, loading } = useQuery(ISSUE_QUERY, { variables: { id } });
   const [onIssueAddTag] = useMutation(ISSUE_ADD_TAG);
   const [onIssueRemoveTag] = useMutation(ISSUE_REMOVE_TAG);
-  const [onIssueAssigneUser] = useMutation(ISSUE_ADD_ASSIGNE);
-  const [onIssueUnassigneUser] = useMutation(ISSUE_REMOVE_ASSIGNE);
+  const [onIssueAssignUser] = useMutation(ISSUE_ASSIGNE_USER);
+  const [onIssueUnassignUser] = useMutation(ISSUE_UNASSIGN_USER);
 
   if (loading) {
     return <Loading />;
@@ -66,9 +66,9 @@ function IssuePage() {
         </Grid>
         <Grid item xs={3}>
           <IssueAssignees
-            assignees={issue.assignedUsers}
-            onAssignAdded={assigne => {
-              onIssueAssigneUser({
+            assignedUsers={issue.assignedUsers}
+            onAssignUser={assigne => {
+              onIssueAssignUser({
                 variables: { id: issue.id, userId: assigne.id },
                 update: (proxy, result) => {
                   const { assignUser } = result.data;
@@ -89,8 +89,8 @@ function IssuePage() {
                 }
               });
             }}
-            onAssignRemoved={assigne => {
-              onIssueUnassigneUser({
+            onUnassignUser={assigne => {
+              onIssueUnassignUser({
                 variables: { id: issue.id, userId: assigne.id },
                 update: (proxy, result) => {
                   const { unassignUser } = result.data;

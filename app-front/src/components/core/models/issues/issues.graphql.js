@@ -183,8 +183,8 @@ export const ISSUE_REMOVE_TAG = gql`
     }
   }
 `;
-export const ISSUE_ADD_ASSIGNE = gql`
-  mutation IssueAddAssigneMutation($id: ID!, $userId: ID!) {
+export const ISSUE_ASSIGNE_USER = gql`
+  mutation IssueAssignUserMutation($id: ID!, $userId: ID!) {
     assignUser(id: $id, userId: $userId) {
       assignedUsers {
         id
@@ -224,8 +224,8 @@ export const ISSUE_ADD_ASSIGNE = gql`
   }
 `;
 
-export const ISSUE_REMOVE_ASSIGNE = gql`
-  mutation IssueRemoveAssigneMutation($id: ID!, $userId: ID!) {
+export const ISSUE_UNASSIGN_USER = gql`
+  mutation IssueUnassignUserMutation($id: ID!, $userId: ID!) {
     unassignUser(id: $id, userId: $userId) {
       assignedUsers {
         id
