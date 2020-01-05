@@ -10,7 +10,7 @@ import IssueHistory from "./IssueHistory";
 import IssueTags from "./IssueTags";
 import IssueAssignees from "./IssueAssignees";
 import Loading from "../../lib/Loading";
-import AttachProject from "./AttachProject";
+import IssueProject from "./IssueProject";
 import { useMe } from "../../core/models/users/users.hooks";
 import {
   CREATE_COMMENT,
@@ -23,7 +23,8 @@ import {
   ISSUE_REMOVE_TAG,
   ISSUE_ASSIGNE_USER,
   ISSUE_UNASSIGN_USER,
-  ISSUE_ATTACH_TO_PROJECT
+  ISSUE_ATTACH_TO_PROJECT,
+  ISSUE_DETATCH_FROM_PROJECT
 } from "../../core/models/issues/issues.graphql";
 
 function IssuePage() {
@@ -33,9 +34,8 @@ function IssuePage() {
   const [onIssueRemoveTag] = useMutation(ISSUE_REMOVE_TAG);
   const [onIssueAssignUser] = useMutation(ISSUE_ASSIGNE_USER);
   const [onIssueUnassignUser] = useMutation(ISSUE_UNASSIGN_USER);
-
-  const [onAttachProject] = useMutation(ISSUE_ATTACH_TO_PROJECT);
-  // const [onDetatchProject] = useMutation(ISSUE_ATTACH_TO_PROJECT);
+  const [onAttachToProject] = useMutation(ISSUE_ATTACH_TO_PROJECT);
+  const [onDetatchFromProject] = useMutation(ISSUE_DETATCH_FROM_PROJECT);
 
   if (loading) {
     return <Loading />;
@@ -164,10 +164,10 @@ function IssuePage() {
               });
             }}
           />
-          <AttachProject
+          <IssueProject
             project={issue.project}
-            onProjectAttached={project => {
-              onAttachProject({
+            onAttachToProject={project => {
+              onAttachToProject({
                 variables: { id: issue.id, projectId: project.id },
                 update: (proxy, result) => {
                   const { attachToProject } = result.data;
@@ -189,7 +189,29 @@ function IssuePage() {
                 }
               });
             }}
-            onProjectDetatched={project => { }}
+            onDetachFromProject={project => {
+              onDetatchFromProject({
+                variables: { id: issue.id, projectId: project.id },
+                update: (proxy, result) => {
+                  const { detatchFromProject } = result.data;
+                  const { issue: cachedIssue } = proxy.readQuery({
+                    query: ISSUE_QUERY,
+                    variables: { id: issue.id }
+                  });
+
+                  proxy.writeQuery({
+                    query: ISSUE_QUERY,
+                    data: {
+                      issue: {
+                        ...cachedIssue,
+                        project: detatchFromProject.project,
+                        changes: detatchFromProject.changes
+                      }
+                    }
+                  });
+                }
+              });
+            }}
           />
         </Grid>
       </Grid>

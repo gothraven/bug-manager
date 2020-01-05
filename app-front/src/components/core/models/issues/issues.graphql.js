@@ -219,6 +219,41 @@ export const ISSUE_ATTACH_TO_PROJECT = gql`
   }
 `;
 
+export const ISSUE_DETATCH_FROM_PROJECT = gql`
+  mutation IssueDetatchFromProjectMutation($id: ID!, $projectId: ID!) {
+    detatchFromProject(id: $id, projectId: $projectId) {
+      project {
+        id
+        name
+      }
+      changes {
+        id
+        createdAt
+        updatedAt
+        creator {
+          id
+          name
+        }
+        type
+        data {
+          user {
+            name
+          }
+          tag {
+            name
+          }
+          project {
+            name
+          }
+          status {
+            name
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const ISSUE_ASSIGNE_USER = gql`
   mutation IssueAssignUserMutation($id: ID!, $userId: ID!) {
     assignUser(id: $id, userId: $userId) {
