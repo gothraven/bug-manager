@@ -8,8 +8,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Typography } from "@material-ui/core";
 
-
-
 function SafeCheck(props) {
   const { title, content, children, action } = props;
   const [open, setOpen] = useState(false);
