@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/styles";
 
-export default makeStyles(_ => ({
+export default makeStyles(() => ({
   iconSelected: {
     width: 17,
     height: 17,

@@ -28,8 +28,13 @@ export function defineRulesFor(role) {
     can("see", "Tags");
     can("see", "Projects");
     can("use", "AssignTags");
+    can("edit", "Comment");
+    can("delete", "Comment");
   }
+  can("edit", "MyComment");
+  can("delete", "MyComment");
   can("see", "Dashboard");
   can("see", "Issue");
-  return rules;
+  can("see", "Profile");
+  return rules
 }

@@ -8,6 +8,8 @@ import {
   ProjectsView,
   IssuePageView,
   DashboardView,
+  ProfileView,
+  SettingsView,
   NotFoundView
 } from "../views";
 import { useMe } from "../core/models/users/users.hooks";
@@ -76,6 +78,20 @@ function AuthenticatedRouter() {
         component={TagsView}
         layout={MainLayout}
         name="Tags"
+      />
+      <RouteWithLayout
+        exact
+        path="/user/profile"
+        component={ProfileView}
+        layout={MainLayout}
+        name="Profile"
+      />
+      <RouteWithLayout
+        exact
+        path="/user/settings"
+        component={SettingsView}
+        layout={MainLayout}
+        name="Settings"
       />
       <RouteWithLayout
         exact

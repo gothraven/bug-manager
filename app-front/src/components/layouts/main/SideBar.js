@@ -61,7 +61,12 @@ function SideBar(props) {
       >
         <Grid item>
           <List>
-            <ListItem button classes={{ root: classes.listItem }}>
+            <ListItem
+              key="Profile"
+              classes={{ root: classes.listItem }}
+              onClick={() => history.push("/user/profile")}
+              button
+            >
               <ListItemIcon classes={{ root: classes.listItemIcon }}>
                 <UserAvatar user={me} />
               </ListItemIcon>
