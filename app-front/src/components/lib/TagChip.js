@@ -25,8 +25,13 @@ function TagChip(props) {
   );
 }
 
+TagChip.defaultProps = {
+  style: {}
+};
+
 TagChip.propTypes = {
-  tag: propTypes.object.isRequired
+  tag: propTypes.object.isRequired,
+  style: propTypes.object
 };
 
 export default TagChip;

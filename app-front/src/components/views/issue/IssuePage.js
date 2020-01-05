@@ -9,16 +9,28 @@ import IssueComment from "./IssueComment";
 import IssueHistory from "./IssueHistory";
 import IssueTags from "./IssueTags";
 import IssueAssignees from "./IssueAssignees";
-import { useMe } from "../../core/models/users/users.hooks";
-import { ISSUE_QUERY, ISSUE_ADD_TAG, ISSUE_REMOVE_TAG } from "../../core/models/issues/issues.graphql";
-import { CREATE_COMMENT, DELETE_COMMENT, UPDATE_COMMENT } from "../../core/models/comments/comments.graphql";
 import Loading from "../../lib/Loading";
+import { useMe } from "../../core/models/users/users.hooks";
+import {
+  CREATE_COMMENT,
+  DELETE_COMMENT,
+  UPDATE_COMMENT
+} from "../../core/models/comments/comments.graphql";
+import {
+  ISSUE_QUERY,
+  ISSUE_ADD_TAG,
+  ISSUE_REMOVE_TAG,
+  ISSUE_REMOVE_ASSIGNE,
+  ISSUE_ADD_ASSIGNE
+} from "../../core/models/issues/issues.graphql";
 
 function IssuePage() {
   const { id } = useParams();
   const { data, loading } = useQuery(ISSUE_QUERY, { variables: { id } });
   const [onIssueAddTag] = useMutation(ISSUE_ADD_TAG);
   const [onIssueRemoveTag] = useMutation(ISSUE_REMOVE_TAG);
+  const [onIssueAssigneUser] = useMutation(ISSUE_ADD_ASSIGNE);
+  const [onIssueUnassigneUser] = useMutation(ISSUE_REMOVE_ASSIGNE);
 
   if (loading) {
     return <Loading />;
@@ -41,11 +53,65 @@ function IssuePage() {
         <Divider />
       </Grid>
       <Grid item container justify="space-evenly">
-        <Grid item xs={8} container direction="column" justify="flex-start" alignItems="stretch" spacing={3}>
+        <Grid
+          item
+          xs={8}
+          container
+          direction="column"
+          justify="flex-start"
+          alignItems="stretch"
+          spacing={3}
+        >
           <IssueBody issue={issue} />
         </Grid>
         <Grid item xs={3}>
-          <IssueAssignees assignees={issue.assignedUsers} />
+          <IssueAssignees
+            assignees={issue.assignedUsers}
+            onAssignAdded={assigne => {
+              onIssueAssigneUser({
+                variables: { id: issue.id, userId: assigne.id },
+                update: (proxy, result) => {
+                  const { assignUser } = result.data;
+                  const { issue: cachedIssue } = proxy.readQuery({
+                    query: ISSUE_QUERY,
+                    variables: { id: issue.id }
+                  });
+                  proxy.writeQuery({
+                    query: ISSUE_QUERY,
+                    data: {
+                      issue: {
+                        ...cachedIssue,
+                        assignedUsers: assignUser.assignedUsers,
+                        changes: assignUser.changes
+                      }
+                    }
+                  });
+                }
+              });
+            }}
+            onAssignRemoved={assigne => {
+              onIssueUnassigneUser({
+                variables: { id: issue.id, userId: assigne.id },
+                update: (proxy, result) => {
+                  const { unassignUser } = result.data;
+                  const { issue: cachedIssue } = proxy.readQuery({
+                    query: ISSUE_QUERY,
+                    variables: { id: issue.id }
+                  });
+                  proxy.writeQuery({
+                    query: ISSUE_QUERY,
+                    data: {
+                      issue: {
+                        ...cachedIssue,
+                        assignedUsers: unassignUser.assignedUsers,
+                        changes: unassignUser.changes
+                      }
+                    }
+                  });
+                }
+              });
+            }}
+          />
           <IssueTags
             tags={issue.tags}
             onTagAdded={tag => {
@@ -126,7 +192,8 @@ function IssueBody(props) {
                     update: (proxy, result) => {
                       const { updateComment } = result.data;
                       const { issue: cachedIssue } = proxy.readQuery({
-                        query: ISSUE_QUERY, variables: { id: issue.id }
+                        query: ISSUE_QUERY,
+                        variables: { id: issue.id }
                       });
                       proxy.writeQuery({
                         query: ISSUE_QUERY,
@@ -155,20 +222,23 @@ function IssueBody(props) {
                       const { deleteComment } = result.data;
                       if (deleteComment) {
                         const { issue: cachedIssue } = proxy.readQuery({
-                          query: ISSUE_QUERY, variables: { id: issue.id }
+                          query: ISSUE_QUERY,
+                          variables: { id: issue.id }
                         });
                         proxy.writeQuery({
                           query: ISSUE_QUERY,
                           data: {
                             issue: {
                               ...cachedIssue,
-                              comments: issue.comments.filter(x => x.id !== comment.id)
+                              comments: issue.comments.filter(
+                                x => x.id !== comment.id
+                              )
                             }
                           }
                         });
                       }
                     }
-                  })
+                  });
                 }}
                 key={comment.id}
                 user={me}
@@ -188,20 +258,26 @@ function IssueBody(props) {
       <IssueComment
         user={me}
         creator={me}
-        onCommentCreated={(content) => {
+        onCommentCreated={content => {
           onCreateComment({
             variables: { content, issueId: issue.id },
             update: (proxy, result) => {
               const { createComment } = result.data;
               const { issue: cachedIssue } = proxy.readQuery({
-                query: ISSUE_QUERY, variables: { id: issue.id }
+                query: ISSUE_QUERY,
+                variables: { id: issue.id }
               });
               proxy.writeQuery({
                 query: ISSUE_QUERY,
-                data: { issue: { ...cachedIssue, comments: [...issue.comments, createComment] } }
+                data: {
+                  issue: {
+                    ...cachedIssue,
+                    comments: [...issue.comments, createComment]
+                  }
+                }
               });
             }
-          })
+          });
         }}
       />
     </>

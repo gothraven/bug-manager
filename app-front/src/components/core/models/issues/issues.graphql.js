@@ -183,3 +183,84 @@ export const ISSUE_REMOVE_TAG = gql`
     }
   }
 `;
+export const ISSUE_ADD_ASSIGNE = gql`
+  mutation IssueAddAssigneMutation($id: ID!, $userId: ID!) {
+    assignUser(id: $id, userId: $userId) {
+      assignedUsers {
+        id
+        name
+      }
+      tags {
+        id
+        name
+        description
+        color
+      }
+      changes {
+        id
+        createdAt
+        updatedAt
+        creator {
+          id
+          name
+        }
+        type
+        data {
+          user {
+            name
+          }
+          tag {
+            name
+          }
+          project {
+            name
+          }
+          status {
+            name
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const ISSUE_REMOVE_ASSIGNE = gql`
+  mutation IssueRemoveAssigneMutation($id: ID!, $userId: ID!) {
+    unassignUser(id: $id, userId: $userId) {
+      assignedUsers {
+        id
+        name
+      }
+      tags {
+        id
+        name
+        description
+        color
+      }
+      changes {
+        id
+        createdAt
+        updatedAt
+        creator {
+          id
+          name
+        }
+        type
+        data {
+          user {
+            name
+          }
+          tag {
+            name
+          }
+          project {
+            name
+          }
+          status {
+            name
+          }
+        }
+      }
+    }
+  }
+`;
