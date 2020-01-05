@@ -96,27 +96,27 @@ function ProjectCard(props) {
           disabled
             ? []
             : [
-              <IconButton
-                key={0}
-                color={edition ? "primary" : "default"}
-                aria-label="edit"
-                disabled={isPending}
-                onClick={() => setEdition(!edition)}
-              >
-                <EditIcon />
-              </IconButton>,
+                <IconButton
+                  key={0}
+                  color={edition ? "primary" : "default"}
+                  aria-label="edit"
+                  disabled={isPending}
+                  onClick={() => setEdition(!edition)}
+                >
+                  <EditIcon />
+                </IconButton>,
 
-              <SafeCheck
-                key={1}
-                title='Delete Project'
-                content='Are you sure you want to delete this project ?'
-                action={onDeleteProject}
-              >
-                <IconButton disabled={isPending}>
-                  <CloseIcon />
-                </IconButton>
-              </SafeCheck>
-            ]
+                <SafeCheck
+                  key={1}
+                  title="Delete Project"
+                  content="Are you sure you want to delete this project ?"
+                  action={onDeleteProject}
+                >
+                  <IconButton disabled={isPending}>
+                    <CloseIcon />
+                  </IconButton>
+                </SafeCheck>
+              ]
         }
       />
       <CardContent>
@@ -132,10 +132,10 @@ function ProjectCard(props) {
             onChange={event => setName(event.target.value)}
           />
         ) : (
-            <Typography variant="h3" color="textPrimary" component="h3">
-              {name}
-            </Typography>
-          )}
+          <Typography variant="h3" color="textPrimary" component="h3">
+            {name}
+          </Typography>
+        )}
         {edition ? (
           <TextField
             label="Description"
@@ -148,10 +148,10 @@ function ProjectCard(props) {
             onChange={event => setDescription(event.target.value)}
           />
         ) : (
-            <Typography variant="body1" color="textSecondary" component="p">
-              {description}
-            </Typography>
-          )}
+          <Typography variant="body1" color="textSecondary" component="p">
+            {description}
+          </Typography>
+        )}
         {edition && (
           <Button
             variant="contained"

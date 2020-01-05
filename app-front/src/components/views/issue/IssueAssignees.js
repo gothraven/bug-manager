@@ -20,7 +20,13 @@ import useStyles from "./IssueAssignees.scss";
 
 function AutoCompleteComponent(props) {
   const classes = useStyles();
-  const { assignedUsers, handleClose, anchorEl, pendingAssignedUsers, setPendingAssignedUsers } = props;
+  const {
+    assignedUsers,
+    handleClose,
+    anchorEl,
+    pendingAssignedUsers,
+    setPendingAssignedUsers
+  } = props;
   const { data, loading: loadingAssignedUser, fetchMore } = usePagination(
     USERS_QUERY,
     "users",
@@ -83,8 +89,8 @@ function AutoCompleteComponent(props) {
 }
 
 AutoCompleteComponent.defaultProps = {
-  anchorEl: null,
-}
+  anchorEl: null
+};
 
 AutoCompleteComponent.propTypes = {
   assignedUsers: PropType.array.isRequired,
@@ -94,13 +100,14 @@ AutoCompleteComponent.propTypes = {
   setPendingAssignedUsers: PropType.func.isRequired
 };
 
-
 function IssueAssignees(props) {
   const classes = useStyles();
   const { onAssignUser, onUnassignUser } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [assignedUsers, setAssignedUsers] = useState(props.assignedUsers);
-  const [pendingAssignedUsers, setPendingAssignedUsers] = useState(props.assignedUsers);
+  const [pendingAssignedUsers, setPendingAssignedUsers] = useState(
+    props.assignedUsers
+  );
 
   function handleRemovedAssignees() {
     assignedUsers
@@ -155,18 +162,24 @@ function IssueAssignees(props) {
           <Divider />
           <Grid item container spacing={1}>
             {assignedUsers.map((user, index) => (
-              <Grid item key={user.id || index} container alignItems="center" spacing={1}>
+              <Grid
+                item
+                key={user.id || index}
+                container
+                alignItems="center"
+                spacing={1}
+              >
                 <Grid item>
                   <UserAvatar user={user} className={classes.userIcon} />
                 </Grid>
-                <Grid item>
-                  {user.name}
-                </Grid>
+                <Grid item>{user.name}</Grid>
               </Grid>
             ))}
             {assignedUsers.length === 0 && (
               <Grid item>
-                <Typography style={{ marginTop: 10 }}>No one assigned</Typography>
+                <Typography style={{ marginTop: 10 }}>
+                  No one assigned
+                </Typography>
               </Grid>
             )}
           </Grid>

@@ -1,19 +1,20 @@
-import React, { useState } from 'react'
-import Grid from '@material-ui/core/Grid'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
+import React, { useState } from "react";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 import { useMutation } from "@apollo/react-hooks";
-import { UPDATE_USER_PASSWORD } from '../../core/models/users/users.graphql'
+import { UPDATE_USER_PASSWORD } from "../../core/models/users/users.graphql";
 
 function SecuritySettings() {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [onUserPasswordUpdate] = useMutation(UPDATE_USER_PASSWORD, {
-    variables: { oldPassword, newPassword, confirmPassword },
+    variables: { oldPassword, newPassword, confirmPassword }
   });
-  const checkAndSetPassword = () => newPassword === confirmPassword ? onUserPasswordUpdate() : false;
+  const checkAndSetPassword = () =>
+    newPassword === confirmPassword ? onUserPasswordUpdate() : false;
 
   return (
     <form>

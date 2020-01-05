@@ -151,8 +151,8 @@ function TagPanel(props) {
       <ExpansionPanelActions>
         <SafeCheck
           key={1}
-          title='Delete Tag'
-          content='Are you sure you want to delete this Tag ?'
+          title="Delete Tag"
+          content="Are you sure you want to delete this Tag ?"
           action={onDeleteTag}
         >
           <Button color="secondary" size="small" disabled={isPending}>
