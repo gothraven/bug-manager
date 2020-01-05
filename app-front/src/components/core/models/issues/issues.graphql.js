@@ -182,3 +182,40 @@ export const ISSUE_REMOVE_TAG = gql`
     }
   }
 `;
+
+export const ISSUE_ATTACH_TO_PROJECT = gql`
+  mutation IssueAttachToProjectMutation($id: ID!, $projectId: ID!) {
+    attachToProject(id: $id, projectId: $projectId) {
+      tags {
+        id
+        name
+        description
+        color
+      }
+      changes {
+        id
+        createdAt
+        updatedAt
+        creator {
+          id
+          name
+        }
+        type
+        data {
+          user {
+            name
+          }
+          tag {
+            name
+          }
+          project {
+            name
+          }
+          status {
+            name
+          }
+        }
+      }
+    }
+  }
+`;

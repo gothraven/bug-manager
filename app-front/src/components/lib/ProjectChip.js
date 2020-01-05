@@ -3,9 +3,9 @@ import propTypes from "prop-types";
 import { useTheme } from "@material-ui/styles";
 import Chip from "@material-ui/core/Chip";
 
-function TagChip(props) {
+function ProjectChip(props) {
   const {
-    tag: { name, color },
+    project: { name = "", color },
     style
   } = props;
   const theme = useTheme();
@@ -14,7 +14,7 @@ function TagChip(props) {
     <Chip
       label={name}
       style={{
-        fontWeight: 500,
+        fontWeight: 400,
         borderColor: color,
         backgroundColor: color,
         color: theme.palette.getContrastText(color),
@@ -25,8 +25,8 @@ function TagChip(props) {
   );
 }
 
-TagChip.propTypes = {
-  tag: propTypes.object.isRequired
+ProjectChip.propTypes = {
+  project: propTypes.object.isRequired
 };
 
-export default TagChip;
+export default ProjectChip;

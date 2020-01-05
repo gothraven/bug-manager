@@ -8,47 +8,36 @@ import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import SettingsIcon from "@material-ui/icons/Settings";
-import CloseIcon from "@material-ui/icons/Close";
 import DoneIcon from "@material-ui/icons/Done";
-import { TAGS_QUERY } from "../../core/models/tags/tags.graphql";
 import { usePagination } from "../../core/hooks";
-import TagChip from "../../lib/TagChip";
+import ProjectChip from "../../lib/ProjectChip";
 import { Can } from "../../core/Ability";
-import AutoCompletePopper from "../../lib/AutoCompletePopper";
 
 import useStyles from "./IssueTags.scss";
+import SingleAutoCompletePopper from "../../lib/SingleAutoCompletePopper";
+import { PROJECTS_QUERY } from "../../core/models/projects/projects.graphql";
 
-function IssueTags(props) {
+function AttachProject(props) {
   const classes = useStyles();
-  const { onTagAdded, onTagRemoved } = props;
+  //   const { onProjectAdded, onProjectRemoved } = props;
   const [anchorEl, setAnchorEl] = useState(null);
-  const [tags, setTags] = useState(props.tags);
-  const [pendingTags, setPendingTags] = useState(props.tags);
-  const { data, loading: loadingTags, fetchMore } = usePagination(
-    TAGS_QUERY,
-    "tags",
-    { notifyOnNetworkStatusChange: true }
-  );
-
-  function handleRemovedTags() {
-    tags
-      .filter(tag => !pendingTags.includes(tag))
-      .map(tag => onTagRemoved(tag));
-  }
-
-  function handleAddedTags() {
-    pendingTags.filter(tag => !tags.includes(tag)).map(tag => onTagAdded(tag));
-  }
+  const [project, setProject] = useState(props.project);
+  const [pendingProject, setPendingProject] = useState(props.project);
+  const {
+    data,
+    loading: loadingProjects,
+    fetchMore
+  } = usePagination(PROJECTS_QUERY, "projects", {
+    notifyOnNetworkStatusChange: true
+  });
 
   const handleClick = event => {
-    setPendingTags(tags);
+    setPendingProject(project);
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
-    handleRemovedTags();
-    handleAddedTags();
-    setTags(pendingTags);
+    setProject(pendingProject);
 
     if (anchorEl) {
       anchorEl.focus();
@@ -59,8 +48,8 @@ function IssueTags(props) {
   const open = Boolean(anchorEl);
   let hasMore = false;
 
-  if (data && data.tags && data.tags.pageInfo) {
-    const { hasNextPage } = data.tags.pageInfo;
+  if (data && data.projects && data.projects.pageInfo) {
+    const { hasNextPage } = data.projects.pageInfo;
     hasMore = hasNextPage;
   }
 
@@ -72,9 +61,9 @@ function IssueTags(props) {
             variant="h3"
             style={{ textTransform: "uppercase", color: "#2E231C" }}
           >
-            Tags
+            Project
           </Typography>
-          <Can I="use" this="AssignTags">
+          <Can I="edit" this="Project">
             {() => (
               <IconButton
                 component="span"
@@ -87,30 +76,30 @@ function IssueTags(props) {
           </Can>
         </Grid>
         <Divider />
-        {tags.map((tag, index) => (
-          <Box key={tag.id || index}>
-            <TagChip tag={tag} style={{ marginTop: 5 }} />
-          </Box>
-        ))}
-        {tags.length === 0 && (
+
+        {!project ? (
           <Typography style={{ marginTop: 10 }}>None yet</Typography>
+        ) : (
+          <ProjectChip project={project} style={{ marginTop: 5 }} />
         )}
-        <AutoCompletePopper
+
+        <SingleAutoCompletePopper
           open={open}
           anchorEl={anchorEl}
-          title="Apply labels"
-          loading={loadingTags}
+          title="Choose project"
+          loading={loadingProjects}
           onClose={handleClose}
-          multiple
-          pendingValues={pendingTags}
+          pendingValues={pendingProject}
           allValues={
-            loadingTags ? [] : _.uniqBy([...tags, ...data.tags.edges], "id")
+            loadingProjects
+              ? []
+              : _.uniqBy([project, ...data.projects.edges], "id")
           }
-          selectedValues={tags}
-          onChange={(event, newValue) => setPendingTags(newValue)}
+          selectedValues={project}
+          onChange={(event, newValue) => setPendingProject(newValue)}
           hasMore={hasMore}
           fetchMore={fetchMore}
-          noOptionsText="No labels"
+          noOptionsText="No project found"
           renderOption={(option, { selected }) => (
             <>
               <DoneIcon
@@ -126,10 +115,6 @@ function IssueTags(props) {
                 <br />
                 {option.description}
               </div>
-              <CloseIcon
-                className={classes.close}
-                style={{ visibility: selected ? "visible" : "hidden" }}
-              />
             </>
           )}
         />
@@ -138,10 +123,10 @@ function IssueTags(props) {
   );
 }
 
-IssueTags.propTypes = {
-  tags: propType.array.isRequired,
-  onTagAdded: propType.func.isRequired,
-  onTagRemoved: propType.func.isRequired
+AttachProject.propTypes = {
+  project: propType.object.isRequired,
+  onProjectAdded: propType.func.isRequired,
+  onProjectRemoved: propType.func.isRequired
 };
 
-export default IssueTags;
+export default AttachProject;

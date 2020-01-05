@@ -20,12 +20,12 @@ export default function usePagination(query, model, options = {}) {
 
         return newEdges.length
           ? {
-            [model]: {
-              __typename: previousResult[model].__typename,
-              edges: [...previousResult[model].edges, ...newEdges],
-              pageInfo
+              [model]: {
+                __typename: previousResult[model].__typename,
+                edges: [...previousResult[model].edges, ...newEdges],
+                pageInfo
+              }
             }
-          }
           : previousResult;
       }
     });

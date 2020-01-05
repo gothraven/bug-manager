@@ -24,7 +24,7 @@ const LoadMoreList = React.forwardRef((props, ref) => {
   );
 });
 
-function AutoCompletePopper(props) {
+function SingleAutoCompletePopper(props) {
   const {
     open,
     anchorEl,
@@ -36,7 +36,6 @@ function AutoCompletePopper(props) {
     allValues,
     loading,
     noOptionsText,
-    multiple,
     hasMore,
     fetchMore,
     title
@@ -55,7 +54,6 @@ function AutoCompletePopper(props) {
         open
         loading={loading}
         onClose={onClose}
-        multiple={multiple}
         classes={{
           paper: classes.paper,
           option: classes.option,
@@ -101,16 +99,15 @@ function AutoCompletePopper(props) {
   );
 }
 
-AutoCompletePopper.defaultProps = {
+SingleAutoCompletePopper.defaultProps = {
   // Popper Props
   anchorEl: null,
   // AutoComplete Props
-  multiple: false,
   open: false,
   loading: false
 };
 
-AutoCompletePopper.propTypes = {
+SingleAutoCompletePopper.propTypes = {
   selectedValues: propType.array.isRequired,
   pendingValues: propType.array.isRequired,
   allValues: propType.array.isRequired,
@@ -122,11 +119,10 @@ AutoCompletePopper.propTypes = {
   anchorEl: propType.object,
   // AutoComplete Props
   onChange: propType.func.isRequired,
-  multiple: propType.bool,
   open: propType.bool,
   loading: propType.bool,
   renderOption: propType.func.isRequired,
   noOptionsText: propType.string.isRequired
 };
 
-export default AutoCompletePopper;
+export default SingleAutoCompletePopper;
