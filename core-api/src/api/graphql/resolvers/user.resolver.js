@@ -1,9 +1,11 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 import { combineResolvers } from 'graphql-resolvers';
 import { omitBy, isNil } from 'lodash';
 import { authorize } from './auth.resolver';
 import { DEVELOPER, USER, ADMIN } from '../../models/user.model';
 import { Paginate } from './pagination.resolver';
+import { env } from '../../../config/vars';
 
 const createToken = async (user, secret, expiresIn) => {
   const { id, email, username, role } = user;
@@ -63,11 +65,11 @@ export default {
         throw new Error('Invalid password');
       }
 
-      return !!(await models.User.findByIdAndUpdate(
-        me.id,
-        { password: newPassword },
-        { new: true }
-      ));
+      const rounds = env === 'test' ? 1 : 10;
+
+      const hash = await bcrypt.hash(newPassword, rounds);
+
+      return !!(await models.User.findByIdAndUpdate(me.id, { password: hash }, { new: true }));
     },
 
     deleteUser: combineResolvers(authorize(ADMIN), async (parent, { id }, { models }) => {

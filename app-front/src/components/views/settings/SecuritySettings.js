@@ -13,7 +13,12 @@ function SecuritySettings() {
   const [onUserPasswordUpdate] = useMutation(UPDATE_USER_PASSWORD, {
     variables: { oldPassword, newPassword, confirmPassword },
   });
-  const checkAndSetPassword = () => newPassword === confirmPassword ? onUserPasswordUpdate() : false;
+  const checkAndSetPassword = () => newPassword === confirmPassword && regex(newPassword) ? onUserPasswordUpdate() : false;
+  const regex_characters = /^[a-zA-Z0-9-_()$&*!@#]{8,}$/;
+  const regex_upper_case = /^.*[A-Z].*[A-Z].*$/;
+  const regex_lower_case = /^.*[a-z].*[a-z].*[a-z].*[a-z].*$/;
+  const regex_number = /^.*[0-9].*[0-9].*$/;
+  const regex = str => regex_characters.test(str) && regex_upper_case.test(str) && regex_number.test(str) && regex_lower_case.test(str);
 
   return (
     <form>
@@ -86,6 +91,7 @@ function SecuritySettings() {
                   e.preventDefault();
                   checkAndSetPassword();
                 }}
+                disabled={oldPassword.length < 8}
               >
                 Save
               </Button>
