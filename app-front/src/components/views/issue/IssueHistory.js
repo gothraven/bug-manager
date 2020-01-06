@@ -6,6 +6,7 @@ import Chip from "@material-ui/core/Chip";
 import EditIcon from "@material-ui/icons/Edit";
 import ErrorIcon from "@material-ui/icons/Error";
 import TurnedInIcon from "@material-ui/icons/TurnedIn";
+import ClassIcon from "@material-ui/icons/Class";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import {
   ASSIGN_USER,
@@ -14,7 +15,9 @@ import {
   REMOVE_TAG,
   CHANGE_STATUS,
   REOPEN_ISSUE,
-  CLOSE_ISSUE
+  CLOSE_ISSUE,
+  ATTACH_TO_PROJECT,
+  DETATCH_FROM_PROJECT
 } from "../../core/constants";
 
 function IssueHistory(props) {
@@ -65,7 +68,10 @@ const issueAdapter = {
   [REOPEN_ISSUE]: {
     icon: <ErrorIcon style={{ color: "green" }} />,
     text: "a reouvert l'issue"
-  }
+  },
+  [ATTACH_TO_PROJECT]: { icon: <ClassIcon />, text: "a attaché l'issue au project " },
+  [DETATCH_FROM_PROJECT]: { icon: <ClassIcon />, text: "a dettaché l'issue du project " },
+  [CHANGE_STATUS]: { icon: <EditIcon />, text: "a changé le STATUS en " }
 };
 
 IssueHistory.propTypes = {

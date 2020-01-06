@@ -14,6 +14,7 @@ import IssueHistory from "./IssueHistory";
 import IssueTags from "./IssueTags";
 import IssueAssignees from "./IssueAssignees";
 import Loading from "../../lib/Loading";
+import IssueProject from "./IssueProject";
 import { useMe } from "../../core/models/users/users.hooks";
 import {
   CREATE_COMMENT,
@@ -28,7 +29,9 @@ import {
   ISSUE_UNASSIGN_USER,
   ISSUE_UPDATE,
   ISSUE_CLOSE,
-  ISSUE_REOPEN
+  ISSUE_REOPEN,
+  ISSUE_ATTACH_TO_PROJECT,
+  ISSUE_DETATCH_FROM_PROJECT
 } from "../../core/models/issues/issues.graphql";
 
 function IssuePage() {
@@ -38,6 +41,8 @@ function IssuePage() {
   const [onIssueRemoveTag] = useMutation(ISSUE_REMOVE_TAG);
   const [onIssueAssignUser] = useMutation(ISSUE_ASSIGNE_USER);
   const [onIssueUnassignUser] = useMutation(ISSUE_UNASSIGN_USER);
+  const [onAttachToProject] = useMutation(ISSUE_ATTACH_TO_PROJECT);
+  const [onDetatchFromProject] = useMutation(ISSUE_DETATCH_FROM_PROJECT);
 
   if (loading) {
     return <Loading />;
@@ -164,6 +169,55 @@ function IssuePage() {
               });
             }}
           />
+          <IssueProject
+            project={issue.project}
+            onAttachToProject={project => {
+              onAttachToProject({
+                variables: { id: issue.id, projectId: project.id },
+                update: (proxy, result) => {
+                  const { attachToProject } = result.data;
+                  const { issue: cachedIssue } = proxy.readQuery({
+                    query: ISSUE_QUERY,
+                    variables: { id: issue.id }
+                  });
+
+                  proxy.writeQuery({
+                    query: ISSUE_QUERY,
+                    data: {
+                      issue: {
+                        ...cachedIssue,
+                        project: attachToProject.project,
+                        changes: attachToProject.changes
+                      }
+                    }
+                  });
+                }
+              });
+            }}
+            onDetachFromProject={project => {
+              onDetatchFromProject({
+                variables: { id: issue.id, projectId: project.id },
+                update: (proxy, result) => {
+                  const { detatchFromProject } = result.data;
+                  const { issue: cachedIssue } = proxy.readQuery({
+                    query: ISSUE_QUERY,
+                    variables: { id: issue.id }
+                  });
+
+                  proxy.writeQuery({
+                    query: ISSUE_QUERY,
+                    data: {
+                      issue: {
+                        ...cachedIssue,
+                        project: detatchFromProject.project,
+                        changes: detatchFromProject.changes
+                      }
+                    }
+                  });
+                }
+              });
+            }}
+          />
         </Grid>
       </Grid>
     </Grid>
@@ -239,95 +293,95 @@ function IssueHeader(props) {
           </Grid>
         </Grid>
       ) : (
-        <Grid
-          item
-          container
-          justify="space-between"
-          alignItems="center"
-          spacing={1}
-        >
-          <Grid item xs>
-            <Typography variant="h1" component="h1" gutterBottom>
-              # {issue.title}
-            </Typography>
-          </Grid>
           <Grid
             item
-            xs={3}
             container
-            justify="flex-end"
+            justify="space-between"
             alignItems="center"
             spacing={1}
           >
-            <IconButton size="small" onClick={() => setEditTitle(!editTitle)}>
-              <EditIcon />
-            </IconButton>
-            {issue.open ? (
-              <Button
-                variant="outlined"
-                size="small"
-                disabled={isPending}
-                color="primary"
-                onClick={() => {
-                  onIssueClose({
-                    variables: { id: issue.id },
-                    update: (proxy, result) => {
-                      const { closeIssue } = result.data;
-                      const { issue: cachedIssue } = proxy.readQuery({
-                        query: ISSUE_QUERY,
-                        variables: { id: issue.id }
-                      });
-                      proxy.writeQuery({
-                        query: ISSUE_QUERY,
-                        data: {
-                          issue: {
-                            ...cachedIssue,
-                            open: closeIssue.open,
-                            changes: closeIssue.changes
+            <Grid item xs>
+              <Typography variant="h1" component="h1" gutterBottom>
+                # {issue.title}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              xs={3}
+              container
+              justify="flex-end"
+              alignItems="center"
+              spacing={1}
+            >
+              <IconButton size="small" onClick={() => setEditTitle(!editTitle)}>
+                <EditIcon />
+              </IconButton>
+              {issue.open ? (
+                <Button
+                  variant="outlined"
+                  size="small"
+                  disabled={isPending}
+                  color="primary"
+                  onClick={() => {
+                    onIssueClose({
+                      variables: { id: issue.id },
+                      update: (proxy, result) => {
+                        const { closeIssue } = result.data;
+                        const { issue: cachedIssue } = proxy.readQuery({
+                          query: ISSUE_QUERY,
+                          variables: { id: issue.id }
+                        });
+                        proxy.writeQuery({
+                          query: ISSUE_QUERY,
+                          data: {
+                            issue: {
+                              ...cachedIssue,
+                              open: closeIssue.open,
+                              changes: closeIssue.changes
+                            }
                           }
+                        });
+                      }
+                    });
+                  }}
+                >
+                  Close Issue
+              </Button>
+              ) : (
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    color="primary"
+                    disabled={isPending}
+                    onClick={() => {
+                      onIssueReOpen({
+                        variables: { id: issue.id },
+                        update: (proxy, result) => {
+                          const { reopenIssue } = result.data;
+                          const { issue: cachedIssue } = proxy.readQuery({
+                            query: ISSUE_QUERY,
+                            variables: { id: issue.id }
+                          });
+                          proxy.writeQuery({
+                            query: ISSUE_QUERY,
+                            data: {
+                              issue: {
+                                ...cachedIssue,
+                                open: reopenIssue.open,
+                                changes: reopenIssue.changes
+                              }
+                            }
+                          });
                         }
                       });
-                    }
-                  });
-                }}
-              >
-                Close Issue
+                    }}
+                  >
+                    Reopen Issue
               </Button>
-            ) : (
-              <Button
-                variant="outlined"
-                size="small"
-                color="primary"
-                disabled={isPending}
-                onClick={() => {
-                  onIssueReOpen({
-                    variables: { id: issue.id },
-                    update: (proxy, result) => {
-                      const { reopenIssue } = result.data;
-                      const { issue: cachedIssue } = proxy.readQuery({
-                        query: ISSUE_QUERY,
-                        variables: { id: issue.id }
-                      });
-                      proxy.writeQuery({
-                        query: ISSUE_QUERY,
-                        data: {
-                          issue: {
-                            ...cachedIssue,
-                            open: reopenIssue.open,
-                            changes: reopenIssue.changes
-                          }
-                        }
-                      });
-                    }
-                  });
-                }}
-              >
-                Reopen Issue
-              </Button>
-            )}
+                )}
+            </Grid>
           </Grid>
-        </Grid>
-      )}
+        )}
     </Grid>
   );
 }
@@ -344,7 +398,12 @@ function IssueBody(props) {
     return [
       ...comments
         .concat(changes)
-        .sort((a, b) => parseInt(a.createdAt, 10) - parseInt(b.createdAt, 10))
+        .sort((a, b) => {
+          const ax = new Date(a.createdAt);
+          const bx = new Date(b.createdAt);
+          // eslint-disable-next-line no-nested-ternary
+          return ax > bx ? 1 : ax < bx ? -1 : 0;
+        })
         .map(change => {
           if (change.type === undefined) {
             const comment = change;

@@ -104,7 +104,7 @@ function IssueTags(props) {
             ))}
             {tags.length === 0 && (
               <Grid item>
-                <Typography style={{ marginTop: 10 }}>None yet</Typography>
+                <Typography>None yet</Typography>
               </Grid>
             )}
           </Grid>
