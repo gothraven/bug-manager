@@ -11,7 +11,8 @@
     "format": "prettier-eslint 'src/**/*.{js,json}' --write",
     "test": "cross-env NODE_ENV=test nyc --reporter=text mocha --timeout 20000 --recursive src/api/tests",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "populate": "babel-node ./populate.db.js"
+    "populate:basic": "babel-node ./populate.db.js",
+    "populate:full": "babel-node ./populate.db.js --full"
   },
   "lint-staged": {
     "**/*.js": [
