@@ -11,7 +11,7 @@
     "format": "prettier-eslint 'src/**/*.{js,json}' --write",
     "test": "cross-env NODE_ENV=test nyc --reporter=text mocha --timeout 20000 --recursive src/api/tests",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "populate" : "babel-node ./scriptMongoDB.js"
+    "populate": "babel-node ./populate.db.js"
   },
   "lint-staged": {
     "**/*.js": [
@@ -43,6 +43,7 @@
     "dotenv-safe": "^6.0.0",
     "express": "^4.15.2",
     "express-validation": "^1.0.2",
+    "faker": "^4.1.0",
     "graphql-resolvers": "^0.3.3",
     "graphql-scalars": "^1.0.4",
     "graphql-yoga": "^1.18.3",
