@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState } from "react";
 import { useQuery } from "@apollo/react-hooks";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";

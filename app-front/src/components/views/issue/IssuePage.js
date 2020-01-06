@@ -34,6 +34,8 @@ import {
   ISSUE_DETATCH_FROM_PROJECT
 } from "../../core/models/issues/issues.graphql";
 
+import useStyle from "./IssuePage.scss";
+
 function IssuePage() {
   const { id } = useParams();
   const { data, loading } = useQuery(ISSUE_QUERY, { variables: { id } });
@@ -58,9 +60,11 @@ function IssuePage() {
       alignItems="stretch"
       spacing={2}
     >
-      <Grid item>
+      <Grid item container direction="column">
         <IssueHeader issue={issue} />
-        <Divider />
+        <Grid item>
+          <Divider />
+        </Grid>
       </Grid>
       <Grid item container justify="space-evenly">
         <Grid
@@ -230,15 +234,12 @@ function IssuePage() {
 
 function IssueHeader(props) {
   const { issue } = props;
+  const classes = useStyle();
   const [edit, setEdit] = useState(false);
   const [issueTitle, setIssueTitle] = useState(issue.title);
   const [onIssueUpdateTitle] = useMutation(ISSUE_UPDATE);
-  const [onIssueClose, { loading: isIssueClosePending }] = useMutation(
-    ISSUE_CLOSE
-  );
-  const [onIssueReOpen, { loading: isIssueReopenPending }] = useMutation(
-    ISSUE_REOPEN
-  );
+  const [onIssueClose, { loading: isIssueClosePending }] = useMutation(ISSUE_CLOSE);
+  const [onIssueReOpen, { loading: isIssueReopenPending }] = useMutation(ISSUE_REOPEN);
   const isPending = isIssueClosePending || isIssueReopenPending;
 
   const onClickClose = () => {
@@ -297,7 +298,8 @@ function IssueHeader(props) {
               <TextField
                 fullWidth
                 multiline
-                variant="outlined"
+                classes={{ root: classes.titleTextField }}
+                // variant="outlined"
                 rowsMax="15"
                 rows="1"
                 value={issueTitle}
@@ -381,7 +383,7 @@ function IssueHeader(props) {
           )
         }
       </Grid>
-    </Grid >
+    </Grid>
   );
 }
 
