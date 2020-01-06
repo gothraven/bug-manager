@@ -60,7 +60,6 @@ const issueAdapter = {
   },
   [ADD_TAG]: { icon: <TurnedInIcon />, text: "a ajouté le tag " },
   [REMOVE_TAG]: { icon: <TurnedInIcon />, text: "a supprimé le TAG " },
-  [CHANGE_STATUS]: { icon: <EditIcon />, text: "a changé le STATUS en " },
   [CLOSE_ISSUE]: {
     icon: <ErrorIcon style={{ color: "red" }} />,
     text: "a fermé l'issue"
