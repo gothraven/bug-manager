@@ -88,6 +88,7 @@ function IssuePage() {
                   });
                   proxy.writeQuery({
                     query: ISSUE_QUERY,
+                    variables: { id: issue.id },
                     data: {
                       issue: {
                         ...cachedIssue,
@@ -110,6 +111,7 @@ function IssuePage() {
                   });
                   proxy.writeQuery({
                     query: ISSUE_QUERY,
+                    variables: { id: issue.id },
                     data: {
                       issue: {
                         ...cachedIssue,
@@ -135,6 +137,7 @@ function IssuePage() {
                   });
                   proxy.writeQuery({
                     query: ISSUE_QUERY,
+                    variables: { id: issue.id },
                     data: {
                       issue: {
                         ...cachedIssue,
@@ -157,6 +160,7 @@ function IssuePage() {
                   });
                   proxy.writeQuery({
                     query: ISSUE_QUERY,
+                    variables: { id: issue.id },
                     data: {
                       issue: {
                         ...cachedIssue,
@@ -180,9 +184,9 @@ function IssuePage() {
                     query: ISSUE_QUERY,
                     variables: { id: issue.id }
                   });
-
                   proxy.writeQuery({
                     query: ISSUE_QUERY,
+                    variables: { id: issue.id },
                     data: {
                       issue: {
                         ...cachedIssue,
@@ -203,9 +207,9 @@ function IssuePage() {
                     query: ISSUE_QUERY,
                     variables: { id: issue.id }
                   });
-
                   proxy.writeQuery({
                     query: ISSUE_QUERY,
+                    variables: { id: issue.id },
                     data: {
                       issue: {
                         ...cachedIssue,
@@ -248,6 +252,7 @@ function IssueHeader(props) {
         });
         proxy.writeQuery({
           query: ISSUE_QUERY,
+          variables: { id: issue.id },
           data: {
             issue: {
               ...cachedIssue,
@@ -270,6 +275,7 @@ function IssueHeader(props) {
         });
         proxy.writeQuery({
           query: ISSUE_QUERY,
+          variables: { id: issue.id },
           data: {
             issue: {
               ...cachedIssue,
@@ -382,7 +388,6 @@ function IssueHeader(props) {
 function IssueBody(props) {
   const { issue } = props;
   const { comments, changes } = issue;
-  console.log(changes)
   const { me } = useMe();
   const [onCreateComment] = useMutation(CREATE_COMMENT);
   const [onDeleteComment] = useMutation(DELETE_COMMENT);
@@ -417,6 +422,7 @@ function IssueBody(props) {
                       });
                       proxy.writeQuery({
                         query: ISSUE_QUERY,
+                        variables: { id: issue.id },
                         data: {
                           issue: {
                             ...cachedIssue,
@@ -447,6 +453,7 @@ function IssueBody(props) {
                         });
                         proxy.writeQuery({
                           query: ISSUE_QUERY,
+                          variables: { id: issue.id },
                           data: {
                             issue: {
                               ...cachedIssue,
@@ -489,6 +496,7 @@ function IssueBody(props) {
               });
               proxy.writeQuery({
                 query: ISSUE_QUERY,
+                variables: { id: issue.id },
                 data: {
                   issue: {
                     ...cachedIssue,
