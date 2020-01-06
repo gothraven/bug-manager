@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import { Typography } from "@material-ui/core";
 
 function SafeCheck(props) {
@@ -18,15 +18,11 @@ function SafeCheck(props) {
       {React.cloneElement(children, { onClick: () => setOpen(true) })}
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>
-          <Typography variant="h3">
-            {title}
-          </Typography>
+          <Typography variant="h3">{title}</Typography>
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <Typography variant="h5">
-              {content}
-            </Typography>
+            <Typography variant="h5">{content}</Typography>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -52,9 +48,7 @@ SafeCheck.propTypes = {
   title: PropTypes.string.isRequired,
   content: PropTypes.any.isRequired,
   action: PropTypes.func.isRequired,
-  children: PropTypes.any.isRequired,
+  children: PropTypes.any.isRequired
 };
 
 export default SafeCheck;
-
-

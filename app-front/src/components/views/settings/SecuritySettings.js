@@ -1,24 +1,24 @@
-import React, { useState } from 'react'
-import Grid from '@material-ui/core/Grid'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
+import React, { useState } from "react";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 import { useMutation } from "@apollo/react-hooks";
-import { UPDATE_USER_PASSWORD } from '../../core/models/users/users.graphql'
+import { UPDATE_USER_PASSWORD } from "../../core/models/users/users.graphql";
 
 function SecuritySettings() {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [onUserPasswordUpdate] = useMutation(UPDATE_USER_PASSWORD, {
-    variables: { oldPassword, newPassword, confirmPassword },
+    variables: { oldPassword, newPassword, confirmPassword }
   });
   const checkAndSetPassword = () => newPassword === confirmPassword && regex(newPassword) ? onUserPasswordUpdate() : false;
-  const regex_characters = /^[a-zA-Z0-9-_()$&*!@#]{8,}$/;
-  const regex_upper_case = /^.*[A-Z].*[A-Z].*$/;
-  const regex_lower_case = /^.*[a-z].*[a-z].*[a-z].*[a-z].*$/;
-  const regex_number = /^.*[0-9].*[0-9].*$/;
-  const regex = str => regex_characters.test(str) && regex_upper_case.test(str) && regex_number.test(str) && regex_lower_case.test(str);
+  const regexCharacters = /^[a-zA-Z0-9-_()$&*!@#]{8,}$/;
+  const regexUpperCase = /^.*[A-Z].*[A-Z].*$/;
+  const regexLowerCase = /^.*[a-z].*[a-z].*[a-z].*[a-z].*$/;
+  const regexNumber = /^.*[0-9].*[0-9].*$/;
+  const regex = str => regexCharacters.test(str) && regexUpperCase.test(str) && regexNumber.test(str) && regexLowerCase.test(str);
 
   return (
     <form>

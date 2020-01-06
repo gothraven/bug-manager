@@ -74,7 +74,7 @@ function IssueTags(props) {
               style={{ textTransform: "uppercase", color: "#2E231C" }}
             >
               Tags
-          </Typography>
+            </Typography>
             <Can I="use" this="AssignTags">
               {() => (
                 <IconButton
@@ -90,7 +90,13 @@ function IssueTags(props) {
           <Divider />
           <Grid item container spacing={1}>
             {tags.map((tag, index) => (
-              <Grid item key={tag.id || index} container alignItems="center" spacing={1}>
+              <Grid
+                item
+                key={tag.id || index}
+                container
+                alignItems="center"
+                spacing={1}
+              >
                 <Grid item>
                   <TagChip tag={tag} style={{ marginTop: 5 }} />
                 </Grid>

@@ -93,13 +93,17 @@ function IssueAssignees(props) {
           <Divider />
           <Grid item container spacing={1}>
             {assignedUsers.map((user, index) => (
-              <Grid item key={user.id || index} container alignItems="center" spacing={1}>
+              <Grid
+                item
+                key={user.id || index}
+                container
+                alignItems="center"
+                spacing={1}
+              >
                 <Grid item>
                   <UserAvatar user={user} className={classes.userIcon} />
                 </Grid>
-                <Grid item>
-                  {user.name}
-                </Grid>
+                <Grid item>{user.name}</Grid>
               </Grid>
             ))}
             {assignedUsers.length === 0 && (

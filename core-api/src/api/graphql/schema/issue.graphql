@@ -39,7 +39,7 @@ type Query {
 
 type Mutation {
   createIssue(title: String!, content: String!): Issue!
-  updateIssue(id: ID!, title: String, content: String): Issue!
+  updateIssue(id: ID!, title: String): Issue!
   assignUser(id: ID!, userId: ID!): Issue!
   unassignUser(id: ID!, userId: ID!): Issue!
   addTag(id: ID!, tagId: ID!): Issue!

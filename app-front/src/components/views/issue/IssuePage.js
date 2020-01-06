@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { useParams } from "react-router-dom";
 import PropType from "prop-types";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import EditIcon from "@material-ui/icons/EditOutlined";
 import Grid from "@material-ui/core/Grid";
 import IssueComment from "./IssueComment";
 import IssueHistory from "./IssueHistory";
@@ -23,9 +27,14 @@ import {
   ISSUE_REMOVE_TAG,
   ISSUE_ASSIGNE_USER,
   ISSUE_UNASSIGN_USER,
+  ISSUE_UPDATE,
+  ISSUE_CLOSE,
+  ISSUE_REOPEN,
   ISSUE_ATTACH_TO_PROJECT,
   ISSUE_DETATCH_FROM_PROJECT
 } from "../../core/models/issues/issues.graphql";
+
+import useStyle from "./IssuePage.scss";
 
 function IssuePage() {
   const { id } = useParams();
@@ -51,11 +60,11 @@ function IssuePage() {
       alignItems="stretch"
       spacing={2}
     >
-      <Grid item>
-        <Typography variant="h1" component="h1" gutterBottom>
-          # {issue.title}
-        </Typography>
-        <Divider />
+      <Grid item container direction="column">
+        <IssueHeader issue={issue} />
+        <Grid item>
+          <Divider />
+        </Grid>
       </Grid>
       <Grid item container justify="space-evenly">
         <Grid
@@ -83,6 +92,7 @@ function IssuePage() {
                   });
                   proxy.writeQuery({
                     query: ISSUE_QUERY,
+                    variables: { id: issue.id },
                     data: {
                       issue: {
                         ...cachedIssue,
@@ -105,6 +115,7 @@ function IssuePage() {
                   });
                   proxy.writeQuery({
                     query: ISSUE_QUERY,
+                    variables: { id: issue.id },
                     data: {
                       issue: {
                         ...cachedIssue,
@@ -130,6 +141,7 @@ function IssuePage() {
                   });
                   proxy.writeQuery({
                     query: ISSUE_QUERY,
+                    variables: { id: issue.id },
                     data: {
                       issue: {
                         ...cachedIssue,
@@ -152,6 +164,7 @@ function IssuePage() {
                   });
                   proxy.writeQuery({
                     query: ISSUE_QUERY,
+                    variables: { id: issue.id },
                     data: {
                       issue: {
                         ...cachedIssue,
@@ -175,9 +188,9 @@ function IssuePage() {
                     query: ISSUE_QUERY,
                     variables: { id: issue.id }
                   });
-
                   proxy.writeQuery({
                     query: ISSUE_QUERY,
+                    variables: { id: issue.id },
                     data: {
                       issue: {
                         ...cachedIssue,
@@ -198,9 +211,9 @@ function IssuePage() {
                     query: ISSUE_QUERY,
                     variables: { id: issue.id }
                   });
-
                   proxy.writeQuery({
                     query: ISSUE_QUERY,
+                    variables: { id: issue.id },
                     data: {
                       issue: {
                         ...cachedIssue,
@@ -214,6 +227,161 @@ function IssuePage() {
             }}
           />
         </Grid>
+      </Grid>
+    </Grid>
+  );
+}
+
+function IssueHeader(props) {
+  const { issue } = props;
+  const classes = useStyle();
+  const [edit, setEdit] = useState(false);
+  const [issueTitle, setIssueTitle] = useState(issue.title);
+  const [onIssueUpdateTitle] = useMutation(ISSUE_UPDATE);
+  const [onIssueClose, { loading: isIssueClosePending }] = useMutation(ISSUE_CLOSE);
+  const [onIssueReOpen, { loading: isIssueReopenPending }] = useMutation(ISSUE_REOPEN);
+  const isPending = isIssueClosePending || isIssueReopenPending;
+
+  const onClickClose = () => {
+    onIssueClose({
+      variables: { id: issue.id },
+      update: (proxy, result) => {
+        const { closeIssue } = result.data;
+        const { issue: cachedIssue } = proxy.readQuery({
+          query: ISSUE_QUERY,
+          variables: { id: issue.id }
+        });
+        proxy.writeQuery({
+          query: ISSUE_QUERY,
+          variables: { id: issue.id },
+          data: {
+            issue: {
+              ...cachedIssue,
+              open: closeIssue.open,
+              changes: closeIssue.changes
+            }
+          }
+        });
+      }
+    });
+  };
+  const onClickOpen = () => {
+    onIssueReOpen({
+      variables: { id: issue.id },
+      update: (proxy, result) => {
+        const { reopenIssue } = result.data;
+        const { issue: cachedIssue } = proxy.readQuery({
+          query: ISSUE_QUERY,
+          variables: { id: issue.id }
+        });
+        proxy.writeQuery({
+          query: ISSUE_QUERY,
+          variables: { id: issue.id },
+          data: {
+            issue: {
+              ...cachedIssue,
+              open: reopenIssue.open,
+              changes: reopenIssue.changes
+            }
+          }
+        });
+      }
+    });
+  };
+
+  return (
+    <Grid item xs={12} container justify="center">
+      <Grid item xs={11} container justify="space-between" alignItems="center">
+        <Grid item xs={7}>
+          {edit ?
+            (
+              <TextField
+                fullWidth
+                multiline
+                classes={{ root: classes.titleTextField }}
+                // variant="outlined"
+                rowsMax="15"
+                rows="1"
+                value={issueTitle}
+                onChange={e => setIssueTitle(e.target.value)}
+              />
+            ) : (
+              <Typography variant="h1" component="h1" gutterBottom>
+                # {issue.title}
+              </Typography>
+            )
+          }
+        </Grid>
+        {edit ?
+          (
+            <Grid item xs={4} container spacing={1}>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  onClick={() => {
+                    setIssueTitle(issue.title);
+                    setEdit(false);
+                  }}
+                >
+                  Cancel
+                  </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  onClick={() => {
+                    onIssueUpdateTitle({
+                      variables: { id: issue.id, title: issueTitle },
+                      update: (proxy, result) => {
+                        const { updateIssue } = result.data;
+                        const { issue: cachedIssue } = proxy.readQuery({
+                          query: ISSUE_QUERY,
+                          variables: { id: issue.id }
+                        });
+                        proxy.writeQuery({
+                          query: ISSUE_QUERY,
+                          data: {
+                            issue: {
+                              ...cachedIssue,
+                              titleIssue: updateIssue.title,
+                              changes: updateIssue.changes
+                            }
+                          }
+                        });
+                      }
+                    });
+                    setEdit(false);
+                  }}
+                >
+                  Save
+                  </Button>
+              </Grid>
+            </Grid>
+          ) : (
+            <Grid item xs={4} container spacing={1}>
+              <Grid item>
+                <IconButton size="small" onClick={() => setEdit(true)}>
+                  <EditIcon />
+                </IconButton>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  size="small"
+                  disabled={isPending}
+                  color={issue.open ? "secondary" : "primary"}
+                  onClick={issue.open ? onClickClose : onClickOpen}
+                >
+                  {issue.open ? "Close Issue" : "Open Issue"}
+                </Button>
+              </Grid>
+            </Grid>
+          )
+        }
       </Grid>
     </Grid>
   );
@@ -256,6 +424,7 @@ function IssueBody(props) {
                       });
                       proxy.writeQuery({
                         query: ISSUE_QUERY,
+                        variables: { id: issue.id },
                         data: {
                           issue: {
                             ...cachedIssue,
@@ -286,6 +455,7 @@ function IssueBody(props) {
                         });
                         proxy.writeQuery({
                           query: ISSUE_QUERY,
+                          variables: { id: issue.id },
                           data: {
                             issue: {
                               ...cachedIssue,
@@ -328,6 +498,7 @@ function IssueBody(props) {
               });
               proxy.writeQuery({
                 query: ISSUE_QUERY,
+                variables: { id: issue.id },
                 data: {
                   issue: {
                     ...cachedIssue,
@@ -344,6 +515,9 @@ function IssueBody(props) {
 }
 
 IssueBody.propTypes = {
+  issue: PropType.object.isRequired
+};
+IssueHeader.propTypes = {
   issue: PropType.object.isRequired
 };
 

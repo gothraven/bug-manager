@@ -12,7 +12,7 @@ export default makeStyles(theme => ({
   },
   iconSelected: {
     width: 17,
-    height: 17,
+    height: 17
   },
   close: {
     opacity: 0.6,

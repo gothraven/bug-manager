@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
-import Grid from '@material-ui/core/Grid'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
-import { useMe } from "../../core/models/users/users.hooks"
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import { useMe } from "../../core/models/users/users.hooks";
 import { ME_QUERY, UPDATE_USER } from "../../core/models/users/users.graphql";
 
 function AccountSettings() {

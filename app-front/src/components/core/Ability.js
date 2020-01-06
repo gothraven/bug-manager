@@ -37,5 +37,5 @@ export function defineRulesFor(role) {
   can("see", "Dashboard");
   can("see", "Issue");
   can("see", "Profile");
-  return rules
+  return rules;
 }

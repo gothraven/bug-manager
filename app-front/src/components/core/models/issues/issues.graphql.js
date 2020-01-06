@@ -47,6 +47,55 @@ export const ISSUES_STATISTICS_QUERY = gql`
   }
 `;
 
+const ISSUE_CHANGES = `
+  changes {
+    id
+    createdAt
+    updatedAt
+    creator {
+      id
+      name
+    }
+    type
+    data {
+      user {
+        name
+      }
+      tag {
+        name
+      }
+      project {
+        name
+      }
+      status {
+        name
+      }
+    }
+  }
+`
+
+const ISSUE_PROJECT = `
+  project {
+    id
+    name
+  }
+`;
+
+const ISSUE_TAGS = `
+  tags {
+    id
+    name
+    description
+    color
+  }
+`;
+
+const ISSUE_ASSIGNED_USERS = `
+  assignedUsers {
+    id
+    name
+  }
+`;
 
 export const ISSUE_QUERY = gql`
   query IssuePageQuery($id: ID!) {
@@ -59,44 +108,11 @@ export const ISSUE_QUERY = gql`
         id
         name
       }
-      assignedUsers {
-        id
-        name
-      }
-      tags {
-        id
-        name
-        description
-        color
-      }
-      project {
-        id
-        name
-      }
-      changes {
-        id
-        createdAt
-        updatedAt
-        creator {
-          id
-          name
-        }
-        type
-        data {
-          user {
-            name
-          }
-          tag {
-            name
-          }
-          project {
-            name
-          }
-          status {
-            name
-          }
-        }
-      }
+      open
+      ${ISSUE_ASSIGNED_USERS}
+      ${ISSUE_TAGS}
+      ${ISSUE_PROJECT}
+      ${ISSUE_CHANGES}
       comments {
         id
         createdAt
@@ -120,39 +136,21 @@ export const CREATE_ISSUE = gql`
   }
 `;
 
+export const ISSUE_UPDATE = gql`
+  mutation IssueUpdateMutation($id: ID!, $title: String) {
+    updateIssue(id: $id, title: $title) {
+      id
+      title
+      updatedAt
+    }
+  }
+`;
+
 export const ISSUE_ADD_TAG = gql`
   mutation IssueAddTagMutation($id: ID!, $tagId: ID!) {
     addTag(id: $id, tagId: $tagId) {
-      tags {
-        id
-        name
-        description
-        color
-      }
-      changes {
-        id
-        createdAt
-        updatedAt
-        creator {
-          id
-          name
-        }
-        type
-        data {
-          user {
-            name
-          }
-          tag {
-            name
-          }
-          project {
-            name
-          }
-          status {
-            name
-          }
-        }
-      }
+      ${ISSUE_TAGS}
+      ${ISSUE_CHANGES}
     }
   }
 `;
@@ -160,36 +158,8 @@ export const ISSUE_ADD_TAG = gql`
 export const ISSUE_REMOVE_TAG = gql`
   mutation IssueRemoveTagMutation($id: ID!, $tagId: ID!) {
     removeTag(id: $id, tagId: $tagId) {
-      tags {
-        id
-        name
-        description
-        color
-      }
-      changes {
-        id
-        createdAt
-        updatedAt
-        creator {
-          id
-          name
-        }
-        type
-        data {
-          user {
-            name
-          }
-          tag {
-            name
-          }
-          project {
-            name
-          }
-          status {
-            name
-          }
-        }
-      }
+      ${ISSUE_TAGS}
+      ${ISSUE_CHANGES}
     }
   }
 `;
@@ -197,34 +167,8 @@ export const ISSUE_REMOVE_TAG = gql`
 export const ISSUE_ATTACH_TO_PROJECT = gql`
   mutation IssueAttachToProjectMutation($id: ID!, $projectId: ID!) {
     attachToProject(id: $id, projectId: $projectId) {
-      project {
-        id
-        name
-      }
-      changes {
-        id
-        createdAt
-        updatedAt
-        creator {
-          id
-          name
-        }
-        type
-        data {
-          user {
-            name
-          }
-          tag {
-            name
-          }
-          project {
-            name
-          }
-          status {
-            name
-          }
-        }
-      }
+      ${ISSUE_PROJECT}
+      ${ISSUE_CHANGES}
     }
   }
 `;
@@ -232,34 +176,8 @@ export const ISSUE_ATTACH_TO_PROJECT = gql`
 export const ISSUE_DETATCH_FROM_PROJECT = gql`
   mutation IssueDetatchFromProjectMutation($id: ID!, $projectId: ID!) {
     detatchFromProject(id: $id, projectId: $projectId) {
-      project {
-        id
-        name
-      }
-      changes {
-        id
-        createdAt
-        updatedAt
-        creator {
-          id
-          name
-        }
-        type
-        data {
-          user {
-            name
-          }
-          tag {
-            name
-          }
-          project {
-            name
-          }
-          status {
-            name
-          }
-        }
-      }
+      ${ISSUE_PROJECT}
+      ${ISSUE_CHANGES}
     }
   }
 `;
@@ -267,40 +185,9 @@ export const ISSUE_DETATCH_FROM_PROJECT = gql`
 export const ISSUE_ASSIGNE_USER = gql`
   mutation IssueAssignUserMutation($id: ID!, $userId: ID!) {
     assignUser(id: $id, userId: $userId) {
-      assignedUsers {
-        id
-        name
-      }
-      tags {
-        id
-        name
-        description
-        color
-      }
-      changes {
-        id
-        createdAt
-        updatedAt
-        creator {
-          id
-          name
-        }
-        type
-        data {
-          user {
-            name
-          }
-          tag {
-            name
-          }
-          project {
-            name
-          }
-          status {
-            name
-          }
-        }
-      }
+      ${ISSUE_ASSIGNED_USERS}
+      ${ISSUE_TAGS}
+      ${ISSUE_CHANGES}
     }
   }
 `;
@@ -308,40 +195,31 @@ export const ISSUE_ASSIGNE_USER = gql`
 export const ISSUE_UNASSIGN_USER = gql`
   mutation IssueUnassignUserMutation($id: ID!, $userId: ID!) {
     unassignUser(id: $id, userId: $userId) {
-      assignedUsers {
-        id
-        name
-      }
-      tags {
-        id
-        name
-        description
-        color
-      }
-      changes {
-        id
-        createdAt
-        updatedAt
-        creator {
-          id
-          name
-        }
-        type
-        data {
-          user {
-            name
-          }
-          tag {
-            name
-          }
-          project {
-            name
-          }
-          status {
-            name
-          }
-        }
-      }
+      ${ISSUE_ASSIGNED_USERS}
+      ${ISSUE_TAGS}
+      ${ISSUE_CHANGES}
+    }
+  }
+`;
+
+export const ISSUE_CLOSE = gql`
+  mutation IssueCloseMutation($id: ID!) {
+    closeIssue(id: $id) {
+      id
+      updatedAt
+      open
+      ${ISSUE_CHANGES}
+    }
+  }
+`;
+
+export const ISSUE_REOPEN = gql`
+  mutation IssueReOpenMutation($id: ID!) {
+    reopenIssue(id: $id) {
+      id
+      updatedAt
+      open
+      ${ISSUE_CHANGES}
     }
   }
 `;

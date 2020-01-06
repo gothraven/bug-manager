@@ -18,15 +18,12 @@ function UserAvatar(props) {
   };
   const data = new IdenticonJs(hash, options).toString();
   return (
-    <Avatar
-      className={className}
-      src={`data:image/svg+xml;base64,${data}`}
-    />
+    <Avatar className={className} src={`data:image/svg+xml;base64,${data}`} />
   );
 }
 
 UserAvatar.defaultProps = {
-  className: undefined,
+  className: undefined
 };
 
 UserAvatar.propTypes = {

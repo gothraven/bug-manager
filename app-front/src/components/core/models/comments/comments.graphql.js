@@ -22,7 +22,6 @@ export const DELETE_COMMENT = gql`
   }
 `;
 
-
 export const UPDATE_COMMENT = gql`
   mutation UpdateCommentMutation($id: ID!, $content: String) {
     updateComment(id: $id, content: $content) {

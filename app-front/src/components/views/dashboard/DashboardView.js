@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState } from "react";
 import { useQuery } from "@apollo/react-hooks";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -23,11 +23,16 @@ function prepareFilters(input = '', tab = 0) {
 }
 
 function DashboardView() {
-  const { data, loading: issuesLoading, fetchMore } = useQuery(ISSUES_QUERY);
   const { data: statisticsData, loading: statisticsLoading } = useQuery(ISSUES_STATISTICS_QUERY);
   const [searchInput, setSearchInput] = useState("");
   const [validatedSearchInput, setValidatedSearchInput] = useState("");
   const [activeTab, setActiveTab] = useState(0);
+  const { data, loading: issuesLoading, fetchMore } = useQuery(ISSUES_QUERY, {
+    variables: {
+      cursor: "",
+      filters: prepareFilters(validatedSearchInput, activeTab)
+    }
+  });
   const loading = issuesLoading || statisticsLoading;
 
   const onTabChanged = value => {
@@ -37,19 +42,6 @@ function DashboardView() {
   const onInputChanged = value => {
     setSearchInput(value);
   };
-
-  useEffect(() => {
-    fetchMore({
-      variables: {
-        filters: prepareFilters(validatedSearchInput, activeTab)
-      },
-      updateQuery: (previousResult, { fetchMoreResult }) => {
-        return {
-          issues: fetchMoreResult.issues
-        };
-      }
-    });
-  }, [fetchMore, validatedSearchInput, activeTab]);
 
   const loadMore = useCallback(() => {
     const { endCursor, hasNextPage } = data.issues.pageInfo;
@@ -80,7 +72,8 @@ function DashboardView() {
     });
   }, [data, loading, fetchMore, validatedSearchInput, activeTab]);
 
-  if (loading) return <Loading />;
+  if (loading)
+    return <Loading />;
 
   const { hasNextPage } = data.issues.pageInfo;
   const { openCount, closedCount } = statisticsData.issuesStatistics;
