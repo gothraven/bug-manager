@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import { combineResolvers } from 'graphql-resolvers';
 import { omitBy, isNil } from 'lodash';
 import { authorize } from './auth.resolver';
-import { USER, ADMIN } from '../../models/user.model';
+import { DEVELOPER, USER, ADMIN } from '../../models/user.model';
 import { Paginate } from './pagination.resolver';
 import { env } from '../../../config/vars';
 
@@ -14,8 +14,8 @@ const createToken = async (user, secret, expiresIn) => {
 
 export default {
   Query: {
-    users: combineResolvers(authorize(ADMIN), Paginate('User')),
-    user: combineResolvers(authorize(ADMIN), async (parent, { id }, { models }) =>
+    users: combineResolvers(authorize(DEVELOPER), Paginate('User')),
+    user: combineResolvers(authorize(DEVELOPER), async (parent, { id }, { models }) =>
       models.User.findById(id)),
     me: combineResolvers(authorize(USER), async (parent, args, { models, me }) =>
       models.User.findById(me.id))

@@ -2,7 +2,11 @@ export const toCursorHash = string => Buffer.from(string).toString('base64');
 
 export const fromCursorHash = string => Buffer.from(string, 'base64').toString('ascii');
 
-export const Paginate = model => async (parent, { after, first = 100 }, { models }) => {
+export const Paginate = model => async (
+  parent,
+  { after, first = 100, filters = {} },
+  { models }
+) => {
   const cursorOptions = after
     ? {
       createdAt: {
@@ -10,7 +14,16 @@ export const Paginate = model => async (parent, { after, first = 100 }, { models
       }
     }
     : {};
-  const data = await models[model].find(cursorOptions, null, {
+  const options = {};
+  Object.keys(filters).map((key) => {
+    if (typeof filters[key] === 'string') {
+      options[key] = new RegExp(`.*${filters[key]}.*`, 'i');
+    } else {
+      options[key] = filters[key];
+    }
+    return null;
+  });
+  const data = await models[model].find({ ...cursorOptions, ...options }, null, {
     sort: { createdAt: -1 },
     limit: first + 1
   });

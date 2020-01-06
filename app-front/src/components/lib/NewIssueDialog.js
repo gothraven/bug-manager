@@ -12,7 +12,8 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import {
   CREATE_ISSUE,
-  ISSUES_QUERY
+  ISSUES_QUERY,
+  ISSUES_STATISTICS_QUERY
 } from "../core/models/issues/issues.graphql";
 
 function NewIssueView() {
@@ -24,7 +25,7 @@ function NewIssueView() {
     CREATE_ISSUE,
     {
       variables: { title, content },
-      refetchQueries: [{ query: ISSUES_QUERY }],
+      refetchQueries: [{ query: ISSUES_QUERY }, { query: ISSUES_STATISTICS_QUERY }],
       update: (proxy, result) => {
         const { createIssue } = result.data;
         setTitle("");

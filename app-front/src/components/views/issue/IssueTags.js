@@ -67,34 +67,42 @@ function IssueTags(props) {
   return (
     <Box m={2}>
       <Paper style={{ padding: 10 }}>
-        <Grid container justify="space-between" alignContent="center">
-          <Typography
-            variant="h3"
-            style={{ textTransform: "uppercase", color: "#2E231C" }}
-          >
-            Tags
+        <Grid container direction="column" spacing={1}>
+          <Grid item container justify="space-between" alignContent="center">
+            <Typography
+              variant="h3"
+              style={{ textTransform: "uppercase", color: "#2E231C" }}
+            >
+              Tags
           </Typography>
-          <Can I="use" this="AssignTags">
-            {() => (
-              <IconButton
-                component="span"
-                style={{ padding: 0 }}
-                onClick={handleClick}
-              >
-                <SettingsIcon />
-              </IconButton>
+            <Can I="use" this="AssignTags">
+              {() => (
+                <IconButton
+                  component="span"
+                  style={{ padding: 0 }}
+                  onClick={handleClick}
+                >
+                  <SettingsIcon />
+                </IconButton>
+              )}
+            </Can>
+          </Grid>
+          <Divider />
+          <Grid item container spacing={1}>
+            {tags.map((tag, index) => (
+              <Grid item key={tag.id || index} container alignItems="center" spacing={1}>
+                <Grid item>
+                  <TagChip tag={tag} style={{ marginTop: 5 }} />
+                </Grid>
+              </Grid>
+            ))}
+            {tags.length === 0 && (
+              <Grid item>
+                <Typography>None yet</Typography>
+              </Grid>
             )}
-          </Can>
+          </Grid>
         </Grid>
-        <Divider />
-        {tags.map((tag, index) => (
-          <Box key={tag.id || index}>
-            <TagChip tag={tag} style={{ marginTop: 5 }} />
-          </Box>
-        ))}
-        {tags.length === 0 && (
-          <Typography style={{ marginTop: 10 }}>None yet</Typography>
-        )}
         <AutoCompletePopper
           open={open}
           anchorEl={anchorEl}

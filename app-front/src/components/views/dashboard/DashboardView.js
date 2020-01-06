@@ -1,24 +1,58 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useQuery } from "@apollo/react-hooks";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import ListItem from "@material-ui/core/ListItem";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
-import Box from "@material-ui/core/Box";
 import ErrorIcon from "@material-ui/icons/Error";
-import IssueItem from "./IssueItem";
+import SearchIcon from "@material-ui/icons/Search";
+import AllInclusiveRoundedIcon from "@material-ui/icons/AllInclusiveRounded";
+import { Input, InputAdornment, Tab, Tabs } from "@material-ui/core";
 import Loading from "../../lib/Loading";
-import { ISSUES_QUERY } from "../../core/models/issues/issues.graphql";
+import IssueItem from "./IssueItem";
+import { ISSUES_QUERY, ISSUES_STATISTICS_QUERY } from "../../core/models/issues/issues.graphql";
 
-import useStyles from "./DashboardView.scss";
+
+function prepareFilters(input = '', tab = 0) {
+  const filter = {
+    open: tab === 0 ? undefined : tab === 1,
+    title: input.length > 0 ? input : undefined
+  };
+  return filter;
+}
 
 function DashboardView() {
-  const classes = useStyles();
-  const { data, loading, fetchMore } = useQuery(ISSUES_QUERY);
+  const { data, loading: issuesLoading, fetchMore } = useQuery(ISSUES_QUERY);
+  const { data: statisticsData, loading: statisticsLoading } = useQuery(ISSUES_STATISTICS_QUERY);
+  const [searchInput, setSearchInput] = useState("");
+  const [validatedSearchInput, setValidatedSearchInput] = useState("");
+  const [activeTab, setActiveTab] = useState(0);
+  const loading = issuesLoading || statisticsLoading;
+
+  const onTabChanged = value => {
+    setActiveTab(value);
+  };
+
+  const onInputChanged = value => {
+    setSearchInput(value);
+  };
+
+  useEffect(() => {
+    fetchMore({
+      variables: {
+        filters: prepareFilters(validatedSearchInput, activeTab)
+      },
+      updateQuery: (previousResult, { fetchMoreResult }) => {
+        return {
+          issues: fetchMoreResult.issues
+        };
+      }
+    });
+  }, [fetchMore, validatedSearchInput, activeTab]);
 
   const loadMore = useCallback(() => {
-    const { endCursor, hasNextPage } = data.tags.pageInfo;
+    const { endCursor, hasNextPage } = data.issues.pageInfo;
 
     if (loading || !hasNextPage) {
       return;
@@ -26,7 +60,8 @@ function DashboardView() {
 
     fetchMore({
       variables: {
-        cursor: endCursor
+        cursor: endCursor,
+        filters: prepareFilters(validatedSearchInput, activeTab)
       },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         const newEdges = fetchMoreResult.issues.edges;
@@ -34,22 +69,21 @@ function DashboardView() {
 
         return newEdges.length
           ? {
-              issues: {
-                __typename: previousResult.issues.__typename,
-                edges: [...previousResult.issues.edges, ...newEdges],
-                pageInfo
-              }
+            issues: {
+              __typename: previousResult.issues.__typename,
+              edges: [...previousResult.issues.edges, ...newEdges],
+              pageInfo
             }
+          }
           : previousResult;
       }
     });
-  }, [data, loading, fetchMore]);
+  }, [data, loading, fetchMore, validatedSearchInput, activeTab]);
 
-  if (loading) {
-    return <Loading />;
-  }
+  if (loading) return <Loading />;
 
   const { hasNextPage } = data.issues.pageInfo;
+  const { openCount, closedCount } = statisticsData.issuesStatistics;
 
   return (
     <Grid
@@ -64,21 +98,70 @@ function DashboardView() {
       <Grid item xs={12}>
         <List style={{ backgroundColor: "white" }}>
           <ListItem divider>
-            <Box className={classes.listHeaderBox}>
-              <ErrorIcon style={{ color: "green" }} />
-              <Typography>39 Issues Opened</Typography>
-            </Box>
-            <Box className={classes.listHeaderBox} style={{ marginLeft: 10 }}>
-              <ErrorIcon style={{ color: "red" }} />
-              <Typography>39 Issues Opened</Typography>
-            </Box>
+            <Tabs
+              value={activeTab}
+              onChange={(_, value) => onTabChanged(value)}
+              indicatorColor="primary"
+              textColor="primary"
+              variant="fullWidth"
+              aria-label="action tabs example"
+            >
+              <Tab
+                label={
+                  <>
+                    <AllInclusiveRoundedIcon />
+                    <Typography style={{ marginLeft: 10 }}>
+                      <strong>{openCount + closedCount}</strong> All
+                    </Typography>
+                  </>
+                }
+              />
+
+              <Tab
+                label={
+                  <>
+                    <ErrorIcon style={{ color: "green" }} />
+                    <Typography style={{ marginLeft: 10 }}>
+                      <strong>{openCount}</strong> Opened Issues
+                    </Typography>
+                  </>
+                }
+              />
+
+              <Tab
+                label={
+                  <>
+                    <ErrorIcon style={{ color: "red" }} />
+                    <Typography style={{ marginLeft: 10 }}>
+                      <strong>{closedCount}</strong> Closed Issues
+                    </Typography>
+                  </>
+                }
+              />
+            </Tabs>
+            <Input
+              onChange={event => onInputChanged(event.target.value)}
+              value={searchInput}
+              onKeyUp={(e) => {
+                if (e.keyCode === 13) {
+                  e.preventDefault();
+                  setValidatedSearchInput(searchInput);
+                }
+              }}
+              endAdornment={
+                <InputAdornment>
+                  <SearchIcon />
+                </InputAdornment>
+              }
+              autoFocus
+              placeholder="search an issue ..."
+              style={{ marginLeft: 20, flex: 1 }}
+            />
           </ListItem>
-          {data.issues.edges.map(node => {
-            if (node == null) {
-              return null;
-            }
-            return <IssueItem key={node.id} issue={node} />;
-          })}
+
+          {data.issues.edges.map(node =>
+            node == null ? null : <IssueItem key={node.id} issue={node} />
+          )}
         </List>
       </Grid>
       {hasNextPage && <Button onClick={loadMore}>load more</Button>}

@@ -5,13 +5,16 @@ import PropType from "prop-types";
 import Chip from "@material-ui/core/Chip";
 import EditIcon from "@material-ui/icons/Edit";
 import TurnedInIcon from "@material-ui/icons/TurnedIn";
+import ClassIcon from "@material-ui/icons/Class";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import {
   ASSIGN_USER,
   UNASSIGN_USER,
   ADD_TAG,
   REMOVE_TAG,
-  CHANGE_STATUS
+  CHANGE_STATUS,
+  ATTACH_TO_PROJECT,
+  DETATCH_FROM_PROJECT
 } from "../../core/constants";
 
 function IssueHistory(props) {
@@ -52,6 +55,8 @@ const issueAdapter = {
   },
   [ADD_TAG]: { icon: <TurnedInIcon />, text: "a ajouté le tag " },
   [REMOVE_TAG]: { icon: <TurnedInIcon />, text: "a supprimé le TAG " },
+  [ATTACH_TO_PROJECT]: { icon: <ClassIcon />, text: "a attaché l'issue au project " },
+  [DETATCH_FROM_PROJECT]: { icon: <ClassIcon />, text: "a dettaché l'issue du project " },
   [CHANGE_STATUS]: { icon: <EditIcon />, text: "a changé le STATUS en " }
 };
 
