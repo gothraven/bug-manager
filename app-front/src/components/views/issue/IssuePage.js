@@ -231,7 +231,12 @@ function IssueBody(props) {
     return [
       ...comments
         .concat(changes)
-        .sort((a, b) => parseInt(a.createdAt, 10) - parseInt(b.createdAt, 10))
+        .sort((a, b) => {
+          const ax = new Date(a.createdAt);
+          const bx = new Date(b.createdAt);
+          // eslint-disable-next-line no-nested-ternary
+          return ax > bx ? 1 : ax < bx ? -1 : 0;
+        })
         .map(change => {
           if (change.type === undefined) {
             const comment = change;
