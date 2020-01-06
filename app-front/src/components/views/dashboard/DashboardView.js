@@ -52,7 +52,7 @@ function DashboardView() {
   }, [fetchMore, validatedSearchInput, activeTab]);
 
   const loadMore = useCallback(() => {
-    const { endCursor, hasNextPage } = data.tags.pageInfo;
+    const { endCursor, hasNextPage } = data.issues.pageInfo;
 
     if (loading || !hasNextPage) {
       return;
