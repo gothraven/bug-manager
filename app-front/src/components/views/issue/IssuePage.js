@@ -226,8 +226,8 @@ function IssuePage() {
 
 function IssueHeader(props) {
   const { issue } = props;
-  const [editTitle, setEditTitle] = useState(false);
-  const [titleIssue, setTitleIssue] = useState(issue.title);
+  const [edit, setEdit] = useState(false);
+  const [issueTitle, setIssueTitle] = useState(issue.title);
   const [onIssueUpdateTitle] = useMutation(ISSUE_UPDATE);
   const [onIssueClose, { loading: isIssueClosePending }] = useMutation(
     ISSUE_CLOSE
@@ -235,98 +235,101 @@ function IssueHeader(props) {
   const [onIssueReOpen, { loading: isIssueReopenPending }] = useMutation(
     ISSUE_REOPEN
   );
-
   const isPending = isIssueClosePending || isIssueReopenPending;
 
+  const onClickClose = () => {
+    onIssueClose({
+      variables: { id: issue.id },
+      update: (proxy, result) => {
+        const { closeIssue } = result.data;
+        const { issue: cachedIssue } = proxy.readQuery({
+          query: ISSUE_QUERY,
+          variables: { id: issue.id }
+        });
+        proxy.writeQuery({
+          query: ISSUE_QUERY,
+          data: {
+            issue: {
+              ...cachedIssue,
+              open: closeIssue.open,
+              changes: closeIssue.changes
+            }
+          }
+        });
+      }
+    });
+  };
+  const onClickOpen = () => {
+    onIssueReOpen({
+      variables: { id: issue.id },
+      update: (proxy, result) => {
+        const { reopenIssue } = result.data;
+        const { issue: cachedIssue } = proxy.readQuery({
+          query: ISSUE_QUERY,
+          variables: { id: issue.id }
+        });
+        proxy.writeQuery({
+          query: ISSUE_QUERY,
+          data: {
+            issue: {
+              ...cachedIssue,
+              open: reopenIssue.open,
+              changes: reopenIssue.changes
+            }
+          }
+        });
+      }
+    });
+  };
+
   return (
-    <Grid item xs={12}>
-      {editTitle ? (
-        <Grid
-          item
-          container
-          justify="space-between"
-          alignItems="center"
-          spacing={1}
-        >
-          <Grid item xs>
-            <TextField
-              fullWidth
-              multiline
-              variant="outlined"
-              rowsMax="15"
-              rows="1"
-              value={titleIssue}
-              onChange={e => setTitleIssue(e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={3} container alignItems="center" spacing={1}>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              onClick={() => {
-                onIssueUpdateTitle({
-                  variables: { id: issue.id, title: titleIssue },
-                  update: (proxy, result) => {
-                    const { updateIssue } = result.data;
-                    const { issue: cachedIssue } = proxy.readQuery({
-                      query: ISSUE_QUERY,
-                      variables: { id: issue.id }
-                    });
-                    proxy.writeQuery({
-                      query: ISSUE_QUERY,
-                      data: {
-                        issue: {
-                          ...cachedIssue,
-                          titleIssue: updateIssue.title,
-                          changes: updateIssue.changes
-                        }
-                      }
-                    });
-                  }
-                });
-                setEditTitle(!editTitle);
-              }}
-            >
-              Save
-            </Button>
-          </Grid>
-        </Grid>
-      ) : (
-          <Grid
-            item
-            container
-            justify="space-between"
-            alignItems="center"
-            spacing={1}
-          >
-            <Grid item xs>
+    <Grid item xs={12} container justify="center">
+      <Grid item xs={11} container justify="space-between" alignItems="center">
+        <Grid item xs={7}>
+          {edit ?
+            (
+              <TextField
+                fullWidth
+                multiline
+                variant="outlined"
+                rowsMax="15"
+                rows="1"
+                value={issueTitle}
+                onChange={e => setIssueTitle(e.target.value)}
+              />
+            ) : (
               <Typography variant="h1" component="h1" gutterBottom>
                 # {issue.title}
               </Typography>
-            </Grid>
-            <Grid
-              item
-              xs={3}
-              container
-              justify="flex-end"
-              alignItems="center"
-              spacing={1}
-            >
-              <IconButton size="small" onClick={() => setEditTitle(!editTitle)}>
-                <EditIcon />
-              </IconButton>
-              {issue.open ? (
+            )
+          }
+        </Grid>
+        {edit ?
+          (
+            <Grid item xs={4} container spacing={1}>
+              <Grid item>
                 <Button
-                  variant="outlined"
-                  size="small"
-                  disabled={isPending}
+                  variant="contained"
                   color="primary"
+                  size="small"
                   onClick={() => {
-                    onIssueClose({
-                      variables: { id: issue.id },
+                    setIssueTitle(issue.title);
+                    setEdit(false);
+                  }}
+                >
+                  Cancel
+                  </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  onClick={() => {
+                    onIssueUpdateTitle({
+                      variables: { id: issue.id, title: issueTitle },
                       update: (proxy, result) => {
-                        const { closeIssue } = result.data;
+                        const { updateIssue } = result.data;
                         const { issue: cachedIssue } = proxy.readQuery({
                           query: ISSUE_QUERY,
                           variables: { id: issue.id }
@@ -336,59 +339,50 @@ function IssueHeader(props) {
                           data: {
                             issue: {
                               ...cachedIssue,
-                              open: closeIssue.open,
-                              changes: closeIssue.changes
+                              titleIssue: updateIssue.title,
+                              changes: updateIssue.changes
                             }
                           }
                         });
                       }
                     });
+                    setEdit(false);
                   }}
                 >
-                  Close Issue
-              </Button>
-              ) : (
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    color="primary"
-                    disabled={isPending}
-                    onClick={() => {
-                      onIssueReOpen({
-                        variables: { id: issue.id },
-                        update: (proxy, result) => {
-                          const { reopenIssue } = result.data;
-                          const { issue: cachedIssue } = proxy.readQuery({
-                            query: ISSUE_QUERY,
-                            variables: { id: issue.id }
-                          });
-                          proxy.writeQuery({
-                            query: ISSUE_QUERY,
-                            data: {
-                              issue: {
-                                ...cachedIssue,
-                                open: reopenIssue.open,
-                                changes: reopenIssue.changes
-                              }
-                            }
-                          });
-                        }
-                      });
-                    }}
-                  >
-                    Reopen Issue
-              </Button>
-                )}
+                  Save
+                  </Button>
+              </Grid>
             </Grid>
-          </Grid>
-        )}
-    </Grid>
+          ) : (
+            <Grid item xs={4} container spacing={1}>
+              <Grid item>
+                <IconButton size="small" onClick={() => setEdit(true)}>
+                  <EditIcon />
+                </IconButton>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  size="small"
+                  disabled={isPending}
+                  color={issue.open ? "secondary" : "primary"}
+                  onClick={issue.open ? onClickClose : onClickOpen}
+                >
+                  {issue.open ? "Close Issue" : "Open Issue"}
+                </Button>
+              </Grid>
+            </Grid>
+          )
+        }
+      </Grid>
+    </Grid >
   );
 }
 
 function IssueBody(props) {
   const { issue } = props;
   const { comments, changes } = issue;
+  console.log(changes)
   const { me } = useMe();
   const [onCreateComment] = useMutation(CREATE_COMMENT);
   const [onDeleteComment] = useMutation(DELETE_COMMENT);
