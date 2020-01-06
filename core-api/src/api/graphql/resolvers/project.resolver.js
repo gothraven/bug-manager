@@ -1,14 +1,14 @@
 import { combineResolvers } from 'graphql-resolvers';
 import { omitBy, isNil } from 'lodash';
 import { authorize } from './auth.resolver';
-import { USER, ADMIN } from '../../models/user.model';
+import { ADMIN, DEVELOPER } from '../../models/user.model';
 import { Paginate } from './pagination.resolver';
 
 export default {
   Query: {
-    project: combineResolvers(authorize(USER), async (parent, { id }, { models }) =>
+    project: combineResolvers(authorize(DEVELOPER), async (parent, { id }, { models }) =>
       models.Project.findById(id)),
-    projects: combineResolvers(authorize(USER), Paginate('Project'))
+    projects: combineResolvers(authorize(DEVELOPER), Paginate('Project'))
   },
   Mutation: {
     createProject: combineResolvers(

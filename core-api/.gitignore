@@ -1,6 +1,8 @@
 # Idea
 .idea/
 
+# database dump
+dump/
 # Environment variables
 .env
 
