@@ -23,7 +23,9 @@ function IssueAssignees(props) {
   const { onAssignUser, onUnassignUser } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [assignedUsers, setAssignedUsers] = useState(props.assignedUsers);
-  const [pendingAssignedUsers, setPendingAssignedUsers] = useState(props.assignedUsers);
+  const [pendingAssignedUsers, setPendingAssignedUsers] = useState(
+    props.assignedUsers
+  );
   const { data, loading: loadingAssignedUser, fetchMore } = usePagination(
     USERS_QUERY,
     "users",

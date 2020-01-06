@@ -238,8 +238,12 @@ function IssueHeader(props) {
   const [edit, setEdit] = useState(false);
   const [issueTitle, setIssueTitle] = useState(issue.title);
   const [onIssueUpdateTitle] = useMutation(ISSUE_UPDATE);
-  const [onIssueClose, { loading: isIssueClosePending }] = useMutation(ISSUE_CLOSE);
-  const [onIssueReOpen, { loading: isIssueReopenPending }] = useMutation(ISSUE_REOPEN);
+  const [onIssueClose, { loading: isIssueClosePending }] = useMutation(
+    ISSUE_CLOSE
+  );
+  const [onIssueReOpen, { loading: isIssueReopenPending }] = useMutation(
+    ISSUE_REOPEN
+  );
   const isPending = isIssueClosePending || isIssueReopenPending;
 
   const onClickClose = () => {
@@ -293,95 +297,91 @@ function IssueHeader(props) {
     <Grid item xs={12} container justify="center">
       <Grid item xs={11} container justify="space-between" alignItems="center">
         <Grid item xs={7}>
-          {edit ?
-            (
-              <TextField
-                fullWidth
-                multiline
-                classes={{ root: classes.titleTextField }}
-                // variant="outlined"
-                rowsMax="15"
-                rows="1"
-                value={issueTitle}
-                onChange={e => setIssueTitle(e.target.value)}
-              />
-            ) : (
-              <Typography variant="h1" component="h1" gutterBottom>
-                # {issue.title}
-              </Typography>
-            )
-          }
-        </Grid>
-        {edit ?
-          (
-            <Grid item xs={4} container spacing={1}>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  onClick={() => {
-                    setIssueTitle(issue.title);
-                    setEdit(false);
-                  }}
-                >
-                  Cancel
-                  </Button>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  onClick={() => {
-                    onIssueUpdateTitle({
-                      variables: { id: issue.id, title: issueTitle },
-                      update: (proxy, result) => {
-                        const { updateIssue } = result.data;
-                        const { issue: cachedIssue } = proxy.readQuery({
-                          query: ISSUE_QUERY,
-                          variables: { id: issue.id }
-                        });
-                        proxy.writeQuery({
-                          query: ISSUE_QUERY,
-                          data: {
-                            issue: {
-                              ...cachedIssue,
-                              titleIssue: updateIssue.title,
-                              changes: updateIssue.changes
-                            }
-                          }
-                        });
-                      }
-                    });
-                    setEdit(false);
-                  }}
-                >
-                  Save
-                  </Button>
-              </Grid>
-            </Grid>
+          {edit ? (
+            <TextField
+              fullWidth
+              multiline
+              classes={{ root: classes.titleTextField }}
+              // variant="outlined"
+              rowsMax="15"
+              rows="1"
+              value={issueTitle}
+              onChange={e => setIssueTitle(e.target.value)}
+            />
           ) : (
-            <Grid item xs={4} container spacing={1}>
-              <Grid item>
-                <IconButton size="small" onClick={() => setEdit(true)}>
-                  <EditIcon />
-                </IconButton>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  size="small"
-                  disabled={isPending}
-                  color={issue.open ? "secondary" : "primary"}
-                  onClick={issue.open ? onClickClose : onClickOpen}
-                >
-                  {issue.open ? "Close Issue" : "Open Issue"}
-                </Button>
-              </Grid>
+            <Typography variant="h1" component="h1" gutterBottom>
+              # {issue.title}
+            </Typography>
+          )}
+        </Grid>
+        {edit ? (
+          <Grid item xs={4} container spacing={1}>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                onClick={() => {
+                  setIssueTitle(issue.title);
+                  setEdit(false);
+                }}
+              >
+                Cancel
+              </Button>
             </Grid>
-          )
-        }
+            <Grid item>
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                onClick={() => {
+                  onIssueUpdateTitle({
+                    variables: { id: issue.id, title: issueTitle },
+                    update: (proxy, result) => {
+                      const { updateIssue } = result.data;
+                      const { issue: cachedIssue } = proxy.readQuery({
+                        query: ISSUE_QUERY,
+                        variables: { id: issue.id }
+                      });
+                      proxy.writeQuery({
+                        query: ISSUE_QUERY,
+                        data: {
+                          issue: {
+                            ...cachedIssue,
+                            titleIssue: updateIssue.title,
+                            changes: updateIssue.changes
+                          }
+                        }
+                      });
+                    }
+                  });
+                  setEdit(false);
+                }}
+              >
+                Save
+              </Button>
+            </Grid>
+          </Grid>
+        ) : (
+          <Grid item xs={4} container spacing={1}>
+            <Grid item>
+              <IconButton size="small" onClick={() => setEdit(true)}>
+                <EditIcon />
+              </IconButton>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                size="small"
+                disabled={isPending}
+                color={issue.open ? "secondary" : "primary"}
+                onClick={issue.open ? onClickClose : onClickOpen}
+              >
+                {issue.open ? "Close Issue" : "Open Issue"}
+              </Button>
+            </Grid>
+          </Grid>
+        )}
       </Grid>
     </Grid>
   );

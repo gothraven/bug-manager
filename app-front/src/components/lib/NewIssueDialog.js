@@ -25,7 +25,10 @@ function NewIssueView() {
     CREATE_ISSUE,
     {
       variables: { title, content },
-      refetchQueries: [{ query: ISSUES_QUERY }, { query: ISSUES_STATISTICS_QUERY }],
+      refetchQueries: [
+        { query: ISSUES_QUERY },
+        { query: ISSUES_STATISTICS_QUERY }
+      ],
       update: (proxy, result) => {
         const { createIssue } = result.data;
         setTitle("");

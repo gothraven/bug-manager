@@ -11,10 +11,12 @@ import AllInclusiveRoundedIcon from "@material-ui/icons/AllInclusiveRounded";
 import { Input, InputAdornment, Tab, Tabs } from "@material-ui/core";
 import Loading from "../../lib/Loading";
 import IssueItem from "./IssueItem";
-import { ISSUES_QUERY, ISSUES_STATISTICS_QUERY } from "../../core/models/issues/issues.graphql";
+import {
+  ISSUES_QUERY,
+  ISSUES_STATISTICS_QUERY
+} from "../../core/models/issues/issues.graphql";
 
-
-function prepareFilters(input = '', tab = 0) {
+function prepareFilters(input = "", tab = 0) {
   const filter = {
     open: tab === 0 ? undefined : tab === 1,
     title: input.length > 0 ? input : undefined
@@ -23,7 +25,9 @@ function prepareFilters(input = '', tab = 0) {
 }
 
 function DashboardView() {
-  const { data: statisticsData, loading: statisticsLoading } = useQuery(ISSUES_STATISTICS_QUERY);
+  const { data: statisticsData, loading: statisticsLoading } = useQuery(
+    ISSUES_STATISTICS_QUERY
+  );
   const [searchInput, setSearchInput] = useState("");
   const [validatedSearchInput, setValidatedSearchInput] = useState("");
   const [activeTab, setActiveTab] = useState(0);
@@ -61,19 +65,18 @@ function DashboardView() {
 
         return newEdges.length
           ? {
-            issues: {
-              __typename: previousResult.issues.__typename,
-              edges: [...previousResult.issues.edges, ...newEdges],
-              pageInfo
+              issues: {
+                __typename: previousResult.issues.__typename,
+                edges: [...previousResult.issues.edges, ...newEdges],
+                pageInfo
+              }
             }
-          }
           : previousResult;
       }
     });
   }, [data, loading, fetchMore, validatedSearchInput, activeTab]);
 
-  if (loading)
-    return <Loading />;
+  if (loading) return <Loading />;
 
   const { hasNextPage } = data.issues.pageInfo;
   const { openCount, closedCount } = statisticsData.issuesStatistics;
@@ -135,7 +138,7 @@ function DashboardView() {
             <Input
               onChange={event => onInputChanged(event.target.value)}
               value={searchInput}
-              onKeyUp={(e) => {
+              onKeyUp={e => {
                 if (e.keyCode === 13) {
                   e.preventDefault();
                   setValidatedSearchInput(searchInput);

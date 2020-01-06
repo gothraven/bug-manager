@@ -68,8 +68,14 @@ const issueAdapter = {
     icon: <ErrorIcon style={{ color: "green" }} />,
     text: "a reouvert l'issue"
   },
-  [ATTACH_TO_PROJECT]: { icon: <ClassIcon />, text: "a attaché l'issue au project " },
-  [DETATCH_FROM_PROJECT]: { icon: <ClassIcon />, text: "a dettaché l'issue du project " },
+  [ATTACH_TO_PROJECT]: {
+    icon: <ClassIcon />,
+    text: "a attaché l'issue au project "
+  },
+  [DETATCH_FROM_PROJECT]: {
+    icon: <ClassIcon />,
+    text: "a dettaché l'issue du project "
+  },
   [CHANGE_STATUS]: { icon: <EditIcon />, text: "a changé le STATUS en " }
 };
 

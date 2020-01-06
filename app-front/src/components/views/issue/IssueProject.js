@@ -21,13 +21,13 @@ function IssueProject(props) {
   const { onAttachToProject, onDetachFromProject } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [project, setProject] = useState(props.project);
-  const {
-    data,
-    loading: loadingProjects,
-    fetchMore
-  } = usePagination(PROJECTS_QUERY, "projects", {
-    notifyOnNetworkStatusChange: true
-  });
+  const { data, loading: loadingProjects, fetchMore } = usePagination(
+    PROJECTS_QUERY,
+    "projects",
+    {
+      notifyOnNetworkStatusChange: true
+    }
+  );
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -61,7 +61,11 @@ function IssueProject(props) {
             </Typography>
             <Can I="use" this="AttachProject">
               {() => (
-                <IconButton component="span" style={{ padding: 0 }} onClick={handleClick}>
+                <IconButton
+                  component="span"
+                  style={{ padding: 0 }}
+                  onClick={handleClick}
+                >
                   <SettingsIcon />
                 </IconButton>
               )}
@@ -102,7 +106,12 @@ function IssueProject(props) {
               allValues={
                 loadingProjects
                   ? []
-                  : _.uniqBy(project ? [project, ...data.projects.edges] : data.projects.edges, "id")
+                  : _.uniqBy(
+                      project
+                        ? [project, ...data.projects.edges]
+                        : data.projects.edges,
+                      "id"
+                    )
               }
               selectedValues={project ? [project] : []}
               onChange={(event, newValue) => {
@@ -118,11 +127,13 @@ function IssueProject(props) {
               hasMore={hasMore}
               fetchMore={fetchMore}
               noOptionsText="No project found"
-              renderOption={(option) => (
+              renderOption={option => (
                 <Grid container alignItems="center" spacing={1}>
                   <Grid item xs>
                     <Typography variant="h6">{option.name}</Typography>
-                    <Typography variant="caption">{option.description}</Typography>
+                    <Typography variant="caption">
+                      {option.description}
+                    </Typography>
                   </Grid>
                 </Grid>
               )}
@@ -135,7 +146,7 @@ function IssueProject(props) {
 }
 
 IssueProject.defaultProps = {
-  project: null,
+  project: null
 };
 
 IssueProject.propTypes = {

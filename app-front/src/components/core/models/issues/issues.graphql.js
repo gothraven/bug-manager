@@ -72,7 +72,7 @@ const ISSUE_CHANGES = `
       }
     }
   }
-`
+`;
 
 const ISSUE_PROJECT = `
   project {
