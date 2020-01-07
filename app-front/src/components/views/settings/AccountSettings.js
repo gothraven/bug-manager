@@ -41,6 +41,7 @@ function AccountSettings() {
             <Grid item>
               <TextField
                 fullWidth
+                required
                 error={username === ""}
                 label="username"
                 variant="outlined"
@@ -54,6 +55,7 @@ function AccountSettings() {
             <Grid item>
               <TextField
                 fullWidth
+                required
                 error={email === ""}
                 label="email"
                 variant="outlined"
