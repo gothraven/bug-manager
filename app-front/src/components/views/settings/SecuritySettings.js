@@ -126,7 +126,7 @@ function SecuritySettings() {
                   e.preventDefault();
                   checkAndSetPassword();
                 }}
-                disabled={oldPassword.length < 8}
+                disabled={!oldPassword || !regex(confirmPassword) || !regex(newPassword) || !regex(oldPassword) || newPassword !== oldPassword}
               >
                 Save
               </Button>
