@@ -23,23 +23,6 @@ To build a basic database for the project to work initially.
 
 To build a full database for the project to work with some examples.
 
-### Default users
-
-if you don't want to create new user you can start with these when you run `npm run populate:full` or `npm run populate:basic`
-```
-Admin:
-- email: admin@bug.co
-- password: password
-
-Developer:
-- email: dev@bug.co
-- password: password
-
-User:
-- email: user@bug.co
-- password: password
-```
-
 ### `npm start`
 
 Runs the app in the development mode.<br>
@@ -59,3 +42,24 @@ Launches the linter checking on all the project.
 ### `npm coverage`
 
 Launches the tests with converage reports.
+
+## Default users
+
+if you don't want to create new user you can start with these when you run `npm run populate:full` or `npm run populate:basic`
+```
+Admin:
+- email: admin@bug.co
+- password: password
+
+Developer:
+- email: dev@bug.co
+- password: password
+
+User:
+- email: user@bug.co
+- password: password
+```
+
+## Documentation
+
+You can find all the queries and mutations in the Graphql Dev console by running `npm start` and checking `http://localhost:{ENV_PORT}`, on the right side you will find a Schema and Doc pannels.
