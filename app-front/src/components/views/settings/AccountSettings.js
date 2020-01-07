@@ -11,16 +11,19 @@ function AccountSettings() {
   const { me } = useMe();
   const [username, setUsername] = useState(me.name);
   const [email, setEmail] = useState(me.email);
-  const [onUpdateUser] = useMutation(UPDATE_USER, {
-    variables: { name: username, email },
-    update: (proxy, { data }) => {
-      const user = data.updateUser;
-      proxy.writeQuery({
-        query: ME_QUERY,
-        data: { me: user }
-      });
+  const [onUpdateUser, { loading: isUpdateUserPending }] = useMutation(
+    UPDATE_USER,
+    {
+      variables: { name: username, email },
+      update: (proxy, { data }) => {
+        const user = data.updateUser;
+        proxy.writeQuery({
+          query: ME_QUERY,
+          data: { me: user }
+        });
+      }
     }
-  });
+  );
 
   return (
     <form>
@@ -38,6 +41,7 @@ function AccountSettings() {
             <Grid item>
               <TextField
                 fullWidth
+                error={username === ""}
                 label="username"
                 variant="outlined"
                 margin="normal"
@@ -50,6 +54,7 @@ function AccountSettings() {
             <Grid item>
               <TextField
                 fullWidth
+                error={email === ""}
                 label="email"
                 variant="outlined"
                 margin="normal"
@@ -77,6 +82,9 @@ function AccountSettings() {
               <Button
                 color="primary"
                 type="submit"
+                disabled={
+                  isUpdateUserPending || email === "" || username === ""
+                }
                 onClick={e => {
                   e.preventDefault();
                   onUpdateUser();
