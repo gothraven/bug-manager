@@ -124,6 +124,7 @@ function TagPanel(props) {
               alignItems="stretch"
             >
               <TextField
+                error={name === ""}
                 label="name"
                 placeholder="Urgent"
                 value={name}
@@ -162,7 +163,7 @@ function TagPanel(props) {
         <Button
           size="small"
           color="primary"
-          disabled={isPending}
+          disabled={isPending || name === ""}
           onClick={() => {
             setExpanded(false);
             onTagUpdate();

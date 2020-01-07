@@ -57,6 +57,7 @@ function NewIssueView() {
         <DialogContent>
           <Grid container justify="center" direction="column">
             <TextField
+              error={title === ""}
               name="title"
               label="Title"
               margin="normal"
@@ -68,6 +69,7 @@ function NewIssueView() {
               value={title}
             />
             <TextField
+              error={content === ""}
               name="content"
               label="Content"
               margin="normal"
@@ -92,7 +94,7 @@ function NewIssueView() {
             Cancel
           </Button>
           <Button
-            disabled={isIssueCreatePending}
+            disabled={isIssueCreatePending || title === "" || content === ""}
             color="primary"
             onClick={() => {
               onCreateIssue();
