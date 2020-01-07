@@ -22,9 +22,15 @@ type UserCursor {
   pageInfo: PageInfo!
 }
 
+input UserFilter {
+  name: String
+  email: String
+  role: Role
+}
+
 type Query {
   user(id: ID!): User!
-  users(after: String, first: PositiveInt): UserCursor
+  users(after: String, first: PositiveInt, filters: UserFilter): UserCursor
   me: User
 }
 
