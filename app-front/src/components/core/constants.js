@@ -4,7 +4,7 @@ export const APP_AUTH_TOKEN = "app-auth-token";
 
 // TODO this should be changed to get the URL from the ENV
 // BASE URL
-export const BASE_URL = "http://localhost:3030/";
+export const BASE_URL = "http://localhost:4000/";
 
 // Roles
 export const ADMIN = "ADMIN";
