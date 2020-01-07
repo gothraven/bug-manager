@@ -7,6 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import AccountSettings from "./AccountSettings";
 import SecuritySettings from "./SecuritySettings";
+import UsersSettings from "./UsersSettings";
+import { Can } from "../../core/Ability";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -67,6 +69,15 @@ function SettingsView() {
       >
         <Tab label="Account" {...a11yProps(0)} />
         <Tab label="Security" {...a11yProps(1)} />
+        <Can I="see" a="UsersSettings">
+          {() => (
+            <Tab
+              label="Users"
+              onClick={e => handleChange(e, 2)}
+              {...a11yProps(2)}
+            />
+          )}
+        </Can>
       </Tabs>
       <TabPanel value={value} index={0}>
         <AccountSettings />
@@ -74,6 +85,13 @@ function SettingsView() {
       <TabPanel value={value} index={1}>
         <SecuritySettings />
       </TabPanel>
+      <Can I="see" a="UsersSettings">
+        {() => (
+          <TabPanel value={value} index={2}>
+            <UsersSettings />
+          </TabPanel>
+        )}
+      </Can>
     </div>
   );
 }

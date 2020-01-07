@@ -3,31 +3,34 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from "@material-ui/core/Tooltip";
 import { useMutation } from "@apollo/react-hooks";
 import { UPDATE_USER_PASSWORD } from "../../core/models/users/users.graphql";
 
-const tooltip_password = (
-  <p style={{"fontSize" : "12px"}}>Le champs doit comporter au minimun :<br/>
-    - 2 Majuscules<br/>
-    - 4 Minuscules<br/>
-    - 2 Chiffres<br/>
+const tooltipPassword = (
+  <p style={{ fontSize: "12px" }}>
+    Le champs doit comporter au minimun :<br />
+    - 2 Majuscules
+    <br />
+    - 4 Minuscules
+    <br />
+    - 2 Chiffres
+    <br />
     Le mot de passe et la confirmation du mot de passe doivent être identique
   </p>
-)
+);
 
 function SecuritySettings() {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [messageLog, setMessageLog] = useState(null);
   const [onUserPasswordUpdate] = useMutation(UPDATE_USER_PASSWORD, {
     variables: { oldPassword, newPassword }
   });
   const checkAndSetPassword = () =>
     newPassword === confirmPassword && regex(newPassword)
       ? onUserPasswordUpdate()
-      : setMessageLog({message : "invalid champs", severity : "error", });
+      : () => {};
   const regexCharacters = /^[a-zA-Z0-9-_()$&*!@#]{8,}$/;
   const regexUpperCase = /^.*[A-Z].*[A-Z].*$/;
   const regexLowerCase = /^.*[a-z].*[a-z].*[a-z].*[a-z].*$/;
@@ -64,7 +67,7 @@ function SecuritySettings() {
                 type="password"
                 error={!oldPassword}
               />
-              <Tooltip title={tooltip_password} placement="bottom-end">
+              <Tooltip title={tooltipPassword} placement="bottom-end">
                 <TextField
                   required
                   fullWidth
@@ -75,10 +78,13 @@ function SecuritySettings() {
                   name="newPassword"
                   label="new password"
                   type="password"
-                  error={(!!newPassword && !regex(newPassword)) || confirmPassword !== newPassword}
+                  error={
+                    (!!newPassword && !regex(newPassword)) ||
+                    confirmPassword !== newPassword
+                  }
                 />
               </Tooltip>
-              <Tooltip title={tooltip_password} placement="bottom-end">
+              <Tooltip title={tooltipPassword} placement="bottom-end">
                 <TextField
                   required
                   fullWidth
@@ -89,7 +95,10 @@ function SecuritySettings() {
                   name="confirmPassword"
                   label="confirm password"
                   type="password"
-                  error={(!!confirmPassword && !regex(confirmPassword)) || confirmPassword !== newPassword}
+                  error={
+                    (!!confirmPassword && !regex(confirmPassword)) ||
+                    confirmPassword !== newPassword
+                  }
                 />
               </Tooltip>
             </Grid>
@@ -116,7 +125,12 @@ function SecuritySettings() {
                   e.preventDefault();
                   checkAndSetPassword();
                 }}
-                disabled={!oldPassword || !regex(confirmPassword) || !regex(newPassword) || newPassword !== confirmPassword}
+                disabled={
+                  !oldPassword ||
+                  !regex(confirmPassword) ||
+                  !regex(newPassword) ||
+                  newPassword !== confirmPassword
+                }
               >
                 Save
               </Button>
