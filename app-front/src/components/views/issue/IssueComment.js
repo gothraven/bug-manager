@@ -18,7 +18,7 @@ import useStyles from "./IssueComment.scss";
 
 function IssueComment(props) {
   const classes = useStyles();
-  const { content, creator, user } = props;
+  const { content, creator, user, first } = props;
   const {
     createdAt,
     updatedAt,
@@ -61,28 +61,41 @@ function IssueComment(props) {
             <Chip size="small" label={creator.role} variant="outlined" />
           </Grid>
           <Grid item>
-            <Can
-              do="delete"
-              on={user.id === creator.id ? "MyComment" : "Comment"}
-            >
-              <SafeCheck
-                title="Delete Comment"
-                content="Are you sure you want to delete this comment ?"
-                action={onCommentDeleted}
+            {!first ? (
+              <>
+                <Can
+                  do="delete"
+                  on={user.id === creator.id ? "MyComment" : "Comment"}
+                >
+                  <SafeCheck
+                    title="Delete Comment"
+                    content="Are you sure you want to delete this comment ?"
+                    action={onCommentDeleted}
+                  >
+                    <IconButton size="small">
+                      <DeleteIcon />
+                    </IconButton>
+                  </SafeCheck>
+                </Can>
+                <Can
+                  do="edit"
+                  on={user.id === creator.id ? "MyComment" : "Comment"}
+                >
+                  <IconButton size="small" onClick={() => setEdit(!edit)}>
+                    <EditIcon />
+                  </IconButton>
+                </Can>
+              </>
+            ) : (
+              <Can
+                do="edit"
+                on={user.id === creator.id ? "MyComment" : "Comment"}
               >
-                <IconButton size="small">
-                  <DeleteIcon />
+                <IconButton size="small" onClick={() => setEdit(!edit)}>
+                  <EditIcon />
                 </IconButton>
-              </SafeCheck>
-            </Can>
-            <Can
-              do="edit"
-              on={user.id === creator.id ? "MyComment" : "Comment"}
-            >
-              <IconButton size="small" onClick={() => setEdit(!edit)}>
-                <EditIcon />
-              </IconButton>
-            </Can>
+              </Can>
+            )}
           </Grid>
         </Grid>
       </Grid>
@@ -103,7 +116,6 @@ function IssueComment(props) {
       />
     );
   }
-
   return (
     <Grid item container spacing={2}>
       <Grid
@@ -203,6 +215,7 @@ IssueComment.defaultProps = {
 IssueComment.propTypes = {
   user: PropType.object.isRequired,
   creator: PropType.object.isRequired,
+  first: PropType.bool.isRequired,
   createdAt: PropType.string,
   updatedAt: PropType.string,
   content: PropType.string,

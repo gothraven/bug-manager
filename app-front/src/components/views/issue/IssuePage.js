@@ -261,31 +261,34 @@ function IssueBody(props) {
           // eslint-disable-next-line no-nested-ternary
           return ax > bx ? 1 : ax < bx ? -1 : 0;
         })
-        .map(change => {
+        .map((change, index) => {
           if (change.type === undefined) {
             const comment = change;
             return (
-              <IssueComment
-                createdAt={comment.createdAt}
-                updatedAt={comment.updatedAt}
-                creatorName={comment.creator.name}
-                onCommentUpdated={content => {
-                  onUpdateComment({ variables: { id: comment.id, content } });
-                }}
-                onCommentDeleted={() => {
-                  onDeleteComment({
-                    variables: { id: comment.id },
-                    optimisticResponse: {
-                      __typename: "Mutation",
-                      deleteComment: true
-                    }
-                  });
-                }}
-                key={comment.id}
-                user={me}
-                creator={comment.creator}
-                content={comment.content}
-              />
+              <>
+                <IssueComment
+                  createdAt={comment.createdAt}
+                  first={index === 0}
+                  updatedAt={comment.updatedAt}
+                  creatorName={comment.creator.name}
+                  onCommentUpdated={content => {
+                    onUpdateComment({ variables: { id: comment.id, content } });
+                  }}
+                  onCommentDeleted={() => {
+                    onDeleteComment({
+                      variables: { id: comment.id },
+                      optimisticResponse: {
+                        __typename: "Mutation",
+                        deleteComment: true
+                      }
+                    });
+                  }}
+                  key={comment.id}
+                  user={me}
+                  creator={comment.creator}
+                  content={comment.content}
+                />
+              </>
             );
           }
           return <IssueHistory key={change.id} change={change} />;
