@@ -52,31 +52,31 @@ function IssueHistory(props) {
 const issueAdapter = {
   [ASSIGN_USER]: {
     icon: <AssignmentIndIcon />,
-    text: "a assigné une tache à "
+    text: "has assigned a task to "
   },
   [UNASSIGN_USER]: {
     icon: <AssignmentIndIcon />,
-    text: "a desassigné une tache à "
+    text: "has desassigned a task to "
   },
-  [ADD_TAG]: { icon: <TurnedInIcon />, text: "a ajouté le tag " },
-  [REMOVE_TAG]: { icon: <TurnedInIcon />, text: "a supprimé le TAG " },
+  [ADD_TAG]: { icon: <TurnedInIcon />, text: "added the tag " },
+  [REMOVE_TAG]: { icon: <TurnedInIcon />, text: "removed the tag " },
   [CLOSE_ISSUE]: {
     icon: <ErrorIcon style={{ color: "red" }} />,
-    text: "a fermé l'issue"
+    text: "closed the issue"
   },
   [REOPEN_ISSUE]: {
     icon: <ErrorIcon style={{ color: "green" }} />,
-    text: "a reouvert l'issue"
+    text: "has reopened the issue"
   },
   [ATTACH_TO_PROJECT]: {
     icon: <ClassIcon />,
-    text: "a attaché l'issue au project "
+    text: "attached the issue to the project "
   },
   [DETATCH_FROM_PROJECT]: {
     icon: <ClassIcon />,
-    text: "a dettaché l'issue du project "
+    text: "dettached the issue to the project "
   },
-  [CHANGE_STATUS]: { icon: <EditIcon />, text: "a changé le STATUS en " }
+  [CHANGE_STATUS]: { icon: <EditIcon />, text: "changed the status to " }
 };
 
 IssueHistory.propTypes = {
