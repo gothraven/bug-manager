@@ -26,7 +26,8 @@ function prepareFilters(input = "", tab = 0) {
 
 function DashboardView() {
   const { data: statisticsData, loading: statisticsLoading } = useQuery(
-    ISSUES_STATISTICS_QUERY
+    ISSUES_STATISTICS_QUERY,
+    { fetchPolicy: 'cache-and-network' }
   );
   const [searchInput, setSearchInput] = useState("");
   const [validatedSearchInput, setValidatedSearchInput] = useState("");
@@ -35,7 +36,8 @@ function DashboardView() {
     variables: {
       cursor: "",
       filters: prepareFilters(validatedSearchInput, activeTab)
-    }
+    },
+    fetchPolicy: 'cache-and-network'
   });
   const loading = issuesLoading || statisticsLoading;
 
@@ -65,20 +67,19 @@ function DashboardView() {
 
         return newEdges.length
           ? {
-              issues: {
-                __typename: previousResult.issues.__typename,
-                edges: [...previousResult.issues.edges, ...newEdges],
-                pageInfo
-              }
+            issues: {
+              __typename: previousResult.issues.__typename,
+              edges: [...previousResult.issues.edges, ...newEdges],
+              pageInfo
             }
+          }
           : previousResult;
       }
     });
   }, [data, loading, fetchMore, validatedSearchInput, activeTab]);
 
-  if (loading) return <Loading />;
+  if (statisticsLoading) return <Loading />;
 
-  const { hasNextPage } = data.issues.pageInfo;
   const { openCount, closedCount } = statisticsData.issuesStatistics;
 
   return (
@@ -154,13 +155,14 @@ function DashboardView() {
               style={{ marginLeft: 20, flex: 1 }}
             />
           </ListItem>
-
-          {data.issues.edges.map(node =>
-            node == null ? null : <IssueItem key={node.id} issue={node} />
-          )}
+          {issuesLoading ? <Loading />
+            : (data.issues.edges.map(node => node == null ? null : <IssueItem key={node.id} issue={node} />))
+          }
         </List>
       </Grid>
-      {hasNextPage && <Button onClick={loadMore}>load more</Button>}
+      {issuesLoading ? <Loading />
+        : (data.issues.pageInfo.hasNextPage && <Button onClick={loadMore}>load more</Button>)
+      }
     </Grid>
   );
 }

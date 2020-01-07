@@ -10,11 +10,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import {
-  CREATE_ISSUE,
-  ISSUES_QUERY,
-  ISSUES_STATISTICS_QUERY
-} from "../core/models/issues/issues.graphql";
+import { CREATE_ISSUE } from "../core/models/issues/issues.graphql";
 
 function NewIssueView() {
   const [open, setOpen] = useState(false);
@@ -25,10 +21,6 @@ function NewIssueView() {
     CREATE_ISSUE,
     {
       variables: { title, content },
-      refetchQueries: [
-        { query: ISSUES_QUERY },
-        { query: ISSUES_STATISTICS_QUERY }
-      ],
       update: (proxy, result) => {
         const { createIssue } = result.data;
         setTitle("");
