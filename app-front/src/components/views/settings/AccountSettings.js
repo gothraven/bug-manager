@@ -50,7 +50,6 @@ function AccountSettings() {
                 onChange={e => setUsername(e.target.value)}
                 name="username"
                 type="text"
-                error={!username}
               />
             </Grid>
             <Grid item>
@@ -65,7 +64,11 @@ function AccountSettings() {
                 onChange={e => setEmail(e.target.value)}
                 name="email"
                 type="email"
-                error={!email || !/^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$/.test(email)}
+                // eslint-disable-next-line react/jsx-no-duplicate-props
+                error={
+                  !email ||
+                  !/^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$/.test(email)
+                }
               />
             </Grid>
           </Grid>

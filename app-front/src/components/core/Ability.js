@@ -22,7 +22,7 @@ export function defineRulesFor(role) {
     can("edit", "Tag");
     can("create", "Project");
     can("edit", "Project");
-    can("see", "Settings");
+    can("see", "UsersSettings");
   }
   if (role === ADMIN || role === DEVELOPER) {
     can("see", "Tags");
@@ -32,6 +32,7 @@ export function defineRulesFor(role) {
     can("edit", "Comment");
     can("delete", "Comment");
   }
+  can("see", "Settings");
   can("edit", "MyComment");
   can("delete", "MyComment");
   can("see", "Dashboard");

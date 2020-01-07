@@ -31,12 +31,25 @@ export const UPDATE_USER = gql`
   }
 `;
 
+export const UPDATE_USER_ROLE = gql`
+  mutation UpdateUserRoleMutation($id: ID!, $role: Role!) {
+    updateUserRole(id: $id, role: $role) {
+      id
+      name
+      email
+      role
+    }
+  }
+`;
+
 export const USERS_QUERY = gql`
-  query Users($cursor: String) {
-    users(first: 10, after: $cursor) {
+  query Users($cursor: String, $filters: UserFilter) {
+    users(first: 10, after: $cursor, filters: $filters) {
       edges {
         id
         name
+        email
+        role
       }
       pageInfo {
         endCursor
