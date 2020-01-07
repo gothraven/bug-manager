@@ -2,13 +2,13 @@ import { combineResolvers } from 'graphql-resolvers';
 import { omitBy, isNil } from 'lodash';
 import { authorize } from './auth.resolver';
 import { USER, ADMIN } from '../../models/user.model';
-import { Paginate } from './pagination.resolver';
 
 export default {
   Query: {
     status: combineResolvers(authorize(USER), async (parent, { id }, { models }) =>
       models.Status.findById(id)),
-    statuses: combineResolvers(authorize(USER), Paginate('Status'))
+    statuses: combineResolvers(authorize(USER), async (parent, args, { models }) =>
+      models.Status.find({}))
   },
   Mutation: {
     createStatus: combineResolvers(
