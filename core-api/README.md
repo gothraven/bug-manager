@@ -4,7 +4,7 @@
 
 ```.env
 NODE_ENV=development | production
-PORT=3030
+PORT=3000
 JWT_SECRET=[... create your own JWT secret ...]
 JWT_EXPIRATION_MINUTES=15
 MONGO_URI=[... connect to your local or online database ...] example: "mongodb://localhost/db"
