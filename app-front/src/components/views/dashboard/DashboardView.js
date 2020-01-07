@@ -8,7 +8,7 @@ import List from "@material-ui/core/List";
 import ErrorIcon from "@material-ui/icons/Error";
 import SearchIcon from "@material-ui/icons/Search";
 import AllInclusiveRoundedIcon from "@material-ui/icons/AllInclusiveRounded";
-import Fab from '@material-ui/core/Fab';
+import Fab from "@material-ui/core/Fab";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import Input from "@material-ui/core/Input";
@@ -28,10 +28,10 @@ function prepareFilters(input = "", tab = 0) {
 }
 
 function DashboardView() {
-  const { data: statisticsData, loading: statisticsLoading } = useQuery(
-    ISSUES_STATISTICS_QUERY,
-    { fetchPolicy: 'cache-and-network' }
-  );
+  const {
+    data: statisticsData,
+    loading: statisticsLoading
+  } = useQuery(ISSUES_STATISTICS_QUERY, { fetchPolicy: "cache-and-network" });
   const [searchInput, setSearchInput] = useState("");
   const [validatedSearchInput, setValidatedSearchInput] = useState("");
   const [activeTab, setActiveTab] = useState(0);
@@ -40,7 +40,7 @@ function DashboardView() {
       cursor: "",
       filters: prepareFilters(validatedSearchInput, activeTab)
     },
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: "cache-and-network"
   });
   const loading = issuesLoading || statisticsLoading;
 
@@ -70,12 +70,12 @@ function DashboardView() {
 
         return newEdges.length
           ? {
-            issues: {
-              __typename: previousResult.issues.__typename,
-              edges: [...previousResult.issues.edges, ...newEdges],
-              pageInfo
+              issues: {
+                __typename: previousResult.issues.__typename,
+                edges: [...previousResult.issues.edges, ...newEdges],
+                pageInfo
+              }
             }
-          }
           : previousResult;
       }
     });
@@ -114,7 +114,7 @@ function DashboardView() {
                         <AllInclusiveRoundedIcon />
                         <Typography style={{ marginLeft: 10 }}>
                           <strong>{openCount + closedCount}</strong> All
-                    </Typography>
+                        </Typography>
                       </>
                     }
                   />
@@ -124,7 +124,7 @@ function DashboardView() {
                         <ErrorIcon style={{ color: "green" }} />
                         <Typography style={{ marginLeft: 10 }}>
                           <strong>{openCount}</strong> Opened Issues
-                    </Typography>
+                        </Typography>
                       </>
                     }
                   />
@@ -134,7 +134,7 @@ function DashboardView() {
                         <ErrorIcon style={{ color: "red" }} />
                         <Typography style={{ marginLeft: 10 }}>
                           <strong>{closedCount}</strong> Closed Issues
-                    </Typography>
+                        </Typography>
                       </>
                     }
                   />
@@ -155,21 +155,33 @@ function DashboardView() {
                   style={{ marginLeft: 20, flex: 1 }}
                 />
                 <Grid item xs={2}>
-                  <Fab size="small" color="primary" onClick={() => setValidatedSearchInput(searchInput)}>
+                  <Fab
+                    size="small"
+                    color="primary"
+                    onClick={() => setValidatedSearchInput(searchInput)}
+                  >
                     <SearchIcon />
                   </Fab>
                 </Grid>
               </Grid>
             </Grid>
           </ListItem>
-          {issuesLoading ? <Loading />
-            : (data.issues.edges.map(node => node == null ? null : <IssueItem key={node.id} issue={node} />))
-          }
+          {issuesLoading ? (
+            <Loading />
+          ) : (
+            data.issues.edges.map(node =>
+              node == null ? null : <IssueItem key={node.id} issue={node} />
+            )
+          )}
         </List>
       </Grid>
-      {issuesLoading ? <Loading />
-        : (data.issues.pageInfo.hasNextPage && <Button onClick={loadMore}>load more</Button>)
-      }
+      {issuesLoading ? (
+        <Loading />
+      ) : (
+        data.issues.pageInfo.hasNextPage && (
+          <Button onClick={loadMore}>load more</Button>
+        )
+      )}
     </Grid>
   );
 }

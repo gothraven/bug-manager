@@ -122,6 +122,7 @@ function ProjectCard(props) {
       <CardContent>
         {edition ? (
           <TextField
+            error={name === ""}
             margin="dense"
             id="name"
             label="Project Name"
@@ -138,6 +139,7 @@ function ProjectCard(props) {
         )}
         {edition ? (
           <TextField
+            error={description === ""}
             label="Description"
             variant="outlined"
             multiline
@@ -157,7 +159,7 @@ function ProjectCard(props) {
             variant="contained"
             color="primary"
             className={classes.button}
-            disabled={isPending}
+            disabled={isPending || name === ""}
             onClick={() => {
               onProjectUpdate();
               setEdition(false);
