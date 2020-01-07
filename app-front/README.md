@@ -3,8 +3,9 @@
 - create a `.env` file in `app-front/` which you should have these environment variables
 
 ```.env
+NODE_ENV=development
 PORT=4000
-CORE_API_PORT=3000
+REACT_APP_BACKEND_URL=http://localhost:3000/
 ```
 
 ## Available Scripts

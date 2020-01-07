@@ -73,10 +73,8 @@ export default {
         throw new Error('Invalid password');
       }
 
-      const rounds = env === 'test' ? 1 : 10;
-
+      const rounds = env === 'development' ? 1 : 10;
       const hash = await bcrypt.hash(newPassword, rounds);
-
       return !!(await models.User.findByIdAndUpdate(me.id, { password: hash }, { new: true }));
     },
 
