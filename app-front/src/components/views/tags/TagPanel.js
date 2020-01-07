@@ -134,7 +134,6 @@ function TagPanel(props) {
                 margin="normal"
               />
               <TextField
-                error={description === ""}
                 label="description"
                 value={description}
                 placeholder="This concerns all the issues that we should fix urgently"
@@ -164,7 +163,7 @@ function TagPanel(props) {
         <Button
           size="small"
           color="primary"
-          disabled={isPending || name === "" || description === ""}
+          disabled={isPending || name === ""}
           onClick={() => {
             setExpanded(false);
             onTagUpdate();
