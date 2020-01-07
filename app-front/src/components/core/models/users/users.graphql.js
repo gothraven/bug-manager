@@ -43,8 +43,8 @@ export const UPDATE_USER_ROLE = gql`
 `;
 
 export const USERS_QUERY = gql`
-  query Users($cursor: String) {
-    users(first: 10, after: $cursor) {
+  query Users($cursor: String, $filters: UserFilter) {
+    users(first: 10, after: $cursor, filters: $filters) {
       edges {
         id
         name
