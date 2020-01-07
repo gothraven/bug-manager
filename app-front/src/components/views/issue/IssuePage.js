@@ -39,30 +39,24 @@ import useStyle from "./IssuePage.scss";
 function IssuePage() {
   const { id } = useParams();
   const { data, loading } = useQuery(ISSUE_QUERY, { variables: { id } });
-  const [onIssueAddTag] = useMutation(ISSUE_ADD_TAG,
-    {
-      refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
-    });
-  const [onIssueRemoveTag] = useMutation(ISSUE_REMOVE_TAG,
-    {
-      refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
-    });
-  const [onIssueAssignUser] = useMutation(ISSUE_ASSIGNE_USER,
-    {
-      refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
-    });
-  const [onIssueUnassignUser] = useMutation(ISSUE_UNASSIGN_USER,
-    {
-      refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
-    });
-  const [onAttachToProject] = useMutation(ISSUE_ATTACH_TO_PROJECT,
-    {
-      refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
-    });
-  const [onDetatchFromProject] = useMutation(ISSUE_DETATCH_FROM_PROJECT,
-    {
-      refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
-    });
+  const [onIssueAddTag] = useMutation(ISSUE_ADD_TAG, {
+    refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
+  });
+  const [onIssueRemoveTag] = useMutation(ISSUE_REMOVE_TAG, {
+    refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
+  });
+  const [onIssueAssignUser] = useMutation(ISSUE_ASSIGNE_USER, {
+    refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
+  });
+  const [onIssueUnassignUser] = useMutation(ISSUE_UNASSIGN_USER, {
+    refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
+  });
+  const [onAttachToProject] = useMutation(ISSUE_ATTACH_TO_PROJECT, {
+    refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
+  });
+  const [onDetatchFromProject] = useMutation(ISSUE_DETATCH_FROM_PROJECT, {
+    refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
+  });
 
   if (loading) {
     return <Loading />;
@@ -100,10 +94,14 @@ function IssuePage() {
           <IssueAssignees
             assignedUsers={issue.assignedUsers}
             onAssignUser={assigne => {
-              onIssueAssignUser({ variables: { id: issue.id, userId: assigne.id } });
+              onIssueAssignUser({
+                variables: { id: issue.id, userId: assigne.id }
+              });
             }}
             onUnassignUser={assigne => {
-              onIssueUnassignUser({ variables: { id: issue.id, userId: assigne.id } });
+              onIssueUnassignUser({
+                variables: { id: issue.id, userId: assigne.id }
+              });
             }}
           />
           <IssueTags
@@ -118,10 +116,14 @@ function IssuePage() {
           <IssueProject
             project={issue.project}
             onAttachToProject={project => {
-              onAttachToProject({ variables: { id: issue.id, projectId: project.id } });
+              onAttachToProject({
+                variables: { id: issue.id, projectId: project.id }
+              });
             }}
             onDetachFromProject={project => {
-              onDetatchFromProject({ variables: { id: issue.id, projectId: project.id } });
+              onDetatchFromProject({
+                variables: { id: issue.id, projectId: project.id }
+              });
             }}
           />
         </Grid>
@@ -135,10 +137,9 @@ function IssueHeader(props) {
   const classes = useStyle();
   const [edit, setEdit] = useState(false);
   const [issueTitle, setIssueTitle] = useState(issue.title);
-  const [onIssueUpdateTitle] = useMutation(ISSUE_UPDATE,
-    {
-      refetchQueries: [{ query: ISSUE_QUERY, variables: { id: issue.id } }]
-    });
+  const [onIssueUpdateTitle] = useMutation(ISSUE_UPDATE, {
+    refetchQueries: [{ query: ISSUE_QUERY, variables: { id: issue.id } }]
+  });
   const [onIssueClose, { loading: isIssueClosePending }] = useMutation(
     ISSUE_CLOSE,
     {
@@ -164,22 +165,21 @@ function IssueHeader(props) {
     <Grid item xs={12} container justify="center">
       <Grid item xs={11} container justify="space-between" alignItems="center">
         <Grid item xs={7}>
-          {edit ?
-            (
-              <TextField
-                fullWidth
-                multiline
-                classes={{ root: classes.titleTextField }}
-                rowsMax="15"
-                rows="1"
-                value={issueTitle}
-                onChange={e => setIssueTitle(e.target.value)}
-              />
-            ) : (
-              <Typography variant="h1" component="h1" gutterBottom>
-                # {issue.title}
-              </Typography>
-            )}
+          {edit ? (
+            <TextField
+              fullWidth
+              multiline
+              classes={{ root: classes.titleTextField }}
+              rowsMax="15"
+              rows="1"
+              value={issueTitle}
+              onChange={e => setIssueTitle(e.target.value)}
+            />
+          ) : (
+            <Typography variant="h1" component="h1" gutterBottom>
+              # {issue.title}
+            </Typography>
+          )}
         </Grid>
         {edit ? (
           <Grid item xs={4} container spacing={1}>
@@ -202,7 +202,9 @@ function IssueHeader(props) {
                 color="primary"
                 size="small"
                 onClick={() => {
-                  onIssueUpdateTitle({ variables: { id: issue.id, title: issueTitle } });
+                  onIssueUpdateTitle({
+                    variables: { id: issue.id, title: issueTitle }
+                  });
                   setEdit(false);
                 }}
               >
@@ -211,25 +213,25 @@ function IssueHeader(props) {
             </Grid>
           </Grid>
         ) : (
-            <Grid item xs={4} container spacing={1}>
-              <Grid item>
-                <IconButton size="small" onClick={() => setEdit(true)}>
-                  <EditIcon />
-                </IconButton>
-              </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  size="small"
-                  disabled={isPending}
-                  color={issue.open ? "secondary" : "primary"}
-                  onClick={issue.open ? onClickClose : onClickOpen}
-                >
-                  {issue.open ? "Close Issue" : "Open Issue"}
-                </Button>
-              </Grid>
+          <Grid item xs={4} container spacing={1}>
+            <Grid item>
+              <IconButton size="small" onClick={() => setEdit(true)}>
+                <EditIcon />
+              </IconButton>
             </Grid>
-          )}
+            <Grid item>
+              <Button
+                variant="contained"
+                size="small"
+                disabled={isPending}
+                color={issue.open ? "secondary" : "primary"}
+                onClick={issue.open ? onClickClose : onClickOpen}
+              >
+                {issue.open ? "Close Issue" : "Open Issue"}
+              </Button>
+            </Grid>
+          </Grid>
+        )}
       </Grid>
     </Grid>
   );
@@ -259,31 +261,34 @@ function IssueBody(props) {
           // eslint-disable-next-line no-nested-ternary
           return ax > bx ? 1 : ax < bx ? -1 : 0;
         })
-        .map(change => {
+        .map((change, index) => {
           if (change.type === undefined) {
             const comment = change;
             return (
-              <IssueComment
-                createdAt={comment.createdAt}
-                updatedAt={comment.updatedAt}
-                creatorName={comment.creator.name}
-                onCommentUpdated={content => {
-                  onUpdateComment({ variables: { id: comment.id, content } });
-                }}
-                onCommentDeleted={() => {
-                  onDeleteComment({
-                    variables: { id: comment.id },
-                    optimisticResponse: {
-                      __typename: "Mutation",
-                      deleteComment: true
-                    }
-                  });
-                }}
-                key={comment.id}
-                user={me}
-                creator={comment.creator}
-                content={comment.content}
-              />
+              <>
+                <IssueComment
+                  createdAt={comment.createdAt}
+                  first={index === 0}
+                  updatedAt={comment.updatedAt}
+                  creatorName={comment.creator.name}
+                  onCommentUpdated={content => {
+                    onUpdateComment({ variables: { id: comment.id, content } });
+                  }}
+                  onCommentDeleted={() => {
+                    onDeleteComment({
+                      variables: { id: comment.id },
+                      optimisticResponse: {
+                        __typename: "Mutation",
+                        deleteComment: true
+                      }
+                    });
+                  }}
+                  key={comment.id}
+                  user={me}
+                  creator={comment.creator}
+                  content={comment.content}
+                />
+              </>
             );
           }
           return <IssueHistory key={change.id} change={change} />;
@@ -294,17 +299,17 @@ function IssueBody(props) {
   return (
     <>
       {issueBodyNodes()}
-      {issue.open &&
+      {issue.open && (
         <IssueComment
           user={me}
           creator={me}
           onCommentCreated={content => {
             onCreateComment({
-              variables: { content, issueId: issue.id },
+              variables: { content, issueId: issue.id }
             });
           }}
         />
-      }
+      )}
     </>
   );
 }
