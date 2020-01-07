@@ -87,16 +87,14 @@ function IssueComment(props) {
                 </Can>
               </>
             ) : (
-              <>
-                <Can
-                  do="edit"
-                  on={user.id === creator.id ? "MyComment" : "Comment"}
-                >
-                  <IconButton size="small" onClick={() => setEdit(!edit)}>
-                    <EditIcon />
-                  </IconButton>
-                </Can>
-              </>
+              <Can
+                do="edit"
+                on={user.id === creator.id ? "MyComment" : "Comment"}
+              >
+                <IconButton size="small" onClick={() => setEdit(!edit)}>
+                  <EditIcon />
+                </IconButton>
+              </Can>
             )}
           </Grid>
         </Grid>
