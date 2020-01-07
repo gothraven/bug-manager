@@ -139,7 +139,6 @@ function ProjectCard(props) {
         )}
         {edition ? (
           <TextField
-            error={description === ""}
             label="Description"
             variant="outlined"
             multiline
