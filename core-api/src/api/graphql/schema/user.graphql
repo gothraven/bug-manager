@@ -32,6 +32,7 @@ type Mutation {
   signUp(name: String!, email: EmailAddress!, password: String!): Auth!
   signIn(email: EmailAddress!, password: String!): Auth!
   updateUser(name: String!, email: EmailAddress!): User!
+  updateUserRole(id: ID!, role: Role!): User!
   updateUserPassword(oldPassword : String!, newPassword : String!): Boolean!
   deleteUser(id: ID!): Boolean!
 }

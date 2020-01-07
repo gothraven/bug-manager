@@ -57,6 +57,14 @@ export default {
       }
     ),
 
+    updateUserRole: combineResolvers(
+      authorize(ADMIN),
+      async (parent, { id, role }, { models, me }) => {
+        const options = omitBy({ role }, isNil);
+        return models.User.findByIdAndUpdate(id, options, { new: true });
+      }
+    ),
+
     updateUserPassword: async (parent, { oldPassword, newPassword }, { models, me }) => {
       const user = await models.User.findById(me.id);
       const isValid = await user.passwordMatches(oldPassword);
