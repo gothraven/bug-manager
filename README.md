@@ -1,19 +1,44 @@
-# Bug Manager
-
-Ce projet consiste à la création d'une application web permettant de faire la gestion de bug informatique d'une infrastructure. Nous l'avons intitulé *Bug Manager*.
-
-Le projet a été scindé en deux sous parties:
-- La première partie concerne le developpement d'une API, en: express.js, GraphQL ...
-- Et la seconde concerne le visuel de l'application web, cette partie a été deveppée en React.js
+# BUG MANGER
 
 
-## core-api
-the back-end api
+## INTRODUCTION
 
-## app-front
-the front-end web-app
+Ce projet consiste à la création d'une application web permettant de faire la gestion des bugs informatique d'une infrastructure. Nous l'avons intitulé **Bug Manager** .
 
-## CONTRIBUTORS
+L'application a été scindée en deux parties: **core-api** ET **app-front**
+
+
+### CORE-API
+Cette première partie constitue le coeur de metier du projet, nommé API(Application Programming Interface), elle a été developpée avec les technologies suivantes:
+- Express.js: utilisé dans ce projet en tant que framework du back end.
+- GraphQL: est le langage de requête et de manipulation de données que nous avons utilisé afin de simplifer le developpement de l'API.
+- MongoDB: Constitue la base de données Non Relationnelle que nous avons utilisé dans ce projet
+- ...
+
+### APP-FRONT
+À cette seconde partie, le developpement concerne de mettre en place une interface WEB permettant d'utiliser l'API de manieère plus naturelle. Le technologies que nous avons utilisés entre autres:
+- React.js: utilisé comme Framework front end de l'application
+- Material UI: est une implémentatin de "Material Design" en React.js, c'est un système adaptable, qui vient avec des componsants que nous pouvons utiliser à notre guise. 
+
+
+## INSTALLATION
+
+L'installation de l'application a été rendue très accessible et facile à mettre en place.
+
+QUELQUES ETAPES À SUIVRE:
+
+- Avoir une version de **NODE.JS >= v12.13.\*** et une version **NPM >= 6.13.\***
+- Se rendre dans les dossiers **core-api** et **app-front**, en suite taper `npm install`
+- parametrer le fichier `.env` à la racine des dossiers **core-api** et **app-front** .
+- Pour lancer l'application en local, taper la commande `npm start` sur les dossiers **core-api** et **app-front**
+- Pour plus d'informations
+    - lire les fichiers `core-api/readme.md` et `core-api/readme.md` 
+    - consulter les documentations de technologies:
+        - [Documentation de React.js](https://reactjs.org/docs/getting-started.html)
+        - [Documentation de GraphQL](https://graphql.org/graphql-js/)
+        - [Documentation de Material UI](https://material-ui.com/)
+
+## CONTRIBUTEURS
 - Safiy Errahmane ZAGHBANE
 - Ludwing NICE
 - Nadir SI MOHAMMED
