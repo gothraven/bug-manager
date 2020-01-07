@@ -46,7 +46,6 @@ function ProjectsView() {
   }
 
   const { hasNextPage } = data.projects.pageInfo;
-
   return (
     <Grid
       container
@@ -54,25 +53,43 @@ function ProjectsView() {
       justify="flex-start"
       alignItems="stretch"
     >
-      <Typography variant="h1" component="h1" gutterBottom>
-        All Projects
-      </Typography>
+      {!((((data || {}).projects || {}).edges || []).length === 0) ? (
+        <Typography variant="h1" component="h1" gutterBottom>
+          All Projects
+        </Typography>
+      ) : (
+        <Typography />
+      )}
       <Grid item>
-        <Grid container direction="row" alignItems="flex-start">
-          {data.projects.edges.map(node => {
-            if (node == null) {
-              return null;
-            }
-            return (
-              <Grid key={node.id} item xs={4}>
-                <ProjectCard
-                  disabled={!ability.can("edit", "Project")}
-                  project={node}
-                />
-              </Grid>
-            );
-          })}
-        </Grid>
+        {data.projects.edges.length !== 0 ? (
+          <Grid container direction="row" alignItems="flex-start">
+            {data.projects.edges.map(node => {
+              if (node == null) {
+                return null;
+              }
+              return (
+                <Grid key={node.id} item xs={4}>
+                  <ProjectCard
+                    disabled={!ability.can("edit", "Project")}
+                    project={node}
+                  />
+                </Grid>
+              );
+            })}
+          </Grid>
+        ) : (
+          <p
+            style={{
+              fontSize: 100,
+              fontWeight: 1000,
+              color: "#c1c1c1",
+              padding: 100,
+              textAlign: "center"
+            }}
+          >
+            New Projects yet !
+          </p>
+        )}
       </Grid>
       {hasNextPage && <Button onClick={fetchMore}>load more</Button>}
       <Can I="create" a="Project">

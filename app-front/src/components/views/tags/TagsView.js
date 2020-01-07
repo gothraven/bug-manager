@@ -47,22 +47,42 @@ function TagsView() {
       justify="flex-start"
       alignItems="stretch"
     >
-      <Typography variant="h1" component="h1" gutterBottom>
-        All labels
-      </Typography>
+      {!((((data || {}).tags || {}).edges || []).length === 0) ? (
+        <Typography variant="h1" component="h1" gutterBottom>
+          All labels
+        </Typography>
+      ) : (
+        <Typography />
+      )}
       <Grid item>
-        {data.tags.edges.map(node => {
-          if (node === null) {
-            return null;
-          }
-          return (
-            <TagPanel
-              disabled={!ability.can("edit", "Tag")}
-              key={node.id}
-              tag={node}
-            />
-          );
-        })}
+        {!((((data || {}).tags || {}).edges || []).length === 0) ? (
+          <>
+            {data.tags.edges.map(node => {
+              if (node === null) {
+                return null;
+              }
+              return (
+                <TagPanel
+                  disabled={!ability.can("edit", "Tag")}
+                  key={node.id}
+                  tag={node}
+                />
+              );
+            })}
+          </>
+        ) : (
+          <p
+            style={{
+              fontSize: 100,
+              fontWeight: 1000,
+              color: "#c1c1c1",
+              padding: 100,
+              textAlign: "center"
+            }}
+          >
+            New Tags yet !
+          </p>
+        )}
       </Grid>
       {hasNextPage && <Button onClick={fetchMore}>load more</Button>}
       <Can I="create" a="Tag">
