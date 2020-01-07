@@ -6,6 +6,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
 import CloseIcon from "@material-ui/icons/Close";
 import EditIcon from "@material-ui/icons/Edit";
 import TextField from "@material-ui/core/TextField";
@@ -154,18 +155,36 @@ function ProjectCard(props) {
           </Typography>
         )}
         {edition && (
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            disabled={isPending || name === ""}
-            onClick={() => {
-              onProjectUpdate();
-              setEdition(false);
-            }}
-          >
-            Save
-          </Button>
+          <Grid container spacing={1}>
+            <Grid item>
+              <Button
+                variant="contained"
+                className={classes.button}
+                disabled={isPending}
+                onClick={() => {
+                  setDescription(project.description || "");
+                  setName(project.name);
+                  setEdition(false);
+                }}
+              >
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                disabled={isPending || name === ""}
+                onClick={() => {
+                  onProjectUpdate();
+                  setEdition(false);
+                }}
+              >
+                Save
+              </Button>
+            </Grid>
+          </Grid>
         )}
       </CardContent>
     </Card>
