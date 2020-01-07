@@ -8,7 +8,10 @@ import List from "@material-ui/core/List";
 import ErrorIcon from "@material-ui/icons/Error";
 import SearchIcon from "@material-ui/icons/Search";
 import AllInclusiveRoundedIcon from "@material-ui/icons/AllInclusiveRounded";
-import { Input, InputAdornment, Tab, Tabs } from "@material-ui/core";
+import Fab from '@material-ui/core/Fab';
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
+import Input from "@material-ui/core/Input";
 import Loading from "../../lib/Loading";
 import IssueItem from "./IssueItem";
 import {
@@ -95,65 +98,69 @@ function DashboardView() {
       <Grid item xs={12}>
         <List style={{ backgroundColor: "white" }}>
           <ListItem divider>
-            <Tabs
-              value={activeTab}
-              onChange={(_, value) => onTabChanged(value)}
-              indicatorColor="primary"
-              textColor="primary"
-              variant="fullWidth"
-              aria-label="action tabs example"
-            >
-              <Tab
-                label={
-                  <>
-                    <AllInclusiveRoundedIcon />
-                    <Typography style={{ marginLeft: 10 }}>
-                      <strong>{openCount + closedCount}</strong> All
+            <Grid container alignItems="center" justify="space-between">
+              <Grid item xs={5}>
+                <Tabs
+                  value={activeTab}
+                  onChange={(_, value) => onTabChanged(value)}
+                  indicatorColor="primary"
+                  textColor="primary"
+                  variant="fullWidth"
+                  aria-label="action tabs example"
+                >
+                  <Tab
+                    label={
+                      <>
+                        <AllInclusiveRoundedIcon />
+                        <Typography style={{ marginLeft: 10 }}>
+                          <strong>{openCount + closedCount}</strong> All
                     </Typography>
-                  </>
-                }
-              />
-
-              <Tab
-                label={
-                  <>
-                    <ErrorIcon style={{ color: "green" }} />
-                    <Typography style={{ marginLeft: 10 }}>
-                      <strong>{openCount}</strong> Opened Issues
+                      </>
+                    }
+                  />
+                  <Tab
+                    label={
+                      <>
+                        <ErrorIcon style={{ color: "green" }} />
+                        <Typography style={{ marginLeft: 10 }}>
+                          <strong>{openCount}</strong> Opened Issues
                     </Typography>
-                  </>
-                }
-              />
-
-              <Tab
-                label={
-                  <>
-                    <ErrorIcon style={{ color: "red" }} />
-                    <Typography style={{ marginLeft: 10 }}>
-                      <strong>{closedCount}</strong> Closed Issues
+                      </>
+                    }
+                  />
+                  <Tab
+                    label={
+                      <>
+                        <ErrorIcon style={{ color: "red" }} />
+                        <Typography style={{ marginLeft: 10 }}>
+                          <strong>{closedCount}</strong> Closed Issues
                     </Typography>
-                  </>
-                }
-              />
-            </Tabs>
-            <Input
-              onChange={event => onInputChanged(event.target.value)}
-              value={searchInput}
-              onKeyUp={e => {
-                if (e.keyCode === 13) {
-                  e.preventDefault();
-                  setValidatedSearchInput(searchInput);
-                }
-              }}
-              endAdornment={
-                <InputAdornment>
-                  <SearchIcon />
-                </InputAdornment>
-              }
-              autoFocus
-              placeholder="search an issue ..."
-              style={{ marginLeft: 20, flex: 1 }}
-            />
+                      </>
+                    }
+                  />
+                </Tabs>
+              </Grid>
+              <Grid item xs={4} container alignItems="center" spacing={2}>
+                <Input
+                  onChange={e => onInputChanged(e.target.value)}
+                  value={searchInput}
+                  onKeyUp={e => {
+                    if (e.keyCode === 13) {
+                      e.preventDefault();
+                      setValidatedSearchInput(searchInput);
+                    }
+                  }}
+                  autoFocus
+                  placeholder="Search for an issue ..."
+                  style={{ marginLeft: 20, flex: 1 }}
+                />
+                <Grid item xs={2}>
+                  <Fab size="small" color="primary" onClick={() => setValidatedSearchInput(searchInput)}>
+                    <SearchIcon />
+                  </Fab>
+                </Grid>
+              </Grid>
+            </Grid>
           </ListItem>
           {issuesLoading ? <Loading />
             : (data.issues.edges.map(node => node == null ? null : <IssueItem key={node.id} issue={node} />))
