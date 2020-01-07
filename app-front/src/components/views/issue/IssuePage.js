@@ -39,12 +39,30 @@ import useStyle from "./IssuePage.scss";
 function IssuePage() {
   const { id } = useParams();
   const { data, loading } = useQuery(ISSUE_QUERY, { variables: { id } });
-  const [onIssueAddTag] = useMutation(ISSUE_ADD_TAG);
-  const [onIssueRemoveTag] = useMutation(ISSUE_REMOVE_TAG);
-  const [onIssueAssignUser] = useMutation(ISSUE_ASSIGNE_USER);
-  const [onIssueUnassignUser] = useMutation(ISSUE_UNASSIGN_USER);
-  const [onAttachToProject] = useMutation(ISSUE_ATTACH_TO_PROJECT);
-  const [onDetatchFromProject] = useMutation(ISSUE_DETATCH_FROM_PROJECT);
+  const [onIssueAddTag] = useMutation(ISSUE_ADD_TAG,
+    {
+      refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
+    });
+  const [onIssueRemoveTag] = useMutation(ISSUE_REMOVE_TAG,
+    {
+      refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
+    });
+  const [onIssueAssignUser] = useMutation(ISSUE_ASSIGNE_USER,
+    {
+      refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
+    });
+  const [onIssueUnassignUser] = useMutation(ISSUE_UNASSIGN_USER,
+    {
+      refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
+    });
+  const [onAttachToProject] = useMutation(ISSUE_ATTACH_TO_PROJECT,
+    {
+      refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
+    });
+  const [onDetatchFromProject] = useMutation(ISSUE_DETATCH_FROM_PROJECT,
+    {
+      refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
+    });
 
   if (loading) {
     return <Loading />;
@@ -82,148 +100,28 @@ function IssuePage() {
           <IssueAssignees
             assignedUsers={issue.assignedUsers}
             onAssignUser={assigne => {
-              onIssueAssignUser({
-                variables: { id: issue.id, userId: assigne.id },
-                update: (proxy, result) => {
-                  const { assignUser } = result.data;
-                  const { issue: cachedIssue } = proxy.readQuery({
-                    query: ISSUE_QUERY,
-                    variables: { id: issue.id }
-                  });
-                  proxy.writeQuery({
-                    query: ISSUE_QUERY,
-                    variables: { id: issue.id },
-                    data: {
-                      issue: {
-                        ...cachedIssue,
-                        assignedUsers: assignUser.assignedUsers,
-                        changes: assignUser.changes
-                      }
-                    }
-                  });
-                }
-              });
+              onIssueAssignUser({ variables: { id: issue.id, userId: assigne.id } });
             }}
             onUnassignUser={assigne => {
-              onIssueUnassignUser({
-                variables: { id: issue.id, userId: assigne.id },
-                update: (proxy, result) => {
-                  const { unassignUser } = result.data;
-                  const { issue: cachedIssue } = proxy.readQuery({
-                    query: ISSUE_QUERY,
-                    variables: { id: issue.id }
-                  });
-                  proxy.writeQuery({
-                    query: ISSUE_QUERY,
-                    variables: { id: issue.id },
-                    data: {
-                      issue: {
-                        ...cachedIssue,
-                        assignedUsers: unassignUser.assignedUsers,
-                        changes: unassignUser.changes
-                      }
-                    }
-                  });
-                }
-              });
+              onIssueUnassignUser({ variables: { id: issue.id, userId: assigne.id } });
             }}
           />
           <IssueTags
             tags={issue.tags}
             onTagAdded={tag => {
-              onIssueAddTag({
-                variables: { id: issue.id, tagId: tag.id },
-                update: (proxy, result) => {
-                  const { addTag } = result.data;
-                  const { issue: cachedIssue } = proxy.readQuery({
-                    query: ISSUE_QUERY,
-                    variables: { id: issue.id }
-                  });
-                  proxy.writeQuery({
-                    query: ISSUE_QUERY,
-                    variables: { id: issue.id },
-                    data: {
-                      issue: {
-                        ...cachedIssue,
-                        tags: addTag.tags,
-                        changes: addTag.changes
-                      }
-                    }
-                  });
-                }
-              });
+              onIssueAddTag({ variables: { id: issue.id, tagId: tag.id } });
             }}
             onTagRemoved={tag => {
-              onIssueRemoveTag({
-                variables: { id: issue.id, tagId: tag.id },
-                update: (proxy, result) => {
-                  const { removeTag } = result.data;
-                  const { issue: cachedIssue } = proxy.readQuery({
-                    query: ISSUE_QUERY,
-                    variables: { id: issue.id }
-                  });
-                  proxy.writeQuery({
-                    query: ISSUE_QUERY,
-                    variables: { id: issue.id },
-                    data: {
-                      issue: {
-                        ...cachedIssue,
-                        tags: removeTag.tags,
-                        changes: removeTag.changes
-                      }
-                    }
-                  });
-                }
-              });
+              onIssueRemoveTag({ variables: { id: issue.id, tagId: tag.id } });
             }}
           />
           <IssueProject
             project={issue.project}
             onAttachToProject={project => {
-              onAttachToProject({
-                variables: { id: issue.id, projectId: project.id },
-                update: (proxy, result) => {
-                  const { attachToProject } = result.data;
-                  const { issue: cachedIssue } = proxy.readQuery({
-                    query: ISSUE_QUERY,
-                    variables: { id: issue.id }
-                  });
-                  proxy.writeQuery({
-                    query: ISSUE_QUERY,
-                    variables: { id: issue.id },
-                    data: {
-                      issue: {
-                        ...cachedIssue,
-                        project: attachToProject.project,
-                        changes: attachToProject.changes
-                      }
-                    }
-                  });
-                }
-              });
+              onAttachToProject({ variables: { id: issue.id, projectId: project.id } });
             }}
             onDetachFromProject={project => {
-              onDetatchFromProject({
-                variables: { id: issue.id, projectId: project.id },
-                update: (proxy, result) => {
-                  const { detatchFromProject } = result.data;
-                  const { issue: cachedIssue } = proxy.readQuery({
-                    query: ISSUE_QUERY,
-                    variables: { id: issue.id }
-                  });
-                  proxy.writeQuery({
-                    query: ISSUE_QUERY,
-                    variables: { id: issue.id },
-                    data: {
-                      issue: {
-                        ...cachedIssue,
-                        project: detatchFromProject.project,
-                        changes: detatchFromProject.changes
-                      }
-                    }
-                  });
-                }
-              });
+              onDetatchFromProject({ variables: { id: issue.id, projectId: project.id } });
             }}
           />
         </Grid>
@@ -237,82 +135,51 @@ function IssueHeader(props) {
   const classes = useStyle();
   const [edit, setEdit] = useState(false);
   const [issueTitle, setIssueTitle] = useState(issue.title);
-  const [onIssueUpdateTitle] = useMutation(ISSUE_UPDATE);
+  const [onIssueUpdateTitle] = useMutation(ISSUE_UPDATE,
+    {
+      refetchQueries: [{ query: ISSUE_QUERY, variables: { id: issue.id } }]
+    });
   const [onIssueClose, { loading: isIssueClosePending }] = useMutation(
-    ISSUE_CLOSE
+    ISSUE_CLOSE,
+    {
+      refetchQueries: [{ query: ISSUE_QUERY, variables: { id: issue.id } }]
+    }
   );
   const [onIssueReOpen, { loading: isIssueReopenPending }] = useMutation(
-    ISSUE_REOPEN
+    ISSUE_REOPEN,
+    {
+      refetchQueries: [{ query: ISSUE_QUERY, variables: { id: issue.id } }]
+    }
   );
   const isPending = isIssueClosePending || isIssueReopenPending;
 
   const onClickClose = () => {
-    onIssueClose({
-      variables: { id: issue.id },
-      update: (proxy, result) => {
-        const { closeIssue } = result.data;
-        const { issue: cachedIssue } = proxy.readQuery({
-          query: ISSUE_QUERY,
-          variables: { id: issue.id }
-        });
-        proxy.writeQuery({
-          query: ISSUE_QUERY,
-          variables: { id: issue.id },
-          data: {
-            issue: {
-              ...cachedIssue,
-              open: closeIssue.open,
-              changes: closeIssue.changes
-            }
-          }
-        });
-      }
-    });
+    onIssueClose({ variables: { id: issue.id } });
   };
   const onClickOpen = () => {
-    onIssueReOpen({
-      variables: { id: issue.id },
-      update: (proxy, result) => {
-        const { reopenIssue } = result.data;
-        const { issue: cachedIssue } = proxy.readQuery({
-          query: ISSUE_QUERY,
-          variables: { id: issue.id }
-        });
-        proxy.writeQuery({
-          query: ISSUE_QUERY,
-          variables: { id: issue.id },
-          data: {
-            issue: {
-              ...cachedIssue,
-              open: reopenIssue.open,
-              changes: reopenIssue.changes
-            }
-          }
-        });
-      }
-    });
+    onIssueReOpen({ variables: { id: issue.id } });
   };
 
   return (
     <Grid item xs={12} container justify="center">
       <Grid item xs={11} container justify="space-between" alignItems="center">
         <Grid item xs={7}>
-          {edit ? (
-            <TextField
-              fullWidth
-              multiline
-              classes={{ root: classes.titleTextField }}
-              // variant="outlined"
-              rowsMax="15"
-              rows="1"
-              value={issueTitle}
-              onChange={e => setIssueTitle(e.target.value)}
-            />
-          ) : (
-            <Typography variant="h1" component="h1" gutterBottom>
-              # {issue.title}
-            </Typography>
-          )}
+          {edit ?
+            (
+              <TextField
+                fullWidth
+                multiline
+                classes={{ root: classes.titleTextField }}
+                rowsMax="15"
+                rows="1"
+                value={issueTitle}
+                onChange={e => setIssueTitle(e.target.value)}
+              />
+            ) : (
+              <Typography variant="h1" component="h1" gutterBottom>
+                # {issue.title}
+              </Typography>
+            )}
         </Grid>
         {edit ? (
           <Grid item xs={4} container spacing={1}>
@@ -335,26 +202,7 @@ function IssueHeader(props) {
                 color="primary"
                 size="small"
                 onClick={() => {
-                  onIssueUpdateTitle({
-                    variables: { id: issue.id, title: issueTitle },
-                    update: (proxy, result) => {
-                      const { updateIssue } = result.data;
-                      const { issue: cachedIssue } = proxy.readQuery({
-                        query: ISSUE_QUERY,
-                        variables: { id: issue.id }
-                      });
-                      proxy.writeQuery({
-                        query: ISSUE_QUERY,
-                        data: {
-                          issue: {
-                            ...cachedIssue,
-                            titleIssue: updateIssue.title,
-                            changes: updateIssue.changes
-                          }
-                        }
-                      });
-                    }
-                  });
+                  onIssueUpdateTitle({ variables: { id: issue.id, title: issueTitle } });
                   setEdit(false);
                 }}
               >
@@ -363,25 +211,25 @@ function IssueHeader(props) {
             </Grid>
           </Grid>
         ) : (
-          <Grid item xs={4} container spacing={1}>
-            <Grid item>
-              <IconButton size="small" onClick={() => setEdit(true)}>
-                <EditIcon />
-              </IconButton>
+            <Grid item xs={4} container spacing={1}>
+              <Grid item>
+                <IconButton size="small" onClick={() => setEdit(true)}>
+                  <EditIcon />
+                </IconButton>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  size="small"
+                  disabled={isPending}
+                  color={issue.open ? "secondary" : "primary"}
+                  onClick={issue.open ? onClickClose : onClickOpen}
+                >
+                  {issue.open ? "Close Issue" : "Open Issue"}
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                size="small"
-                disabled={isPending}
-                color={issue.open ? "secondary" : "primary"}
-                onClick={issue.open ? onClickClose : onClickOpen}
-              >
-                {issue.open ? "Close Issue" : "Open Issue"}
-              </Button>
-            </Grid>
-          </Grid>
-        )}
+          )}
       </Grid>
     </Grid>
   );
@@ -391,9 +239,15 @@ function IssueBody(props) {
   const { issue } = props;
   const { comments, changes } = issue;
   const { me } = useMe();
-  const [onCreateComment] = useMutation(CREATE_COMMENT);
-  const [onDeleteComment] = useMutation(DELETE_COMMENT);
-  const [onUpdateComment] = useMutation(UPDATE_COMMENT);
+  const [onCreateComment] = useMutation(CREATE_COMMENT, {
+    refetchQueries: [{ query: ISSUE_QUERY, variables: { id: issue.id } }]
+  });
+  const [onDeleteComment] = useMutation(DELETE_COMMENT, {
+    refetchQueries: [{ query: ISSUE_QUERY, variables: { id: issue.id } }]
+  });
+  const [onUpdateComment] = useMutation(UPDATE_COMMENT, {
+    refetchQueries: [{ query: ISSUE_QUERY, variables: { id: issue.id } }]
+  });
 
   function issueBodyNodes() {
     return [
@@ -414,30 +268,7 @@ function IssueBody(props) {
                 updatedAt={comment.updatedAt}
                 creatorName={comment.creator.name}
                 onCommentUpdated={content => {
-                  onUpdateComment({
-                    variables: { id: comment.id, content },
-                    update: (proxy, result) => {
-                      const { updateComment } = result.data;
-                      const { issue: cachedIssue } = proxy.readQuery({
-                        query: ISSUE_QUERY,
-                        variables: { id: issue.id }
-                      });
-                      proxy.writeQuery({
-                        query: ISSUE_QUERY,
-                        variables: { id: issue.id },
-                        data: {
-                          issue: {
-                            ...cachedIssue,
-                            comments: issue.comments.map(x => {
-                              if (x.id === updateComment.id)
-                                return updateComment;
-                              return x;
-                            })
-                          }
-                        }
-                      });
-                    }
-                  });
+                  onUpdateComment({ variables: { id: comment.id, content } });
                 }}
                 onCommentDeleted={() => {
                   onDeleteComment({
@@ -445,27 +276,6 @@ function IssueBody(props) {
                     optimisticResponse: {
                       __typename: "Mutation",
                       deleteComment: true
-                    },
-                    update: (proxy, result) => {
-                      const { deleteComment } = result.data;
-                      if (deleteComment) {
-                        const { issue: cachedIssue } = proxy.readQuery({
-                          query: ISSUE_QUERY,
-                          variables: { id: issue.id }
-                        });
-                        proxy.writeQuery({
-                          query: ISSUE_QUERY,
-                          variables: { id: issue.id },
-                          data: {
-                            issue: {
-                              ...cachedIssue,
-                              comments: issue.comments.filter(
-                                x => x.id !== comment.id
-                              )
-                            }
-                          }
-                        });
-                      }
                     }
                   });
                 }}
@@ -484,32 +294,17 @@ function IssueBody(props) {
   return (
     <>
       {issueBodyNodes()}
-      <IssueComment
-        user={me}
-        creator={me}
-        onCommentCreated={content => {
-          onCreateComment({
-            variables: { content, issueId: issue.id },
-            update: (proxy, result) => {
-              const { createComment } = result.data;
-              const { issue: cachedIssue } = proxy.readQuery({
-                query: ISSUE_QUERY,
-                variables: { id: issue.id }
-              });
-              proxy.writeQuery({
-                query: ISSUE_QUERY,
-                variables: { id: issue.id },
-                data: {
-                  issue: {
-                    ...cachedIssue,
-                    comments: [...issue.comments, createComment]
-                  }
-                }
-              });
-            }
-          });
-        }}
-      />
+      {issue.open &&
+        <IssueComment
+          user={me}
+          creator={me}
+          onCommentCreated={content => {
+            onCreateComment({
+              variables: { content, issueId: issue.id },
+            });
+          }}
+        />
+      }
     </>
   );
 }
