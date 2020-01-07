@@ -7,14 +7,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { useMutation } from "@apollo/react-hooks";
 import { UPDATE_USER_PASSWORD } from "../../core/models/users/users.graphql";
 
-const tooltip_oldPassword = (
-  <p style={{"fontSize" : "12px"}}>Le champs doit comporter au minimun :<br/>
-    - 2 Majuscules<br/>
-    - 4 Minuscules<br/>
-    - 2 Chiffres
-  </p>
-)
-
 const tooltip_password = (
   <p style={{"fontSize" : "12px"}}>Le champs doit comporter au minimun :<br/>
     - 2 Majuscules<br/>
@@ -60,20 +52,18 @@ function SecuritySettings() {
         <Grid item container spacing={4}>
           <Grid item container direction="column" justify="flex-start">
             <Grid item>
-              <Tooltip title={tooltip_oldPassword} placement="bottom-end">
-                <TextField
-                  required
-                  fullWidth
-                  variant="outlined"
-                  margin="normal"
-                  value={oldPassword}
-                  onChange={e => setOldPassword(e.target.value)}
-                  name="oldPassword"
-                  label="old password"
-                  type="password"
-                  error={!!oldPassword && !regex(oldPassword)}
-                />
-              </Tooltip>
+              <TextField
+                required
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                value={oldPassword}
+                onChange={e => setOldPassword(e.target.value)}
+                name="oldPassword"
+                label="old password"
+                type="password"
+                error={!oldPassword}
+              />
               <Tooltip title={tooltip_password} placement="bottom-end">
                 <TextField
                   required
@@ -126,7 +116,7 @@ function SecuritySettings() {
                   e.preventDefault();
                   checkAndSetPassword();
                 }}
-                disabled={!oldPassword || !regex(confirmPassword) || !regex(newPassword) || !regex(oldPassword) || newPassword !== oldPassword}
+                disabled={!oldPassword || !regex(confirmPassword) || !regex(newPassword) || newPassword !== confirmPassword}
               >
                 Save
               </Button>
