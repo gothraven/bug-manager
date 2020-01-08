@@ -23,7 +23,7 @@ la base de données est également déployée en ligne sur [mongodb.com](https:/
 - React.js: utilisé comme Framework front end de l'application
 - Material UI: est une implémentatin de "Material Design" en React.js, c'est un système adaptable, qui vient avec des componsants que nous pouvons utiliser à notre guise. 
 
-actuellement déployé sur *Firebase* => [bug-manager.io](https://bug-manager-e2e19.firebaseapp.com/), créer vos propres utilisateurs ou utiliser les utilisateurs suivants
+actuellement déployé sur *Firebase* => [https://bug-manager-e2e19.firebaseapp.com/](https://bug-manager-e2e19.firebaseapp.com/), créer vos propres utilisateurs ou utiliser les utilisateurs suivants
 ```
 Admin:
 - email: admin@bug.co
