@@ -1,5 +1,4 @@
 scalar Date
-scalar PositiveInt
 
 type Status {
   id: ID!
@@ -9,14 +8,9 @@ type Status {
   description: String
 }
 
-type StatusCursor {
-  edges: [Status!]!
-  pageInfo: PageInfo!
-}
-
 type Query {
   status(id: ID!): Status!
-  statuses(after: String, first: PositiveInt): StatusCursor
+  statuses: [Status]!
 }
 
 type Mutation {

@@ -27,10 +27,20 @@ function SecuritySettings() {
   const [onUserPasswordUpdate] = useMutation(UPDATE_USER_PASSWORD, {
     variables: { oldPassword, newPassword }
   });
+
+  const onUndoHandler = () => {
+    setOldPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+  };
   const checkAndSetPassword = () =>
     newPassword === confirmPassword && regex(newPassword)
-      ? onUserPasswordUpdate()
+      ? () => {
+          onUserPasswordUpdate();
+          onUndoHandler("");
+        }
       : () => {};
+
   const regexCharacters = /^[a-zA-Z0-9-_()$&*!@#]{8,}$/;
   const regexUpperCase = /^.*[A-Z].*[A-Z].*$/;
   const regexLowerCase = /^.*[a-z].*[a-z].*[a-z].*[a-z].*$/;
@@ -105,15 +115,7 @@ function SecuritySettings() {
           </Grid>
           <Grid container justify="flex-end" alignItems="center" spacing={1}>
             <Grid item>
-              <Button
-                color="secondary"
-                type="button"
-                onClick={() => {
-                  setOldPassword("");
-                  setNewPassword("");
-                  setConfirmPassword("");
-                }}
-              >
+              <Button color="secondary" type="button" onClick={onUndoHandler}>
                 Undo
               </Button>
             </Grid>
