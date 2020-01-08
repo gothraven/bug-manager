@@ -21,6 +21,9 @@ export default {
       authorize(ADMIN),
       async (parent, { id, name, description }, { models }) => {
         const options = omitBy({ name, description }, isNil);
+        if (name === '') {
+          return new Error('name should not be empty');
+        }
         return models.Status.findByIdAndUpdate(id, options, { new: true });
       }
     ),
