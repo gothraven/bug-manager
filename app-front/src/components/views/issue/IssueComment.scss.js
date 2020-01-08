@@ -9,6 +9,7 @@ export default makeStyles(theme => ({
     borderRadius: theme.shape.borderRadius
   },
   content: {
-    whiteSpace: "pre-wrap"
+    whiteSpace: "pre-wrap",
+    padding: "10px"
   }
 }));

@@ -39,7 +39,7 @@ function IssueComment(props) {
         alignItems="center"
         spacing={1}
       >
-        <Grid item xs>
+        <Grid item xs style={{ marginLeft: 10 }}>
           <Typography variant="caption">{`Created ${moment(
             createdAt
           ).fromNow()}`}</Typography>
@@ -56,6 +56,7 @@ function IssueComment(props) {
           justify="flex-end"
           alignItems="center"
           spacing={1}
+          style={{ marginRight: 5 }}
         >
           <Grid item>
             <Chip size="small" label={creator.role} variant="outlined" />
