@@ -35,6 +35,7 @@ import {
 } from "../../core/models/issues/issues.graphql";
 
 import useStyle from "./IssuePage.scss";
+import IssueStatus from "./IssueStatus";
 
 function IssuePage() {
   const { id } = useParams();
@@ -91,6 +92,12 @@ function IssuePage() {
           <IssueBody issue={issue} />
         </Grid>
         <Grid item xs={3}>
+          <IssueStatus
+            status={issue.status}
+            statusOpened={issue.open}
+            onAttachToStatus={(/* status */) => {}}
+            onDetachFromStatus={(/* status */) => {}}
+          />
           <IssueAssignees
             assignedUsers={issue.assignedUsers}
             onAssignUser={assigne => {
