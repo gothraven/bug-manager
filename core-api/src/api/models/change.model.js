@@ -47,20 +47,4 @@ const changeSchema = new mongoose.Schema(
   }
 );
 
-changeSchema.method({
-  /**
-   * @deprecated Since version 1.0.
-   */
-  transform() {
-    const transformed = {};
-    const fields = ['id', 'userId', 'issueId', 'type', 'data'];
-
-    fields.forEach((field) => {
-      transformed[field] = this[field];
-    });
-
-    return transformed;
-  }
-});
-
 export default mongoose.model('Change', changeSchema);
