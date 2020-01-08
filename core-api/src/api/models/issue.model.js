@@ -54,31 +54,4 @@ issueSchema.post('remove', async function remove(_, next) {
   }
 });
 
-issueSchema.method({
-  /**
-   * @deprecated Since version 1.0.
-   */
-  transform() {
-    const transformed = {};
-    const fields = [
-      'id',
-      'title',
-      'createdAt',
-      'updatedAt',
-      'creatorId',
-      'open',
-      'statusId',
-      'assignedUserIds',
-      'tagsIds',
-      'projectId'
-    ];
-
-    fields.forEach((field) => {
-      transformed[field] = this[field];
-    });
-
-    return transformed;
-  }
-});
-
 module.exports = mongoose.model('Issue', issueSchema);
