@@ -28,6 +28,7 @@ import {
   ISSUE_REMOVE_TAG,
   ISSUE_ASSIGNE_USER,
   ISSUE_UNASSIGN_USER,
+  ISSUE_UPDATE_STATUS,
   ISSUE_UPDATE,
   ISSUE_CLOSE,
   ISSUE_REOPEN,
@@ -58,6 +59,9 @@ function IssuePage() {
     refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
   });
   const [onDetatchFromProject] = useMutation(ISSUE_DETATCH_FROM_PROJECT, {
+    refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
+  });
+  const [onIssueUpdateStatusProject] = useMutation(ISSUE_UPDATE_STATUS, {
     refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
   });
 
@@ -96,9 +100,12 @@ function IssuePage() {
         <Grid item xs={3}>
           <IssueStatus
             status={issue.status}
-            statusOpened={issue.open}
-            onAttachToStatus={(/* status */) => {}}
-            onDetachFromStatus={(/* status */) => {}}
+            open={issue.open}
+            onUpdateIssueStatus={status => {
+              onIssueUpdateStatusProject({
+                variables: { id: issue.id, statusId: status.id }
+              });
+            }}
           />
           <IssueAssignees
             assignedUsers={issue.assignedUsers}
