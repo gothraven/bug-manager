@@ -28,17 +28,14 @@ export default {
       }
     ),
 
-    deleteStatus: combineResolvers(
-      authorize(ADMIN),
-      async (parent, { id }, { models }) => {
-        const status = await models.Status.findById(id);
+    deleteStatus: combineResolvers(authorize(ADMIN), async (parent, { id }, { models }) => {
+      const status = await models.Status.findById(id);
 
-        if (status) {
-          await status.remove();
-          return true;
-        }
-        return false;
+      if (status) {
+        await status.remove();
+        return true;
       }
-    )
+      return false;
+    })
   }
 };
