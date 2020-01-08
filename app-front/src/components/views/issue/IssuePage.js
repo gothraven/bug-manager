@@ -28,6 +28,7 @@ import {
   ISSUE_REMOVE_TAG,
   ISSUE_ASSIGNE_USER,
   ISSUE_UNASSIGN_USER,
+  ISSUE_UPDATE_STATUS,
   ISSUE_UPDATE,
   ISSUE_CLOSE,
   ISSUE_REOPEN,
@@ -36,6 +37,7 @@ import {
 } from "../../core/models/issues/issues.graphql";
 
 import useStyle from "./IssuePage.scss";
+import IssueStatus from "./IssueStatus";
 
 function IssuePage() {
   const { id } = useParams();
@@ -57,6 +59,9 @@ function IssuePage() {
     refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
   });
   const [onDetatchFromProject] = useMutation(ISSUE_DETATCH_FROM_PROJECT, {
+    refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
+  });
+  const [onIssueUpdateStatusProject] = useMutation(ISSUE_UPDATE_STATUS, {
     refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
   });
 
@@ -93,6 +98,15 @@ function IssuePage() {
           <IssueBody me={me} issue={issue} />
         </Grid>
         <Grid item xs={3}>
+          <IssueStatus
+            status={issue.status}
+            open={issue.open}
+            onUpdateIssueStatus={status => {
+              onIssueUpdateStatusProject({
+                variables: { id: issue.id, statusId: status.id }
+              });
+            }}
+          />
           <IssueAssignees
             assignedUsers={issue.assignedUsers}
             onAssignUser={assigne => {

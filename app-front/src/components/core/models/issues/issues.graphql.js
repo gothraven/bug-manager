@@ -97,6 +97,14 @@ const ISSUE_ASSIGNED_USERS = `
   }
 `;
 
+const ISSUE_STATUS = `
+  status {
+    id
+    name
+    description
+  }
+`;
+
 export const ISSUE_QUERY = gql`
   query IssuePageQuery($id: ID!) {
     issue(id: $id) {
@@ -109,6 +117,7 @@ export const ISSUE_QUERY = gql`
         name
       }
       open
+      ${ISSUE_STATUS}
       ${ISSUE_ASSIGNED_USERS}
       ${ISSUE_TAGS}
       ${ISSUE_PROJECT}
@@ -142,6 +151,15 @@ export const ISSUE_UPDATE = gql`
       id
       title
       updatedAt
+    }
+  }
+`;
+
+export const ISSUE_UPDATE_STATUS = gql`
+  mutation IssueUpdateStatusMutation($id: ID!, $statusId: ID!) {
+    updateIssueStatus(id: $id, statusId: $statusId) {
+      ${ISSUE_STATUS}
+      ${ISSUE_CHANGES}
     }
   }
 `;
