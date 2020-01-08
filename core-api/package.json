@@ -49,12 +49,9 @@
     "jwt-simple": "0.5.6",
     "lodash": "^4.17.4",
     "merge-graphql-schemas": "^1.7.3",
-    "method-override": "^3.0.0",
     "moment-timezone": "^0.5.13",
     "mongoose": "^5.7.13",
     "morgan": "^1.8.1",
-    "passport": "^0.4.0",
-    "passport-jwt": "4.0.0",
     "pm2": "^3.0.0",
     "uuid": "^3.1.0",
     "winston": "^3.1.0"
