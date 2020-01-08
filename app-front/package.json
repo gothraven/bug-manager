@@ -36,7 +36,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.js' --fix",
-    "format": "prettier 'src/**/*.{js,json}' --write"
+    "format": "prettier 'src/**/*.{js,json}' --write",
+    "deploy": "npm run build && firebase deploy"
   },
   "husky": {
     "hooks": {
