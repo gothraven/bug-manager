@@ -15,6 +15,7 @@ import IssueTags from "./IssueTags";
 import IssueAssignees from "./IssueAssignees";
 import Loading from "../../lib/Loading";
 import IssueProject from "./IssueProject";
+import { Can } from "../../core/Ability";
 import { useMe } from "../../core/models/users/users.hooks";
 import {
   CREATE_COMMENT,
@@ -38,6 +39,7 @@ import useStyle from "./IssuePage.scss";
 
 function IssuePage() {
   const { id } = useParams();
+  const { me } = useMe();
   const { data, loading } = useQuery(ISSUE_QUERY, { variables: { id } });
   const [onIssueAddTag] = useMutation(ISSUE_ADD_TAG, {
     refetchQueries: [{ query: ISSUE_QUERY, variables: { id } }]
@@ -73,7 +75,7 @@ function IssuePage() {
       spacing={2}
     >
       <Grid item container direction="column">
-        <IssueHeader issue={issue} />
+        <IssueHeader me={me} issue={issue} />
         <Grid item>
           <Divider />
         </Grid>
@@ -88,7 +90,7 @@ function IssuePage() {
           alignItems="stretch"
           spacing={3}
         >
-          <IssueBody issue={issue} />
+          <IssueBody me={me} issue={issue} />
         </Grid>
         <Grid item xs={3}>
           <IssueAssignees
@@ -133,7 +135,7 @@ function IssuePage() {
 }
 
 function IssueHeader(props) {
-  const { issue } = props;
+  const { issue, me } = props;
   const classes = useStyle();
   const [edit, setEdit] = useState(false);
   const [issueTitle, setIssueTitle] = useState(issue.title);
@@ -215,20 +217,34 @@ function IssueHeader(props) {
         ) : (
           <Grid item xs={4} container spacing={1}>
             <Grid item>
-              <IconButton size="small" onClick={() => setEdit(true)}>
-                <EditIcon />
-              </IconButton>
+              <Can
+                do="edit"
+                on={me.id === issue.creator.id ? "MyIssue" : "Issue"}
+              >
+                {() => (
+                  <IconButton size="small" onClick={() => setEdit(true)}>
+                    <EditIcon />
+                  </IconButton>
+                )}
+              </Can>
             </Grid>
             <Grid item>
-              <Button
-                variant="contained"
-                size="small"
-                disabled={isPending}
-                color={issue.open ? "secondary" : "primary"}
-                onClick={issue.open ? onClickClose : onClickOpen}
+              <Can
+                do="open/close"
+                on={me.id === issue.creator.id ? "MyIssue" : "Issue"}
               >
-                {issue.open ? "Close Issue" : "Open Issue"}
-              </Button>
+                {() => (
+                  <Button
+                    variant="contained"
+                    size="small"
+                    disabled={isPending}
+                    color={issue.open ? "secondary" : "primary"}
+                    onClick={issue.open ? onClickClose : onClickOpen}
+                  >
+                    {issue.open ? "Close Issue" : "Open Issue"}
+                  </Button>
+                )}
+              </Can>
             </Grid>
           </Grid>
         )}
@@ -238,9 +254,8 @@ function IssueHeader(props) {
 }
 
 function IssueBody(props) {
-  const { issue } = props;
+  const { issue, me } = props;
   const { comments, changes } = issue;
-  const { me } = useMe();
   const [onCreateComment] = useMutation(CREATE_COMMENT, {
     refetchQueries: [{ query: ISSUE_QUERY, variables: { id: issue.id } }]
   });
@@ -315,10 +330,12 @@ function IssueBody(props) {
 }
 
 IssueBody.propTypes = {
-  issue: PropType.object.isRequired
+  issue: PropType.object.isRequired,
+  me: PropType.object.isRequired
 };
 IssueHeader.propTypes = {
-  issue: PropType.object.isRequired
+  issue: PropType.object.isRequired,
+  me: PropType.object.isRequired
 };
 
 export default IssuePage;
