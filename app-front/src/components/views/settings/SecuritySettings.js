@@ -62,6 +62,9 @@ function SecuritySettings() {
         <Typography variant="h1" component="h1" gutterBottom>
           Security information
         </Typography>
+        <Typography variant="subtitle1" component="p" gutterBottom>
+          Security settings is about changing the user password !
+        </Typography>
         <Grid item container spacing={4}>
           <Grid item container direction="column" justify="flex-start">
             <Grid item>

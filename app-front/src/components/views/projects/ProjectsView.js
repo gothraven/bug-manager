@@ -53,13 +53,17 @@ function ProjectsView() {
       justify="flex-start"
       alignItems="stretch"
     >
-      {!((((data || {}).projects || {}).edges || []).length === 0) ? (
-        <Typography variant="h1" component="h1" gutterBottom>
-          All Projects
-        </Typography>
-      ) : (
-        <Typography />
-      )}
+      {!(data.projects.edges.length === 0) ? (
+        <>
+          <Typography variant="h1" component="h1" gutterBottom>
+            All Projects
+          </Typography>
+          <Typography variant="subtitle1" component="p" gutterBottom>
+            Here you can create or find all the projects, which your team can
+            use to link issues to the right project !
+          </Typography>
+        </>
+      ) : null}
       <Grid item>
         {data.projects.edges.length !== 0 ? (
           <Grid container direction="row" alignItems="flex-start">
