@@ -101,6 +101,9 @@ function HomeUsers(props) {
             />
           ))}
         </Grid>
+        <Typography variant="body1" align="center" gutterBottom>
+          We are just kidding !
+        </Typography>
       </Container>
     </div>
   );

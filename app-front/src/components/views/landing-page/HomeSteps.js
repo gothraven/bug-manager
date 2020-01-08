@@ -4,6 +4,9 @@ import clsx from "clsx";
 import { withStyles, useTheme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
+import Link from "@material-ui/core/Link";
 import BugReportIcon from "@material-ui/icons/BugReport";
 import BuildIcon from "@material-ui/icons/Build";
 import WhatshotIcon from "@material-ui/icons/Whatshot";
@@ -50,13 +53,27 @@ const styles = theme => ({
   stepBody: {
     minHeight: 290
   },
-
+  divider: {
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(2)
+  },
   img: {
     maxWidth: 500,
     width: "100%",
-    height: "auto"
+    height: "auto",
+    borderRadius: "2%"
   }
 });
+
+const ReadMeLink = React.forwardRef((buttonProps, ref) => (
+  <Link
+    naked
+    prefetch
+    href="https://git-etudiants.lacl.fr/restProjet2019/safiy-errahmane-zaghbane-abdoul-mouctar-diallo-nadir-si-mohammed-ludwig-nice/blob/master/README.md"
+    ref={ref}
+    {...buttonProps}
+  />
+));
 
 function HomeSteps(props) {
   const { classes } = props;
@@ -80,15 +97,20 @@ function HomeSteps(props) {
           <Typography variant="subtitle1" component="div" gutterBottom>
             Follow the instructions on the README file to do all the necessary
             steps.
+            <br />
+            <br />
+            <br />
           </Typography>
           <img
             className={classes.img}
-            src={`/images/themes-${theme.palette.type}.jpg`}
+            src="/images/installation-instructions.png"
             loading="eager"
             alt=""
             width={500}
             height={307}
           />
+          <Divider className={classes.divider} />
+          <Button component={ReadMeLink}>Find the README</Button>
         </div>
       </Grid>
       <Grid item xs={12} md={4} className={classes.step}>
@@ -105,7 +127,15 @@ function HomeSteps(props) {
           </Typography>
           <img
             className={classes.img}
-            src={`/images/themes-${theme.palette.type}.jpg`}
+            src="/images/deploy-1.png"
+            alt=""
+            loading="eager"
+            width={500}
+            height={307}
+          />
+          <img
+            className={classes.img}
+            src="/images/deploy-2.png"
             alt=""
             loading="eager"
             width={500}
