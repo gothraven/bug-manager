@@ -10,7 +10,6 @@
     "lint": "eslint 'src/**/*.js' --fix",
     "format": "prettier-eslint 'src/**/*.{js,json}' --write",
     "test": "cross-env NODE_ENV=test nyc --reporter=text mocha --timeout 20000 --recursive src/api/tests",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "populate:basic": "babel-node ./populate.db.js",
     "populate:full": "babel-node ./populate.db.js --full"
   },
@@ -28,7 +27,7 @@
   },
   "keywords": [
     "express",
-    "rest",
+    "graphql",
     "api",
     "node",
     "es7"
@@ -60,9 +59,6 @@
     "@babel/preset-env": "^7.7.1",
     "@babel/register": "^7.7.0",
     "babel-eslint": "^10.0.3",
-    "chai": "^4.1.0",
-    "chai-as-promised": "^7.1.1",
-    "coveralls": "^3.0.0",
     "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^12.0.1",
     "eslint-plugin-import": "^2.2.0",
@@ -73,10 +69,7 @@
     "mocha": "^6.2.0",
     "nodemon": "^1.11.0",
     "nyc": "^14.1.1",
-    "prettier-eslint-cli": "^5.0.0",
-    "sinon": "^6.0.0",
-    "sinon-chai": "^3.0.0",
-    "supertest": "^4.0.2"
+    "prettier-eslint-cli": "^5.0.0"
   },
   "peerDependencies": {
     "eslint": "^4.9.0"
