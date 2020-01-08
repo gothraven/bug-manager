@@ -382,7 +382,6 @@ function StatusListItem(props) {
             onChange={e => setName(e.target.value)}
           />
           <TextField
-            error={description === ""}
             margin="dense"
             label="Status description"
             type="text"
