@@ -15,14 +15,15 @@ Cette première partie constitue le coeur de metier du projet, nommé API(Applic
 - MongoDB: Constitue la base de données Non Relationnelle que nous avons utilisé dans ce projet
 - ...
 
-actuellement déployé dans [https://bug-manager-core.herokuapp.com](https://bug-manager-core.herokuapp.com) en mode dev pour que tu puisses utiliser le Playground de Graphql.
+actuellement déployé sur *Heroku* => [https://bug-manager-core.herokuapp.com](https://bug-manager-core.herokuapp.com) en mode dev pour que tu puisses utiliser le Playground de Graphql.
+la base de données est également déployée en ligne sur [mongodb.com](https://www.mongodb.com/)
 
 ### APP-FRONT
 À cette seconde partie, le developpement concerne de mettre en place une interface WEB permettant d'utiliser l'API de manieère plus naturelle. Le technologies que nous avons utilisés entre autres:
 - React.js: utilisé comme Framework front end de l'application
 - Material UI: est une implémentatin de "Material Design" en React.js, c'est un système adaptable, qui vient avec des componsants que nous pouvons utiliser à notre guise. 
 
-actuellement déployé dans [bug-manager.io](https://bug-manager-e2e19.firebaseapp.com/)
+actuellement déployé sur *Firebase* => [bug-manager.io](https://bug-manager-e2e19.firebaseapp.com/)
 
 ## INSTALLATION
 
