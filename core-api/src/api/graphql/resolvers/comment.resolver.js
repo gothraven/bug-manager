@@ -23,6 +23,9 @@ export default {
       own('Comment'),
       async (parent, { id, content }, { models }) => {
         const options = omitBy({ content }, isNil);
+        if (content === '') {
+          return new Error('content should not be empty');
+        }
         return models.Comment.findByIdAndUpdate(id, options, { new: true });
       }
     ),

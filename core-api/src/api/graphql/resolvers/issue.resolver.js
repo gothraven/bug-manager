@@ -54,6 +54,9 @@ export default {
       own('Issue'),
       async (parent, { id, title }, { models }) => {
         const options = omitBy({ title }, isNil);
+        if (title === '') {
+          return new Error('title should not be empty');
+        }
         const issue = models.Issue.findByIdAndUpdate(id, options, {
           new: true
         });
