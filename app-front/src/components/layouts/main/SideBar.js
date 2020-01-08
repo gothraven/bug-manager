@@ -93,7 +93,11 @@ function SideBar(props) {
         </Grid>
         <Grid item>
           <List>
-            <ListItem button classes={{ root: classes.listItem }}>
+            <ListItem
+              button
+              classes={{ root: classes.listItem }}
+              onClick={() => history.push("/landing-page")}
+            >
               <ListItemIcon classes={{ root: classes.listItemIcon }}>
                 <HelpIcon />
               </ListItemIcon>

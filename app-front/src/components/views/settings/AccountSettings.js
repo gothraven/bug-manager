@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
+import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -7,14 +8,22 @@ import Button from "@material-ui/core/Button";
 import { useMe } from "../../core/models/users/users.hooks";
 import { ME_QUERY, UPDATE_USER } from "../../core/models/users/users.graphql";
 
+const useStyles = makeStyles(theme => ({
+  whiteCard: {
+    backgroundColor: theme.palette.background.paper,
+    borderRadius: "2%"
+  }
+}));
+
 function AccountSettings() {
   const { me } = useMe();
-  const [username, setUsername] = useState(me.name);
+  const classes = useStyles();
+  const [name, setName] = useState(me.name);
   const [email, setEmail] = useState(me.email);
   const [onUpdateUser, { loading: isUpdateUserPending }] = useMutation(
     UPDATE_USER,
     {
-      variables: { name: username, email },
+      variables: { name, email },
       update: (proxy, { data }) => {
         const user = data.updateUser;
         proxy.writeQuery({
@@ -32,22 +41,35 @@ function AccountSettings() {
         direction="column"
         justify="flex-start"
         alignItems="stretch"
+        spacing={3}
       >
-        <Typography variant="h1" component="h1" gutterBottom>
-          Account information
-        </Typography>
+        <Grid item>
+          <Typography variant="h1" component="h1" gutterBottom>
+            Account information
+          </Typography>
+          <Typography variant="subtitle1" component="p" gutterBottom>
+            Account informations settings is about changing the user general
+            informations !
+          </Typography>
+        </Grid>
         <Grid item container spacing={4}>
-          <Grid item container direction="column" justify="flex-start">
+          <Grid
+            item
+            container
+            direction="column"
+            justify="flex-start"
+            className={classes.whiteCard}
+          >
             <Grid item>
               <TextField
                 fullWidth
                 required
-                error={username === ""}
+                error={name === ""}
                 label="username"
                 variant="outlined"
                 margin="normal"
-                value={username}
-                onChange={e => setUsername(e.target.value)}
+                value={name}
+                onChange={e => setName(e.target.value)}
                 name="username"
                 type="text"
               />
@@ -78,7 +100,7 @@ function AccountSettings() {
                 color="secondary"
                 type="button"
                 onClick={() => {
-                  setUsername(me.name);
+                  setName(me.name);
                   setEmail(me.email);
                 }}
               >
@@ -90,7 +112,10 @@ function AccountSettings() {
                 color="primary"
                 type="submit"
                 disabled={
-                  isUpdateUserPending || email === "" || username === ""
+                  isUpdateUserPending ||
+                  email === "" ||
+                  name === "" ||
+                  (email === me.email && name === me.name)
                 }
                 onClick={e => {
                   e.preventDefault();

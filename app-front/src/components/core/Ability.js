@@ -30,10 +30,14 @@ export function defineRulesFor(role) {
     can("see", "Projects");
     can("use", "AssignTags");
     can("use", "AttachProject");
+    can("open/close", "Issue");
+    can("edit", "Issue");
     can("edit", "Comment");
     can("delete", "Comment");
   }
   can("see", "Settings");
+  can("open/close", "MyIssue");
+  can("edit", "MyIssue");
   can("edit", "MyComment");
   can("delete", "MyComment");
   can("see", "Dashboard");

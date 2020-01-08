@@ -1,10 +1,10 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
-import Link from "@material-ui/core/Link";
 import Copyright from "../../lib/Copyright";
 import HomeUsers from "./HomeUsers";
 import HomeSteps from "./HomeSteps";
@@ -53,19 +53,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const GettingStartedLink = React.forwardRef((props, ref) => {
-  return (
-    <Link
-      href="https://git-etudiants.lacl.fr/restProjet2019/safiy-errahmane-zaghbane-abdoul-mouctar-diallo-nadir-si-mohammed-ludwig-nice"
-      naked
-      prefetch
-      ref={ref}
-      {...props}
-    />
-  );
-});
-
 function LandingPage() {
+  const history = useHistory();
   const classes = useStyles();
 
   return (
@@ -88,11 +77,11 @@ function LandingPage() {
             </Typography>
             <Typography variant="h4" component="h2">
               An Issue Manager for faster and easier development. Build your own
-              project system, or monitoring its issues was never more easier.
+              project system, for monitoring issues.
             </Typography>
             <Button
-              component={GettingStartedLink}
               className={classes.button}
+              onClick={() => history.push("/")}
               variant="outlined"
             >
               Get Started
@@ -102,7 +91,7 @@ function LandingPage() {
         <HomeSteps />
         <HomeUsers />
       </main>
-      <Grid container justify="center" spacing={10}>
+      <Grid container justify="center">
         <Grid item>
           <Copyright />
         </Grid>
