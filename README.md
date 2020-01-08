@@ -20,6 +20,7 @@ Cette première partie constitue le coeur de metier du projet, nommé API(Applic
 - React.js: utilisé comme Framework front end de l'application
 - Material UI: est une implémentatin de "Material Design" en React.js, c'est un système adaptable, qui vient avec des componsants que nous pouvons utiliser à notre guise. 
 
+actuellement déployé dans [bug-manager.io](https://bug-manager-e2e19.firebaseapp.com/)
 
 ## INSTALLATION
 
