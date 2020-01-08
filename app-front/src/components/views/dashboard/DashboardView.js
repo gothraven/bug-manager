@@ -85,6 +85,22 @@ function DashboardView() {
 
   const { openCount, closedCount } = statisticsData.issuesStatistics;
 
+  if (!issuesLoading && data.issues.edges.length === 0) {
+    return (
+      <p
+        style={{
+          fontSize: 100,
+          fontWeight: 1000,
+          color: "#c1c1c1",
+          padding: 100,
+          textAlign: "center"
+        }}
+      >
+        New Issues yet !
+      </p>
+    );
+  }
+
   return (
     <Grid
       container
@@ -92,112 +108,94 @@ function DashboardView() {
       justify="flex-start"
       alignItems="stretch"
     >
-      {!((((data || {}).issues || {}).edges || []).length === 0) ? (
-        <>
-          <Typography variant="h1" component="h1" gutterBottom>
-            All Issues
-          </Typography>
-          <Grid item xs={12}>
-            <List style={{ backgroundColor: "white" }}>
-              <ListItem divider>
-                <Grid container alignItems="center" justify="space-between">
-                  <Grid item xs={5}>
-                    <Tabs
-                      value={activeTab}
-                      onChange={(_, value) => onTabChanged(value)}
-                      indicatorColor="primary"
-                      textColor="primary"
-                      variant="fullWidth"
-                      aria-label="action tabs example"
-                    >
-                      <Tab
-                        label={
-                          <>
-                            <AllInclusiveRoundedIcon />
-                            <Typography style={{ marginLeft: 10 }}>
-                              <strong>{openCount + closedCount}</strong> All
-                            </Typography>
-                          </>
-                        }
-                      />
-                      <Tab
-                        label={
-                          <>
-                            <ErrorIcon style={{ color: "green" }} />
-                            <Typography style={{ marginLeft: 10 }}>
-                              <strong>{openCount}</strong> Opened Issues
-                            </Typography>
-                          </>
-                        }
-                      />
-                      <Tab
-                        label={
-                          <>
-                            <ErrorIcon style={{ color: "red" }} />
-                            <Typography style={{ marginLeft: 10 }}>
-                              <strong>{closedCount}</strong> Closed Issues
-                            </Typography>
-                          </>
-                        }
-                      />
-                    </Tabs>
-                  </Grid>
-                  <Grid item xs={4} container alignItems="center" spacing={2}>
-                    <Input
-                      onChange={e => onInputChanged(e.target.value)}
-                      value={searchInput}
-                      onKeyUp={e => {
-                        if (e.keyCode === 13) {
-                          e.preventDefault();
-                          setValidatedSearchInput(searchInput);
-                        }
-                      }}
-                      autoFocus
-                      placeholder="Search for an issue ..."
-                      style={{ marginLeft: 20, flex: 1 }}
-                    />
-                    <Grid item xs={2}>
-                      <Fab
-                        size="small"
-                        color="primary"
-                        onClick={() => setValidatedSearchInput(searchInput)}
-                      >
-                        <SearchIcon />
-                      </Fab>
-                    </Grid>
-                  </Grid>
+      <Typography variant="h1" component="h1" gutterBottom>
+        All Issues
+      </Typography>
+      <Grid item xs={12}>
+        <List style={{ backgroundColor: "white" }}>
+          <ListItem divider>
+            <Grid container alignItems="center" justify="space-between">
+              <Grid item xs={5}>
+                <Tabs
+                  value={activeTab}
+                  onChange={(_, value) => onTabChanged(value)}
+                  indicatorColor="primary"
+                  textColor="primary"
+                  variant="fullWidth"
+                  aria-label="action tabs example"
+                >
+                  <Tab
+                    label={
+                      <>
+                        <AllInclusiveRoundedIcon />
+                        <Typography style={{ marginLeft: 10 }}>
+                          <strong>{openCount + closedCount}</strong> All
+                        </Typography>
+                      </>
+                    }
+                  />
+                  <Tab
+                    label={
+                      <>
+                        <ErrorIcon style={{ color: "green" }} />
+                        <Typography style={{ marginLeft: 10 }}>
+                          <strong>{openCount}</strong> Opened Issues
+                        </Typography>
+                      </>
+                    }
+                  />
+                  <Tab
+                    label={
+                      <>
+                        <ErrorIcon style={{ color: "red" }} />
+                        <Typography style={{ marginLeft: 10 }}>
+                          <strong>{closedCount}</strong> Closed Issues
+                        </Typography>
+                      </>
+                    }
+                  />
+                </Tabs>
+              </Grid>
+              <Grid item xs={4} container alignItems="center" spacing={2}>
+                <Input
+                  onChange={e => onInputChanged(e.target.value)}
+                  value={searchInput}
+                  onKeyUp={e => {
+                    if (e.keyCode === 13) {
+                      e.preventDefault();
+                      setValidatedSearchInput(searchInput);
+                    }
+                  }}
+                  autoFocus
+                  placeholder="Search for an issue ..."
+                  style={{ marginLeft: 20, flex: 1 }}
+                />
+                <Grid item xs={2}>
+                  <Fab
+                    size="small"
+                    color="primary"
+                    onClick={() => setValidatedSearchInput(searchInput)}
+                  >
+                    <SearchIcon />
+                  </Fab>
                 </Grid>
-              </ListItem>
-              {issuesLoading ? (
-                <Loading />
-              ) : (
-                data.issues.edges.map(node =>
-                  node == null ? null : <IssueItem key={node.id} issue={node} />
-                )
-              )}
-            </List>
-          </Grid>
+              </Grid>
+            </Grid>
+          </ListItem>
           {issuesLoading ? (
             <Loading />
           ) : (
-            data.issues.pageInfo.hasNextPage && (
-              <Button onClick={loadMore}>load more</Button>
+            data.issues.edges.map(node =>
+              node == null ? null : <IssueItem key={node.id} issue={node} />
             )
           )}
-        </>
-      ) : (
-        <p
-          style={{
-            fontSize: 100,
-            fontWeight: 1000,
-            color: "#c1c1c1",
-            padding: 100,
-            textAlign: "center"
-          }}
-        >
-          New Issues yet !
-        </p>
-      )}
+        </List>
+      </Grid>
+      {issuesLoading
+        ? null
+        : data.issues.pageInfo.hasNextPage && (
+            <Button onClick={loadMore}>load more</Button>
+          )}
     </Grid>
   );
 }

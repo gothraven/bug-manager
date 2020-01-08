@@ -93,6 +93,9 @@ function UsersSettings() {
         <Typography variant="h1" component="h1" gutterBottom>
           Users Settings
         </Typography>
+        <Typography variant="subtitle1" component="p" gutterBottom>
+          Users settings is about upgarding or downgrading users roles !
+        </Typography>
         <Grid item container direction="column" justify="center" spacing={2}>
           <Grid item container justify="flex-end">
             <Grid item xs={5} container alignItems="center" spacing={2}>

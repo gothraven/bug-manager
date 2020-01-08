@@ -86,6 +86,10 @@ function StatusSettings() {
         <Typography variant="h1" component="h1" gutterBottom>
           Life Cycle Settings
         </Typography>
+        <Typography variant="subtitle1" component="p" gutterBottom>
+          Life cyle settings concerns the issues status, you can use the
+          examples or create new ones !
+        </Typography>
       </Grid>
       <StatusBoard
         statuses={data.statuses}
@@ -382,7 +386,6 @@ function StatusListItem(props) {
             onChange={e => setName(e.target.value)}
           />
           <TextField
-            error={description === ""}
             margin="dense"
             label="Status description"
             type="text"
