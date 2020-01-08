@@ -82,7 +82,7 @@ function TagsView() {
               textAlign: "center"
             }}
           >
-            New Tags yet !
+            No Tags yet !
           </p>
         )}
       </Grid>

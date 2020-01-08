@@ -96,7 +96,7 @@ function DashboardView() {
           textAlign: "center"
         }}
       >
-        New Issues yet !
+        No Issues yet !
       </p>
     );
   }

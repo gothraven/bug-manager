@@ -91,7 +91,7 @@ function ProjectsView() {
               textAlign: "center"
             }}
           >
-            New Projects yet !
+            No Projects yet !
           </p>
         )}
       </Grid>
