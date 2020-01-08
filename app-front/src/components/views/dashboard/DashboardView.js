@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useCallback, useState } from "react";
 import { useQuery } from "@apollo/react-hooks";
 import Grid from "@material-ui/core/Grid";
@@ -85,22 +86,6 @@ function DashboardView() {
 
   const { openCount, closedCount } = statisticsData.issuesStatistics;
 
-  if (!issuesLoading && data.issues.edges.length === 0) {
-    return (
-      <p
-        style={{
-          fontSize: 100,
-          fontWeight: 1000,
-          color: "#c1c1c1",
-          padding: 100,
-          textAlign: "center"
-        }}
-      >
-        No Issues yet !
-      </p>
-    );
-  }
-
   return (
     <Grid
       container
@@ -184,10 +169,23 @@ function DashboardView() {
           </ListItem>
           {issuesLoading ? (
             <Loading />
-          ) : (
+          ) : data.issues.edges.length > 0 ? (
             data.issues.edges.map(node =>
               node == null ? null : <IssueItem key={node.id} issue={node} />
             )
+          ) : (
+            <p
+              style={{
+                fontSize: 100,
+                fontWeight: 1000,
+                color: "#c1c1c1",
+                padding: 100,
+                textAlign: "center"
+              }}
+            >
+              No {activeTab === 1 && "Open"}
+              {activeTab === 2 && "Closed"} Issues yet !
+            </p>
           )}
         </List>
       </Grid>
