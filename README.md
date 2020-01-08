@@ -15,6 +15,8 @@ Cette première partie constitue le coeur de metier du projet, nommé API(Applic
 - MongoDB: Constitue la base de données Non Relationnelle que nous avons utilisé dans ce projet
 - ...
 
+actuellement déployé dans [https://bug-manager-core.herokuapp.com](https://bug-manager-core.herokuapp.com) en mode dev pour que tu puisses utiliser le Playground de Graphql.
+
 ### APP-FRONT
 À cette seconde partie, le developpement concerne de mettre en place une interface WEB permettant d'utiliser l'API de manieère plus naturelle. Le technologies que nous avons utilisés entre autres:
 - React.js: utilisé comme Framework front end de l'application
