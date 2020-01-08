@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -6,6 +7,13 @@ import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useMutation } from "@apollo/react-hooks";
 import { UPDATE_USER_PASSWORD } from "../../core/models/users/users.graphql";
+
+const useStyles = makeStyles(theme => ({
+  whiteCard: {
+    backgroundColor: theme.palette.background.paper,
+    borderRadius: "2%"
+  }
+}));
 
 const tooltipPassword = (
   <p style={{ fontSize: "12px" }}>
@@ -21,6 +29,7 @@ const tooltipPassword = (
 );
 
 function SecuritySettings() {
+  const classes = useStyles();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -58,15 +67,24 @@ function SecuritySettings() {
         direction="column"
         justify="flex-start"
         alignItems="stretch"
+        spacing={3}
       >
-        <Typography variant="h1" component="h1" gutterBottom>
-          Security information
-        </Typography>
-        <Typography variant="subtitle1" component="p" gutterBottom>
-          Security settings is about changing the user password !
-        </Typography>
+        <Grid item>
+          <Typography variant="h1" component="h1" gutterBottom>
+            Security information
+          </Typography>
+          <Typography variant="subtitle1" component="p" gutterBottom>
+            Security settings is about changing the user password !
+          </Typography>
+        </Grid>
         <Grid item container spacing={4}>
-          <Grid item container direction="column" justify="flex-start">
+          <Grid
+            item
+            container
+            direction="column"
+            justify="flex-start"
+            className={classes.whiteCard}
+          >
             <Grid item>
               <TextField
                 required
