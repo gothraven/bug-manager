@@ -8,6 +8,7 @@ import Box from "@material-ui/core/Box";
 import AccountSettings from "./AccountSettings";
 import SecuritySettings from "./SecuritySettings";
 import UsersSettings from "./UsersSettings";
+import StatusSettings from "./StatusSettings";
 import { Can } from "../../core/Ability";
 
 function TabPanel(props) {
@@ -52,7 +53,7 @@ const useStyles = makeStyles(theme => ({
 
 function SettingsView() {
   const classes = useStyles();
-  const [value, setValue] = React.useState(2);
+  const [value, setValue] = React.useState(3);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -78,6 +79,15 @@ function SettingsView() {
             />
           )}
         </Can>
+        <Can I="see" a="StatusSettings">
+          {() => (
+            <Tab
+              label="Life Cycle"
+              onClick={e => handleChange(e, 3)}
+              {...a11yProps(3)}
+            />
+          )}
+        </Can>
       </Tabs>
       <TabPanel value={value} index={0}>
         <AccountSettings />
@@ -89,6 +99,13 @@ function SettingsView() {
         {() => (
           <TabPanel value={value} index={2}>
             <UsersSettings />
+          </TabPanel>
+        )}
+      </Can>
+      <Can I="see" a="StatusSettings">
+        {() => (
+          <TabPanel value={value} index={3}>
+            <StatusSettings />
           </TabPanel>
         )}
       </Can>
