@@ -37,7 +37,6 @@
     "bcryptjs": "2.4.3",
     "bluebird": "^3.5.0",
     "cors": "^2.8.3",
-    "cross-env": "^5.0.1",
     "dataloader": "^1.4.0",
     "dotenv-safe": "^6.0.0",
     "express": "^4.15.2",
